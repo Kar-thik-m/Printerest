@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Url } from '../../../Config';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ const Register = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:4000/user/register', { 
+            const response = await fetch(`${Url}/user/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,8 +41,9 @@ const Register = () => {
                 setMessage(errorData.message || 'Error registering user');
             }
         } catch (error) {
+            alert(error);
             console.error('Error:', error);
-            setMessage('Error registering user');
+           
         } finally {
             setLoading(false);
         }

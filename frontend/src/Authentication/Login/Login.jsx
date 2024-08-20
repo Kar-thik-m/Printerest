@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Url } from '../../../Config';
 
-const Register = () => {
+const Login= () => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -23,7 +23,7 @@ const Register = () => {
 
 
         try {
-            const response = await fetch(`${Url}/user/register`, {
+            const response = await fetch(`${Url}/user/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const Register = () => {
             await response.json();
             alert("sucessfull")
             setFormData({
-                username: '',
+               
                 email: '',
                 password: '',
             })
@@ -45,19 +45,8 @@ const Register = () => {
     };
     return (
         <div>
-            <h2>Register</h2>
+            <h2>LOGIN</h2>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
                 <div>
                     <label htmlFor="email">Email:</label>
                     <input
@@ -89,4 +78,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Login;

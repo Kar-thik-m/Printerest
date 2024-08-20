@@ -12,13 +12,13 @@ userRouter.post('/register', async (req, res) => {
             res.status(409).send({ message: "user already exist" })
             return;
         }
-        bcrypt.hash(payload.password, 10, async (err, hash) => {
+         await bcrypt.hash(payload.password, 10, async (err, hash) => {
             if (err) {
                 res.status(500).send({ message: "error in encrypting password" })
             }
 
             const userdata = new usermodel({ ...payload, password: hash });
-            await userdata.save();
+          
             const token = generateToken({ userId: userdata._id });
             try {
                 res.cookie('token', token, {
@@ -30,6 +30,7 @@ userRouter.post('/register', async (req, res) => {
                } catch (error) {
                 res.send("cookies Error",error)
                }
+            await userdata.save();
             res.status(201).send({ message: 'User registered successfully',token });
         })
 
@@ -49,7 +50,7 @@ userRouter.post('/login', async function (req, res) {
             return res.status(404).send({ message: "User not found" });
         }
 
-        bcrypt.compare(password, existingUser.password, function (err, result) {
+       await bcrypt.compare(password, existingUser.password, function (err, result) {
             if (err) {
                 return res.status(500).send({ message: "Error in comparing passwords" });
             }

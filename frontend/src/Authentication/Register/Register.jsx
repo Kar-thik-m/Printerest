@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Url } from '../../../Config';
+
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -8,8 +8,7 @@ const Register = () => {
         password: '',
     });
 
-    const [message, setMessage] = useState('');
-    const [loading, setLoading] = useState(false);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,34 +20,23 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+
 
         try {
-            const response = await fetch(`${Url}/user/register`, {
+            const response = await fetch(`http://localhost:4000/user/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
             });
-
-            if (response.ok) {
-                alert('User registered successfully');
-                setFormData({ username: '', email: '', password: '' });
-                setMessage('');
-            } else {
-                const errorData = await response.json();
-                setMessage(errorData.message || 'Error registering user');
-            }
+            await response.json();
         } catch (error) {
             alert(error);
             console.error('Error:', error);
-           
-        } finally {
-            setLoading(false);
+
         }
     };
-
     return (
         <div>
             <h2>Register</h2>
@@ -86,11 +74,11 @@ const Register = () => {
                         required
                     />
                 </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Registering...' : 'Register'}
+                <button type="submit" >
+                    submit
                 </button>
             </form>
-            {message && <p>{message}</p>}
+
         </div>
     );
 };

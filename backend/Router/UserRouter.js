@@ -1,6 +1,6 @@
 import express from 'express';
 import { usermodel } from '../Model/user.js'; // Ensure the path is correct
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 import { generateToken } from '../Utils.js';
 const userRouter = express.Router();
 

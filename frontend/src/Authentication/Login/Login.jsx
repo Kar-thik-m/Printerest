@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Url } from '../../../Config';
 
-const Login= () => {
+const Login = () => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -30,10 +30,15 @@ const Login= () => {
                 },
                 body: JSON.stringify(formData),
             });
+            if (!response.ok) {
+
+                alert("faill")
+
+            }
             await response.json();
             alert("sucessfull")
             setFormData({
-               
+
                 email: '',
                 password: '',
             })

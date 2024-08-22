@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Url } from '../../../Config';
+import { useDispatch } from "react-redux"; 
+import { register } from '../../Action/Users';
 
 const Register = () => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
     });
-
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,31 +18,11 @@ const Register = () => {
         });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-
-        try {
-            const response = await fetch(`${Url}/user/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-            await response.json();
-            alert("sucessfull")
-            setFormData({
-                username: '',
-                email: '',
-                password: '',
-            })
-        } catch (error) {
-            alert(error);
-            console.error('Error:', error);
-
-        }
+    const handleSubmit = (e) => {
+        e.preventDefault(); 
+        dispatch(register(formData));
     };
+
     return (
         <div>
             <h2>Register</h2>
@@ -80,11 +60,10 @@ const Register = () => {
                         required
                     />
                 </div>
-                <button type="submit" >
-                    submit
+                <button type="submit">
+                    Submit
                 </button>
             </form>
-
         </div>
     );
 };

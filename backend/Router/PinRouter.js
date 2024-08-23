@@ -7,12 +7,11 @@ const router = express.Router();
 // POST /pins - Create a new pin
 router.post('/pins', authenticateToken, async (req, res) => {
     try {
-        if (!req.body.title || !req.body.content) {
-            return res.status(400).json({ message: 'Title and content are required' });
-        }
-
-        req.body.user = req.user._id;
-        const pin = new Pinmodel(req.body);
+       
+        const { title, image } = req.body;
+        const user = req.user._id;  
+        
+        const pin = new Pinmodel({ title, image, user });
         await pin.save();
 
         res.status(201).json(pin);
@@ -25,7 +24,7 @@ router.post('/pins', authenticateToken, async (req, res) => {
 // GET /getallpins - Get all pins
 router.get('/getallpins', async (req, res) => {
     try {
-        const pins = await Pinmodel.find().populate('user', 'username');
+        const pins = await Pinmodel.find().populate('user', 'username').select('-user');
         res.status(200).json(pins);
     } catch (error) {
         console.error(error); // Log error details for debugging

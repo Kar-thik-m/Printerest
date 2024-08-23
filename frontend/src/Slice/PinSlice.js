@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
-  items: [], 
   error: null,
 };
 
@@ -16,15 +15,28 @@ const pinSlice = createSlice({
     },
     pinSuccess(state, action) {
       state.loading = false;
-      state.items = action.payload;
+      state.item=action.payload;
     },
     pinFailure(state, action) {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    CreatepinFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
+    CreatepinRequest(state) {
+        state.loading = true;
+        state.error = null;
+    },
+    CreatepinSuccess(state, action) {
+        state.loading = false;
+        state.items.push(action.payload); 
+    },
+   
   },
 });
 
-export const { pinRequest, pinSuccess, pinFailure } = pinSlice.actions;
+export const { pinRequest, pinSuccess, pinFailure,CreatepinRequest,CreatepinSuccess, CreatepinFailure, } = pinSlice.actions;
 
 export default pinSlice.reducer;

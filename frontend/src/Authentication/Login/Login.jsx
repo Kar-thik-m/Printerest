@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { Url } from '../../../Config';
-
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { LoginApi } from '../../Action/Users';
 const Login = () => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
-        username: '',
         email: '',
         password: '',
-    });
-
-
+    })
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,36 +17,11 @@ const Login = () => {
         });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-
-        try {
-            const response = await fetch(`${Url}/user/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-            if (!response.ok) {
-
-                alert("faill")
-
-            }
-            await response.json();
-            alert("sucessfull")
-            setFormData({
-
-                email: '',
-                password: '',
-            })
-        } catch (error) {
-            alert(error);
-            console.error('Error:', error);
-
-        }
+    const handleSubmit =(e) => {
+        e.preventDefault(); 
+      dispatch(LoginApi(formData));
     };
+
     return (
         <div>
             <h2>LOGIN</h2>

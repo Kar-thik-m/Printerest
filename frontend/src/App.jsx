@@ -1,10 +1,9 @@
 
 import Register from "./Authentication/Register/Register";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./Authentication/Login/Login.jsx";
+import Home from "./Components/Home/Home.jsx";
 import CreatePin from "./Components/Create/CreatePin.jsx";
-import Login from "./Authentication/Login/Login";
-import Home from "./Components/Home/Home";
-
 
 function App() {
 

@@ -1,5 +1,6 @@
-import { registerRequest, registerSuccess, registerFail } from "../Slice/AuthSlice.js"
-import { Url } from "../../Config.js";
+
+import { loginRequest,loginFail,loginSuccess,registerFail,registerRequest,registerSuccess } from "../Slice/AuthSlice.js";
+import { Url } from "../../config.js";
 export const register = (userData) => async (dispatch) => {
     dispatch(registerRequest());
 
@@ -22,6 +23,33 @@ export const register = (userData) => async (dispatch) => {
         dispatch(registerSuccess(data));
 
     } catch (error) {
-        dispatch(registerFail(error.toString())); 
+        dispatch(registerFail(error.toString()));
+    }
+};
+
+
+export const LoginApi = (userData) => async (dispatch) => {
+    dispatch(loginRequest());
+
+    try {
+        const response = await fetch(`${Url}/user/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+           
+            return;
+        }
+
+        const data = await response.json();
+        dispatch(loginSuccess(data));
+
+    } catch (error) {
+        dispatch(loginFail(error));
     }
 };

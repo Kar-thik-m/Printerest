@@ -16,7 +16,7 @@ router.post('/pins', authenticateToken, async (req, res) => {
 
         res.status(201).json(pin);
     } catch (error) {
-        console.error(error); // Log error details for debugging
+        console.error(error); 
         res.status(400).json({ message: error.message });
     }
 });
@@ -24,10 +24,10 @@ router.post('/pins', authenticateToken, async (req, res) => {
 // GET /getallpins - Get all pins
 router.get('/getallpins', async (req, res) => {
     try {
-        const pins = await Pinmodel.find().populate('user', 'username').select('-user');
+        const pins = await Pinmodel.find().populate('user', 'username email').select('-user');
         res.status(200).json(pins);
     } catch (error) {
-        console.error(error); // Log error details for debugging
+        console.error(error); 
         res.status(500).json({ message: error.message });
     }
 });
@@ -43,7 +43,7 @@ router.get('/:id', async (req, res) => {
 
         res.status(200).json(pin);
     } catch (error) {
-        console.error(error); // Log error details for debugging
+        console.error(error); 
         res.status(500).json({ message: error.message });
     }
 });

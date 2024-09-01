@@ -6,7 +6,7 @@ const SaveRouter = express.Router();
 // Create a new save entry
 SaveRouter.post('/save', async (req, res) => {
     try {
-        console.log('req.user:', req.user);
+       
 
         if (!req.user || !req.user.id) {
             return res.status(401).json({ message: 'Unauthorized' });

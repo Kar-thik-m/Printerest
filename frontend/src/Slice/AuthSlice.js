@@ -15,7 +15,7 @@ const authSlice = createSlice({
         loginSuccess(state, action) {
             state.loading = false;
             state.isAuthenticated = true;
-            state.user = action.payload.user;
+            state = action.payload;
         },
         loginFail(state, action) {
             state.loading = false;

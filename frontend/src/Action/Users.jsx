@@ -47,6 +47,8 @@ export const LoginApi = (userData) => async (dispatch) => {
         }
 
         const data = await response.json();
+        const { token } = data;
+        localStorage.setItem('token', token);
         dispatch(loginSuccess(data));
 
     } catch (error) {

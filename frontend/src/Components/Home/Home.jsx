@@ -7,13 +7,12 @@ const Home = () => {
     const { item, loading, error } = useSelector((state) => state.pins);
 
     useEffect(() => {
-        dispatch(GetPinsAll()); 
+        dispatch(GetPinsAll());
     }, [dispatch]);
-console.log(item)
+    console.log(item)
     return (
         <div>
-           
-          jj
+           home
         </div>
     );
 }

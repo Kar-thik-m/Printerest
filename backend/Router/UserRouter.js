@@ -77,4 +77,17 @@ userRouter.post('/login', async function (req, res) {
     }
 });
 
+
+userRouter.get("profile",async (req,res)=>{
+    try {
+        const finduser= usermodel.findById(req.user._id);
+        if (!finduser) {
+            return res.status(404).json({ message: "User not found" }); 
+        }
+        res.status(200).json(finduser);
+    } catch (error) {
+        res.status(500).send({ message: "user not define" });
+    }
+
+})
 export default userRouter;

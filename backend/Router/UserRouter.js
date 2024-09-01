@@ -78,7 +78,7 @@ userRouter.post('/login', async function (req, res) {
 });
 
 
-userRouter.get("profile",async (req,res)=>{
+userRouter.get("/profile",async (req,res)=>{
     try {
         const finduser= usermodel.findById(req.user._id);
         if (!finduser) {

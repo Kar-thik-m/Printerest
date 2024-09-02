@@ -1,0 +1,79 @@
+
+
+
+.card {
+    width: 100%;
+    max-width: 400px;
+    margin: 7vh auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+}
+
+.Login{
+    text-decoration: none;
+    color: #5c8ce4;
+    font-size: 16px;
+    font-weight: bold;
+}
+.title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.inputGroup {
+    margin-bottom: 15px;
+}
+
+/* Label styling */
+.label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+
+.button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.logo {
+    width: 100%;
+    text-align: center;
+    padding: 10px; 
+}
+
+.image {
+    width: 50px;
+    height: 50px;
+   
+}
+
+.button:hover {
+    background-color: #0056b3;
+}

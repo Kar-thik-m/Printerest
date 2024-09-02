@@ -15,28 +15,41 @@ const pinSlice = createSlice({
     },
     pinSuccess(state, action) {
       state.loading = false;
-      state.item=action.payload;
+      state.item = action.payload;
     },
     pinFailure(state, action) {
-        state.loading = false;
-        state.error = action.payload;
+      state.loading = false;
+      state.error = action.payload;
     },
     CreatepinFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
     CreatepinRequest(state) {
-        state.loading = true;
-        state.error = null;
+      state.loading = true;
+      state.error = null;
     },
     CreatepinSuccess(state, action) {
-        state.loading = false;
-        state.items.push(action.payload); 
+      state.loading = false;
+      state.items.push(action.payload);
     },
-   
+    pinDetailsRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    pinDetailsSuccess(state, action) {
+      state.loading = false;
+      state.pindetails = action.payload;
+    },
+    pinDetailsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-export const { pinRequest, pinSuccess, pinFailure,CreatepinRequest,CreatepinSuccess, CreatepinFailure, } = pinSlice.actions;
+export const { pinRequest, pinSuccess, pinFailure, CreatepinRequest, CreatepinSuccess, CreatepinFailure,
+  pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess
+} = pinSlice.actions;
 
 export default pinSlice.reducer;

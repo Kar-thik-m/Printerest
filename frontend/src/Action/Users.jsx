@@ -1,6 +1,10 @@
 
-import { loginRequest,loginFail,loginSuccess,registerFail,registerRequest,registerSuccess } from "../Slice/AuthSlice.js";
+import {
+    loginRequest, loginFail, loginSuccess, registerFail, registerRequest, registerSuccess,
+    loadUserRequest, loadUserFail, loadUserSuccess
+} from "../Slice/AuthSlice.js";
 import { Url } from "../../config.js";
+
 export const register = (userData) => async (dispatch) => {
     dispatch(registerRequest());
 
@@ -41,8 +45,8 @@ export const LoginApi = (userData) => async (dispatch) => {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-           
+            await response.json();
+
             return;
         }
 
@@ -55,3 +59,15 @@ export const LoginApi = (userData) => async (dispatch) => {
         dispatch(loginFail(error));
     }
 };
+
+export const Loaduser = async (dispatch) => {
+    try {
+        dispatch(loadUserRequest());
+        const response = await fetch(`${Url}/user/profile`);
+        const data = response.json();
+        dispatch(loadUserSuccess(data));
+
+    } catch (error) {
+         dispatch(loadUserFail(error))
+    }
+}

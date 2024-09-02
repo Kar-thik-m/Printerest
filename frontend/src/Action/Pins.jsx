@@ -1,20 +1,34 @@
-import { pinRequest,pinFailure,pinSuccess,CreatepinRequest,CreatepinFailure,CreatepinSuccess } from "../Slice/PinSlice";
+import {
+    pinRequest, pinFailure, pinSuccess, CreatepinRequest, CreatepinFailure, CreatepinSuccess,
+    pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess
+} from "../Slice/PinSlice";
 import { Url } from "../../config";
 
 export const GetPinsAll = () => async (dispatch) => {
     try {
         dispatch(pinRequest());
-        const response = await fetch(`${Url}/item/getallpins`); // Correct URL
+        const response = await fetch(`${Url}/item/getallpins`);
         if (!response.ok) {
-            dispatch(pinFailure(error)); 
+            dispatch(pinFailure(error));
         }
         const data = await response.json();
-        dispatch(pinSuccess(data)); // Pasthe actual data to pinSuccess
+        dispatch(pinSuccess(data));
     } catch (error) {
-        dispatch(pinFailure(error)); // Convert error to string
+        dispatch(pinFailure(error));
     }
 };
 
+
+export const Getpindetails = (id) => async (dispatch) => {
+    try {
+        dispatch(pinDetailsRequest())
+        const response = await fetch(`${Url}/item/${id}`);
+        const data = await response.json();
+        dispatch(pinDetailsSuccess(data));
+    } catch (error) {
+        dispatch(pinDetailsFailure(error));
+    }
+}
 
 
 

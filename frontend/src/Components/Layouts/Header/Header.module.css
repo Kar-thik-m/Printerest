@@ -1,0 +1,53 @@
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    gap: 4rem;
+}
+
+.logoimage {
+    height: 40px;
+    width: auto;
+}
+
+.search {
+    flex-grow:0;
+    
+}
+
+.authlinks {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.loginlink {
+    text-decoration: none;
+    color: #080808;
+    font-size: 16px;
+    font-weight: bold;
+    
+}
+.navlink{
+    text-decoration: none;
+    color: #080808;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.loginlink:hover {
+  color: #a9abad;
+}
+.navlink:hover {
+    color: #a9abad;
+}

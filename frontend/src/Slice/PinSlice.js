@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+ 
   loading: false,
   error: null,
+  item:null,
+  pindetails:null,
 };
 
 const pinSlice = createSlice({
@@ -31,7 +34,7 @@ const pinSlice = createSlice({
     },
     CreatepinSuccess(state, action) {
       state.loading = false;
-      state.items.push(action.payload);
+      state.item=action.payload
     },
     pinDetailsRequest(state) {
       state.loading = true;

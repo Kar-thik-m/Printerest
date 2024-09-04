@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { LoginApi } from '../../Action/Users';
 import Lstyle from "../Login/Login.module.css";
 import Logo from "../../assets/logo.jpeg"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const Login = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { isAuthenticated, } = useSelector((state) => state.user)
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -24,10 +27,14 @@ const Login = () => {
         e.preventDefault();
         dispatch(LoginApi(formData));
     };
-
+    useEffect(() => {
+        if (isAuthenticated) {
+    navigate("/")
+        }
+    }, [isAuthenticated,navigate])
     return (
-        
-            <div className={Lstyle.card}>
+
+        <div className={Lstyle.card}>
             <div className={Lstyle.logo}>
                 <img src={Logo} className={Lstyle.image}></img>
             </div>
@@ -59,18 +66,18 @@ const Login = () => {
                     />
                 </div>
                 <div className={Lstyle.forget}>
-                   <b>Forget password</b>
+                    <b>Forget password</b>
                 </div>
                 <button type="submit" className={Lstyle.button}>
                     Submit
                 </button>
                 <div className={Lstyle.check}>
                     <h4>You Don't Have Account Click-<Link to="/register" className={Lstyle.register}>Register</Link> </h4>
-                   
+
                 </div>
             </form>
         </div>
-        
+
     );
 };
 

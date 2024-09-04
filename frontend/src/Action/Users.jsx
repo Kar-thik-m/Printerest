@@ -1,4 +1,4 @@
-
+import axios from "axios";
 import {
     loginRequest, loginFail, loginSuccess, registerFail, registerRequest, registerSuccess,
     loadUserRequest, loadUserFail, loadUserSuccess
@@ -51,8 +51,7 @@ export const LoginApi = (userData) => async (dispatch) => {
         }
 
         const data = await response.json();
-        const { token } = data;
-        localStorage.setItem('token', token);
+        
         dispatch(loginSuccess(data));
 
     } catch (error) {
@@ -60,14 +59,18 @@ export const LoginApi = (userData) => async (dispatch) => {
     }
 };
 
+
 export const Loaduser = async (dispatch) => {
     try {
         dispatch(loadUserRequest());
-        const response = await fetch(`${Url}/user/profile`);
-        const data = response.json();
-        dispatch(loadUserSuccess(data));
+     
+        const { data } = await axios.get(`${Url}/user/profile`, {
+            withCredentials: true,
+        });
 
+        dispatch(loadUserSuccess(data));
     } catch (error) {
-         dispatch(loadUserFail(error))
+        dispatch(loadUserFail(error.response?.data?.message || error.message || 'Something went wrong'));
     }
-}
+};
+

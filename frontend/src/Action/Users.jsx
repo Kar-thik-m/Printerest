@@ -1,4 +1,4 @@
-import axios from "axios";
+import Cookies from 'js-cookie';
 import {
     loginRequest, loginFail, loginSuccess, registerFail, registerRequest, registerSuccess,
     loadUserRequest, loadUserFail, loadUserSuccess
@@ -59,18 +59,28 @@ export const LoginApi = (userData) => async (dispatch) => {
     }
 };
 
-
 export const Loaduser = async (dispatch) => {
     try {
         dispatch(loadUserRequest());
-     
-        const { data } = await axios.get(`${Url}/user/profile`, {
-            withCredentials: true,
+        
+        // Get the token from cookies
+        const token = Cookies.get('token');
+        console.log(token); // Log the token for debugging purposes
+
+        const response = await fetch(`${Url}/user/profile`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
 
+        if (!response.ok) {
+            throw new Error('Failed to load user');
+        }
+
+        const data = await response.json();
         dispatch(loadUserSuccess(data));
     } catch (error) {
-        dispatch(loadUserFail(error.response?.data?.message || error.message || 'Something went wrong'));
+        dispatch(loadUserFail(error || 'Something went wrong'));
     }
 };
 

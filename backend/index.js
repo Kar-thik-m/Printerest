@@ -10,7 +10,10 @@ const app = express();
 ConectToDb();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: 'http://your-frontend-domain.com',
+  credentials: true // Allow cookies to be sent and received
+}));
 app.use("/user", userRouter);
 app.use("/item", router);
 app.use("/saveitem", authenticateToken, SaveRouter);

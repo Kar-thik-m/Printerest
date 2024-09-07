@@ -9,25 +9,28 @@ import { Loaduser } from "./Action/Users.jsx";
 import Pindetail from "./Components/Pindetails/Pindetails.jsx";
 import { useEffect } from "react";
 import ProtectRoute from "./Components/PrivateRoute/ProtectRoute.jsx";
-import store from "./Slice/Store.js";
+import Getprofile from "./Components/getprofile.jsx";
+import { useDispatch } from "react-redux";
+
 function App() {
-useEffect(()=>{
-store.dispatch(Loaduser);
-},[])
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(Loaduser);
+  }, [dispatch])
 
   return (
     <div>
       <Router>
         <Header />
         <Routes>
-          <Route index path="/" element={<Home />}/>
-          <Route path="/create"  element=<ProtectRoute element={<CreatePin /> } /> />
+          <Route index path="/" element={<Getprofile />} />
+          <Route path="/create" element=<ProtectRoute element={<CreatePin />} /> />
           <Route path="/login" element={<Login />} />
-          <Route path="/pin/:id" element=<ProtectRoute element={<Pindetail /> } /> />
+          <Route path="/pin/:id" element=<ProtectRoute element={<Pindetail />} /> />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<div>Not Found</div>} />
         </Routes>
-      
+
       </Router>
     </div>
   )

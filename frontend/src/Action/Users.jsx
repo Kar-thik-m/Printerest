@@ -67,7 +67,7 @@ export const Loaduser = async (dispatch) => {
         const token = Cookies.get('token');
         console.log(token); // Log the token for debugging purposes
 
-        const response = await fetch(`${Url}/load/profile`, {
+        const response = await fetch(`${Url}/user/profile`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

@@ -3,7 +3,8 @@ import { usermodel } from '../Model/user.js';
 
 export const authenticateToken = async (req, res, next) => {
     try {
-        const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+        const token = req.cookies.token ;
+
 
         if (!token) {
             return res.status(401).json({ message: 'Access denied, no token provided' });

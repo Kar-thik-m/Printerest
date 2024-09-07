@@ -8,9 +8,10 @@ const GetProfile = () => {
        
         const fetchProfile = async () => {
             try {
-                const response = await fetch(`${Url}/user/profile`);
+                const response = await fetch(`${Url}/user/profile`,{withCredentials: true});
                 const data = await response.json();
                 console.log(data);
+                
             } catch (error) {
                 console.log(error);
             }

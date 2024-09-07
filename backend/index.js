@@ -11,7 +11,7 @@ ConectToDb();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://your-frontend-domain.com',
+  
   credentials: true // Allow cookies to be sent and received
 }));
 app.use("/user", userRouter);

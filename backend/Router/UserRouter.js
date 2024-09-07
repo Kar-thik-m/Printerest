@@ -3,7 +3,7 @@ import { usermodel } from '../Model/user.js'; // Ensure the path is correct
 import bcrypt from "bcryptjs"
 
 import { sendToken } from '../Utils/jwt.js';
-
+import { authenticateToken } from '../Middleware/Authentication.js';
 const userRouter = express.Router();
 
 userRouter.post('/register', async (req, res) => {
@@ -55,5 +55,16 @@ userRouter.post('/login', async function (req, res) {
 });
 
 
+userRouter.get("/profile", authenticateToken, async (req, res) => {
+    try {
+        const finduser = await usermodel.findById(req.user.id);
+        if (!finduser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(finduser);
+    } catch (error) {
+        res.status(500).send({ message: "user not define" });
+    }
 
+})
 export default userRouter;

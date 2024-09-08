@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   
 });
 userSchema.methods.getJwtToken = function(){
-    return jwt.sign({email: this.email}, process.env.SECRET_KEY, {
+    return jwt.sign({id: this.id}, process.env.SECRET_KEY, {
          expiresIn: process.env.EXPIRES
      })
  }

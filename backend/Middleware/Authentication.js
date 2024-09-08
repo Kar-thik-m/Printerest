@@ -12,7 +12,7 @@ export const authenticateToken = async (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
-        // Assuming the token contains an 'email' field
+        
         const user = await usermodel.findOne({ email: decoded.email });
 
         if (!user) {

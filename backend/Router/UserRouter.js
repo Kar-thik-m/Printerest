@@ -59,17 +59,20 @@ userRouter.post('/login', async (req, res) => {
 });
 
 
-userRouter.get("/profile", authenticateToken, async (req, res) => {
+
+userRouter.get('/profile', authenticateToken, async (req, res) => {
     try {
-       
-        const finduser = await usermodel.findById(req.user.id);
+        
+        const finduser = await usermodel.findOne({ email: req.user.email });
+        
         if (!finduser) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: 'User not found' });
         }
+        
         res.status(200).json(finduser);
     } catch (error) {
-        res.status(500).send({ message: "user not define" });
+        
+        res.status(500).json({ message: 'Internal server error' }); // Improved error message
     }
-
-})
+});
 export default userRouter;

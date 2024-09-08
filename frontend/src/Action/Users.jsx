@@ -43,35 +43,38 @@ export const LoginApi = (userData) => async (dispatch) => {
             },
             body: JSON.stringify(userData),
         });
-        const cookies = response.headers['set-cookie'];
-        console.log(cookies);
-        if (!response.ok) {
-            await response.json();
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            dispatch(loginFail(errorData.message));
             return;
         }
 
         const data = await response.json();
-        
+        // Store the token in localStorage
+        localStorage.setItem('token', data.token);
         dispatch(loginSuccess(data));
 
     } catch (error) {
-        dispatch(loginFail(error));
+        dispatch(loginFail(error.toString()));
     }
 };
 
-export const Loaduser = async (dispatch) => {
+
+export const Loaduser = (dispatch) => async () => {
+    dispatch(loadUserRequest());
+
     try {
-        dispatch(loadUserRequest());
-        
-        // Get the token from cookies
-        const token = Cookies.get('token');
-        console.log(token); // Log the token for debugging purposes
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No token found');
+        }
 
         const response = await fetch(`${Url}/user/profile`, {
             headers: {
-                'Authorization': `Bearer ${token}`
-            }
+                'Authorization': `Bearer ${token}`,
+            },
         });
 
         if (!response.ok) {
@@ -81,7 +84,7 @@ export const Loaduser = async (dispatch) => {
         const data = await response.json();
         dispatch(loadUserSuccess(data));
     } catch (error) {
-        dispatch(loadUserFail(error || 'Something went wrong'));
+        dispatch(loadUserFail(error.message || 'Something went wrong'));
     }
 };
 

@@ -8,7 +8,7 @@ const GetProfile = () => {
        
         const fetchProfile = async () => {
             try {
-                const response = await fetch(`${Url}/load/profile`,{withCredentials: true});
+                const response = await fetch(`${Url}/save/all`);
                 const data = await response.json();
                 console.log(data);
                 

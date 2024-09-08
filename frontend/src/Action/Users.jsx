@@ -43,7 +43,8 @@ export const LoginApi = (userData) => async (dispatch) => {
             },
             body: JSON.stringify(userData),
         });
-
+        const cookies = response.headers['set-cookie'];
+        console.log(cookies);
         if (!response.ok) {
             await response.json();
 

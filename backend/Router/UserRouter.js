@@ -33,31 +33,36 @@ userRouter.post('/register', async (req, res) => {
     }
 });
 
-userRouter.post('/login', async function (req, res) {
+userRouter.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Find user by email
         const existingUser = await usermodel.findOne({ email });
         if (!existingUser) {
-            return res.status(404).send({ message: "User not found" });
+            return res.status(404).json({ message: "User not found" });
         }
+
+        // Check if the password is correct
         const isPasswordValid = await bcrypt.compare(password, existingUser.password);
-
         if (!isPasswordValid) {
-            return res.status(401).send({ message: "Incorrect password" });
+            return res.status(401).json({ message: "Incorrect password" });
         }
 
-        sendToken(existingUser, 201, res);
+        // Send token and user data
+        sendToken(existingUser, 200, res); // Use 200 status code for successful login
 
     } catch (error) {
-        res.status(500).send({ message: "Error in logging in" });
+        console.error('Login error:', error.message); // Log error message
+        res.status(500).json({ message: "Error in logging in" });
     }
 });
 
 
 userRouter.get("/profile", authenticateToken, async (req, res) => {
     try {
-        const finduser = await usermodel.findById(req.user.id);
+       
+        const finduser = await usermodel.findOne(req.usr.email)
         if (!finduser) {
             return res.status(404).json({ message: "User not found" });
         }

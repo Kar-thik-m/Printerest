@@ -2,7 +2,7 @@ import {
     pinRequest, pinFailure, pinSuccess, CreatepinRequest, CreatepinFailure, CreatepinSuccess,
     pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess
 } from "../Slice/PinSlice";
-import Cookies from 'js-cookie';
+
 import { Url } from "../../config";
 
 
@@ -11,7 +11,7 @@ export const GetPinsAll = () => async (dispatch) => {
         dispatch(pinRequest());
         const response = await fetch(`${Url}/item/getallpins`);
         if (!response.ok) {
-            const error = await response.text(); // Read the error message from the response
+            const error = await response.text(); 
             dispatch(pinFailure(error));
         }
         const data = await response.json();
@@ -26,7 +26,7 @@ export const Getpindetails = (id) => async (dispatch) => {
         dispatch(pinDetailsRequest());
         const response = await fetch(`${Url}/item/${id}`);
         if (!response.ok) {
-            const error = await response.text(); // Read the error message from the response
+            const error = await response.text(); 
             dispatch(pinDetailsFailure(error));
         }
         const data = await response.json();
@@ -39,8 +39,9 @@ export const Getpindetails = (id) => async (dispatch) => {
 export const createPin = (pinData) => async (dispatch) => {
     try {
         dispatch(CreatepinRequest());
-        const token = Cookies.get('token');
-        console.log(token)
+       
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token =  user.token ; 
 
         if (!token) {
             throw new Error('No authentication token found');

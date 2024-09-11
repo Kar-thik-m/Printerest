@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createPin } from '../../Action/Pins';
+import Cstyle from "../Create/Create.module.css";
 
 const CreatePin = () => {
     const [formData, setFormData] = useState({ title: '', image: '' });
@@ -16,11 +17,16 @@ const CreatePin = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setFormData({
+            title: '',
+             image: '' 
+        })
         dispatch(createPin(formData));
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+       <div className={Cstyle.formbody}>
+         <form onSubmit={handleSubmit} className={Cstyle.form}>
             <div>
                 <label htmlFor="title">Title</label>
                 <input
@@ -43,6 +49,7 @@ const CreatePin = () => {
             </div>
             <button type="submit">Create Pin</button>
         </form>
+       </div>
     );
 };
 

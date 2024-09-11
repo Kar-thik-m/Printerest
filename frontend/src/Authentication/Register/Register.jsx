@@ -4,7 +4,12 @@ import { useDispatch } from 'react-redux';
 import { register } from '../../Action/Users';
 import RStyle from "../Register/Register.module.css";
 import Logo from "../../assets/logo.jpeg"
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 const Register = () => {
+    const navigate = useNavigate();
+    const {loading } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         username: '',
@@ -24,7 +29,11 @@ const Register = () => {
         e.preventDefault();
         dispatch(register(formData));
     };
-
+  useEffect(() => {
+        if (loading===true) {
+            navigate("/login"); 
+        }
+    }, [loading, navigate]);
     return (
         <div className={RStyle.whole}>
             <div className={RStyle.card}>

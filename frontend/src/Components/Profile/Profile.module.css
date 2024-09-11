@@ -1,0 +1,88 @@
+.profiles {
+   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: sans-serif;
+    padding: 10px 0px;
+
+}
+
+.profileimage {
+    width: 10rem;
+    border-radius: 50%;
+
+
+}
+
+.profilename {
+    font-size: 50px;
+    padding-top: 10px;
+
+
+}
+
+.gmail {
+    color: rgb(100, 98, 98);
+    padding-bottom: 10px;
+
+}
+
+.edit {
+    width: 5rem;
+    padding: 10px;
+    background-color: gainsboro;
+    border-radius: 10px;
+
+}
+
+.saveandcreade {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    
+    gap: 2rem;
+    font-size: large;
+    color: rgb(19, 20, 20);
+    width: 100%;
+
+}
+
+.saveandcreade>a {
+    text-decoration: none;
+    color: rgb(19, 20, 20);
+    font-size: x-large;
+    padding: 10px;
+}
+
+.saveandcreade>a:hover {
+    cursor: pointer;
+    background-color: rgb(229, 235, 235);
+    border-radius: 8px;
+}
+.createlink{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+    
+    
+   
+}
+
+
+.createlink a {
+    color: white; 
+    text-decoration: none; 
+    padding: 1rem; 
+    border-radius: 1rem; 
+    background-color: red; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+.createlink a:hover {
+    cursor: pointer; 
+    background-color: darkred;
+    color: lightgray; 
+}

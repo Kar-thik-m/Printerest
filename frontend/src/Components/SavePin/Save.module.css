@@ -1,0 +1,57 @@
+/* Save.module.css */
+
+
+.savedItem {
+    display: flex;
+ 
+    flex-wrap: wrap;
+   
+   
+}
+.cart{
+
+    width: 15rem;
+}
+.savedItem > div {
+    margin: 10px;
+    padding: 10px;
+   
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.itemImage {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.itemImage:hover {
+    transform: scale(1.05);
+}
+
+.userName {
+   letter-spacing: 1px;
+    margin-left: 1rem;
+   font-family:monospace;
+    text-transform: lowercase;
+}
+
+.profileImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+   
+}
+
+.profileinfo {
+    display: flex;
+    align-items: center;
+    
+    padding: 10px;
+}

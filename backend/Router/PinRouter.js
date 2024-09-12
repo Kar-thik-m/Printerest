@@ -4,7 +4,7 @@ import { authenticateToken } from '../Middleware/Authentication.js';
 
 const router = express.Router();
 
-// POST /pins - Create a new pin
+
 router.post('/pins', authenticateToken, async (req, res) => {
     try {
        
@@ -21,7 +21,7 @@ router.post('/pins', authenticateToken, async (req, res) => {
     }
 });
 
-// GET /getallpins - Get all pins
+
 router.get('/getallpins', async (req, res) => {
     try {
         const pins = await Pinmodel.find().populate('user', 'username email').select('-user');
@@ -32,7 +32,7 @@ router.get('/getallpins', async (req, res) => {
     }
 });
 
-// GET /:id - Get a pin by ID
+
 router.get('/:id', async (req, res) => {
     try {
         const pin = await Pinmodel.findById(req.params.id).populate('user', 'username');

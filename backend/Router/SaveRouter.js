@@ -23,8 +23,8 @@ SaveRouter.post('/save', async (req, res) => {
 SaveRouter.get('/save/all', async (req, res) => {
     try {
         const saves = await Savemodel.find()
-            .populate('user', 'username')  // Ensure 'user' field is populated
-            .populate('items', 'title image');  // Ensure 'items' field is populated
+            .populate('user', 'username')  
+            .populate('items', 'title image');  
 
         res.status(200).json(saves);
     } catch (error) {
@@ -32,7 +32,7 @@ SaveRouter.get('/save/all', async (req, res) => {
     }
 });
 
-// Retrieve a save entry by ID
+
 SaveRouter.get('/save/:id', async (req, res) => {
     try {
         const { id } = req.params;

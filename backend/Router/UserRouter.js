@@ -1,5 +1,5 @@
 import express from 'express';
-import { usermodel } from '../Model/user.js'; // Ensure the path is correct
+import { usermodel } from '../Model/user.js'; 
 import bcrypt from "bcryptjs"
 
 import { sendToken } from '../Utils/jwt.js';
@@ -72,7 +72,7 @@ userRouter.get('/profile', authenticateToken, async (req, res) => {
         res.status(200).json(finduser);
     } catch (error) {
         
-        res.status(500).json({ message: 'Internal server error' }); // Improved error message
+        res.status(500).json({ message: 'Internal server error' }); 
     }
 });
 export default userRouter;

@@ -15,15 +15,23 @@ const CreatePin = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formDataToSend = new FormData();
         formDataToSend.append('title', formData.title);
-        formDataToSend.append('image', formData.image);
+        if (formData.image) {
+            formDataToSend.append('image', formData.image);
+        }
 
-        dispatch(createPin(formDataToSend));
-        setFormData({ title: '', image: null });
+        try {
+            await dispatch(createPin(formDataToSend));
+            setFormData({ title: '', image: null });
+            alert('Pin created successfully!');
+        } catch (error) {
+            console.error('Error creating pin:', error);
+            alert('Failed to create pin. Please try again.');
+        }
     };
 
     return (

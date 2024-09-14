@@ -26,7 +26,7 @@ const SavePin = () => {
                                    
                                     
                                         <img
-                                            src={item.image}
+                                            src={item.image.url}
                                             alt={item.title}
                                             className={SaveStyle.itemImage}
                                         />

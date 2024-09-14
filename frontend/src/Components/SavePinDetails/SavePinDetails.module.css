@@ -1,84 +1,85 @@
 .container {
     display: flex;
     justify-content: center;
-    
 }
 
 .cart {
-    width: 50rem;
     box-shadow: 0 4px 8px rgba(13, 0, 0, 0.5);
     display: flex;
     flex-direction: row;
     border-radius: 5%;
-    background-color:white;
+    background-color: white;
     padding: 10px;
 }
 
 .imageside {
-    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the image vertically and horizontally */
 }
 
 .image {
     width: 100%;
-    height: 100%;
-    border-radius: 5% 0px 0px 5%;
-
+    height: 100%; /* Ensure the image takes up the full height of the container */
+    object-fit: cover; /* Cover the entire container while maintaining aspect ratio */
 }
 
-.content{
-    width: 100%;
-  
-    border-radius: 0px 5% 5% 0px;
-   
+.contant {
+    flex: 1;
+    height: auto;
+    border-radius: 0 5% 5% 0;
+    display: flex;
+    flex-direction: column; /* Make sure content flows correctly */
 }
+
 .head {
     width: 90%;
-    padding: 10% ;
+    padding: 10px;
     display: flex;
     align-items: center; 
     justify-content: space-between; 
-    padding: 10px; 
     gap: 2rem;
 }
 
-.head>i{
+.head > i {
     font-size: x-large;
 }
 
 .save {
- 
-    padding: 10px 15px 10px 15px;
+    padding: 10px 15px;
     background-color: rgb(253, 0, 0);
     color: aliceblue;
-    
     border-radius: 10%;
     margin-left: auto; 
     margin-right: 10px;
     font-weight: bold; 
 }
+
 .save:hover {
     background-color: rgb(200, 0, 0); 
-    box-shadow: 0px 6px 12px rgba(219, 141, 141, 0.6); 
+    box-shadow: 0 6px 12px rgba(219, 141, 141, 0.6); 
     cursor: pointer; 
 }
-.username{
+
+.username {
     width: 100%;
-    height: 10%;
+    height: auto;
+    display: flex;
     justify-content: space-between;
     align-items: center;
-   
-    display: flex;
-     font-size: large;
-     color: black;
+    font-size: large;
+    color: black;
 }
-.username>div{
+
+.username > div {
     margin: 1rem;
 }
+
 .follow {
     margin: 1rem;
     padding: 10px 25px; 
     background-color: #fafbfc; 
-   
     border: none; 
     border-radius: 5px; 
     font-size: 16px; 
@@ -91,54 +92,53 @@
 
 .follow:hover {
     background-color: #e7eaee; 
-    box-shadow: 0px 4px 8px rgba(156, 153, 153, 0.2); 
+    box-shadow: 0 4px 8px rgba(156, 153, 153, 0.2); 
 }
-.title{
-    width: 80%;
 
-    font-size:xx-large;
-    margin: 10%;
+.title {
+    width: 80%;
+    font-size: large;
+    margin: auto;
     letter-spacing: 1px;
 }
-.comment{
+
+.comment {
     width: 100%;
-    height:28rem;
-    
-    overflow:scroll;
+    height: 40vh;
+    overflow: scroll;
 }
 
-.commentContainer{
+.commentContainer {
     display: flex;
     align-items: center;
     width: 80%;
-    height: 5vh;
+    height: auto;
     border: 2px solid #a7a4a4; 
     margin: 1rem;
     border-radius: 3rem;
-    
 }
-.commentTextarea{
-    margin-left: 1rem ;
+
+.commentTextarea {
+    margin-left: 1rem;
     width: 70%;
     height: 30px;
-    
     border: none;
-    
 }
+
 .commentTextarea:focus,
 .commentButton:focus {
     outline: none; 
-     
 }
-.commentButton{
-  padding: 8px 7px;
-  margin-left: auto;
-  margin-right: 1rem;
-  border: none;
-  cursor: pointer;
-  
+
+.commentButton {
+    padding: 8px 7px;
+    margin-left: auto;
+    margin-right: 1rem;
+    border: none;
+    cursor: pointer;
 }
-.commentButton:hover{
+
+.commentButton:hover {
     background-color: rgb(46, 45, 45);
     border-radius: 3rem;
     color: #e7eaee;

@@ -50,7 +50,7 @@ export const createPin = (pinData) => async (dispatch) => {
         const response = await fetch(`${Url}/item/pins`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+               'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(pinData),

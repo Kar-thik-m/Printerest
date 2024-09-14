@@ -26,7 +26,7 @@ const SavePinDetails = () => {
             <div className={sdStyle.cart}>
                 <div className={sdStyle.imageside}>
                     <img
-                        src={savedetails.items[0].image}
+                        src={savedetails.items[0].image.url}
                         alt={savedetails.items[0].title}
                         className={sdStyle.image}
                     />

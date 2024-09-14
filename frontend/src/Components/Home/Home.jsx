@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 const Home = () => {
     const dispatch = useDispatch();
     const { item, loading, error } = useSelector((state) => state.pins);
-     
 
     useEffect(() => {
         dispatch(GetPinsAll());
@@ -20,12 +19,13 @@ const Home = () => {
             <div className={Hstyle.pinsContainer}>
                 {item && item.length > 0 ? (
                     item.map(pin => (
-                        <div key={pin.id} className={Hstyle.pin}>
-                            <Link to={`/pin/${pin._id}`}><img src={pin.image} alt={pin.title} className={Hstyle.pinImage} /></Link>
+                        <div key={pin._id} className={Hstyle.pin}>
+                            <Link to={`/pin/${pin._id}`}>
+                                <img src={pin.image.url} alt={pin.title} className={Hstyle.pinImage} />
+                            </Link>
 
                             <div className={Hstyle.profileInfo}>
-                                <img src={pin.image} className={Hstyle.profileImage} />
-
+                                <img src={pin.image.url} className={Hstyle.profileImage} alt={pin.user.username} />
                                 <div className={Hstyle.userName}>{pin.user.username}</div>
                             </div>
                         </div>

@@ -40,7 +40,7 @@ const Pindetail = () => {
         <div className={PDstyle.container}>
             <div className={PDstyle.cart}>
                 <div className={PDstyle.imageside}>
-                    <img src={pindetails.image} alt={pindetails.title} className={PDstyle.image} />
+                    <img src={pindetails.image.url} alt={pindetails.title} className={PDstyle.image} />
                 </div>
                 <div className={PDstyle.contant}>
                     <div className={PDstyle.head}>
@@ -58,7 +58,7 @@ const Pindetail = () => {
                         <div>{pindetails.title}</div>
                     </div>
                     <div className={PDstyle.comment}>
-                        <div style={{ margin: "10px" }}><h3>Comments!</h3></div>
+                        <div style={{ margin: "10px" }}>Comments!</div>
                     </div>
                     <div style={{ width: "100%", height: "10vh", display: "flex", alignItems: "center" }}>
                         <div className={PDstyle.commentContainer}>

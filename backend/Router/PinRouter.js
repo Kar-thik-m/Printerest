@@ -76,7 +76,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
             return res.status(403).json({ message: 'Unauthorized' });
         }
         await cloudinary.v2.uploader.destroy(pin.image.id);
-        await Pinmodel.deleteOne({ _id:id });
+        await Pinmodel.deleteOne({ _id: id });
         res.status(200).json({ message: 'Pin deleted successfully' });
     } catch (error) {
         console.error(error);

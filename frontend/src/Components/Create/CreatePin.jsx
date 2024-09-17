@@ -1,34 +1,36 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { createPin } from '../../Action/Pins';
-import Cstyle from "../Create/Create.module.css";
+import { createPin } from '../../Action/Pins'; // Ensure this path is correct
+import Cstyle from '../Create/Create.module.css';
 
 const CreatePin = () => {
-    const [formData, setFormData] = useState({ title: '', image: null });
+    const titleRef = useRef(null);
+    const imageRef = useRef(null);
     const dispatch = useDispatch();
-
-    const handleChange = (e) => {
-        const { id, value, files } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [id]: id === 'image' ? files[0] : value,
-        }));
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const formDataToSend = new FormData();
-        formDataToSend.append('title', formData.title);
-        if (formData.image) {
-            formDataToSend.append('image', formData.image);
-        }
+        // Get form values
+        const title = titleRef.current.value;
+        const file = imageRef.current.files[0];
+
+        // Create FormData instance
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('file', file);
 
         try {
-            await dispatch(createPin(formDataToSend));
-            setFormData({ title: '', image: null });
-            alert('Pin created successfully!');
+            // Dispatch action with form data
+            await dispatch(createPin(formData));
+
+            // Clear form fields after successful submission
+            titleRef.current.value = '';
+            imageRef.current.value = '';
+
+            console.log('Pin created:', { title, file });
         } catch (error) {
+            // Handle error
             console.error('Error creating pin:', error);
             alert('Failed to create pin. Please try again.');
         }
@@ -37,26 +39,27 @@ const CreatePin = () => {
     return (
         <div className={Cstyle.formbody}>
             <form onSubmit={handleSubmit} className={Cstyle.form}>
-                <div>
+                <div className={Cstyle.formGroup}>
                     <label htmlFor="title">Title</label>
                     <input
                         type="text"
                         id="title"
-                        value={formData.title}
-                        onChange={handleChange}
+                        ref={titleRef}
+                        className={Cstyle.input}
                         required
                     />
                 </div>
-                <div>
+                <div className={Cstyle.formGroup}>
                     <label htmlFor="image">Image</label>
                     <input
                         type="file"
                         id="image"
-                        onChange={handleChange}
+                        ref={imageRef}
+                        className={Cstyle.input}
                         required
                     />
                 </div>
-                <button type="submit">Create Pin</button>
+                <button type="submit" className={Cstyle.button}>Create Pin</button>
             </form>
         </div>
     );

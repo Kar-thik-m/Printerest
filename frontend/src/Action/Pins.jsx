@@ -69,3 +69,11 @@ export const createPin = (formData) => async (dispatch) => {
         dispatch(CreatepinFailure(error.toString()));
     }
 };
+
+export const postcomments=()=>()=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}

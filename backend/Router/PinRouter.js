@@ -70,25 +70,27 @@ router.post('/comments/:id', authenticateToken, async (req, res) => {
         pin
     })
 })
-router.delete('comments/:id', authenticateToken, async (req, res) => {
-    try {
-        const { id } = req.params;
-        const userId = req.user.id;
-        const pin = await Pinmodel.findById(id);
+router.delete('/pins/:pinId/comments/:commentId', authenticateToken, async (req, res) => {
+    const { pinId, commentId } = req.params;
 
+    try {
+        const pin = await Pinmodel.findById(pinId);
         if (!pin) {
-            return res.status(404).json({ message: 'comment not found' });
+            return res.status(404).json({ message: 'Pin not found' });
         }
-        if (!userId) {
-            return res.status(403).json({ message: 'Unauthorized' });
+        const updatedComments = pin.comments.filter(comment => comment._id.toString() !== commentId);
+
+        if (updatedComments.length === pin.comments.length) {
+            return res.status(404).json({ message: 'Comment not found' });
         }
-        await Pinmodel.deleteOne({ _id: id });
-        res.status(200).json({ message: 'comment deleted successfully' });
+        pin.comments = updatedComments;
+        await pin.save();
+        res.status(200).json({ message: 'Comment successfully deleted' });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error', error });
     }
 });
+
 router.get('/:id', async (req, res) => {
     try {
         const pin = await Pinmodel.findById(req.params.id).populate('user', 'username');

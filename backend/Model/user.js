@@ -17,7 +17,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'user'
     },
-  
+    userimage:{
+        id: String,
+        url: String,
+    }
 });
 userSchema.methods.getJwtToken = function(){
     return jwt.sign({email: this.email}, process.env.SECRET_KEY, {

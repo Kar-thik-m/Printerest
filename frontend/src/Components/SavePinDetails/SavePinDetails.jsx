@@ -8,7 +8,7 @@ const SavePinDetails = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const { savedetails, loading } = useSelector((state) => state.save);
- 
+
     useEffect(() => {
         dispatch(SaveDetailsPin(id));
     }, [id, dispatch]);
@@ -31,7 +31,15 @@ const SavePinDetails = () => {
                         className={sdStyle.image}
                     />
                 </div>
-                <div className={sdStyle.content}>
+                <div className={sdStyle.contantside}>
+                    <div className={sdStyle.head}>
+
+                        <i className={`fa 'fa-heart' : 'fa-heart-o'`} aria-hidden="true"></i>
+                        <i className="fa fa-download" aria-hidden="true"></i>
+                        <div className={sdStyle.save}>
+                            <b>Save</b>
+                        </div>
+                    </div>
                     <div className={sdStyle.username}>
                         <div>{savedetails.user.username}</div>
                         <button className={sdStyle.follow}>Follow</button>

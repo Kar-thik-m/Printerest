@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef } from 'react'; 
 import { useDispatch } from 'react-redux';
 import { createPin } from '../../Action/Pins'; // Ensure this path is correct
 import Cstyle from '../Create/Create.module.css';
@@ -11,26 +11,29 @@ const CreatePin = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Get form values
+        
         const title = titleRef.current.value;
         const file = imageRef.current.files[0];
 
-        // Create FormData instance
+        if (!title || !file) {
+            alert('Title and image are required.');
+            return;
+        }
+
         const formData = new FormData();
         formData.append('title', title);
         formData.append('file', file);
 
         try {
-            // Dispatch action with form data
+            
             await dispatch(createPin(formData));
 
-            // Clear form fields after successful submission
             titleRef.current.value = '';
             imageRef.current.value = '';
 
-            console.log('Pin created:', { title, file });
+        
         } catch (error) {
-            // Handle error
+           
             console.error('Error creating pin:', error);
             alert('Failed to create pin. Please try again.');
         }

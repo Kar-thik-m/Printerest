@@ -37,7 +37,7 @@ export const Getpindetails = (id) => async (dispatch) => {
 };
 
 
-export const createPin = (pinData) => async (dispatch) => {
+export const createPin = (formData) => async (dispatch) => {
     try {
         dispatch(CreatepinRequest());
         const user = JSON.parse(localStorage.getItem('user'));
@@ -48,24 +48,24 @@ export const createPin = (pinData) => async (dispatch) => {
         const response = await fetch(`${Url}/item/pins`, {
             method: 'POST',
             headers: {
+
                 'Authorization': `Bearer ${token}`,
 
             },
-            body: JSON.stringify(pinData),
+            body: formData,
         });
-console.log(JSON.stringify(pinData))
+        console.log(formData)
         if (!response.ok) {
-            
+
             const errorText = await response.text();
-            console.error('Response Status:', response.status);
-            console.error('Response Text:', errorText);
+        
             throw new Error(errorText || 'Network response was not ok');
         }
 
         const data = await response.json();
         dispatch(CreatepinSuccess(data));
     } catch (error) {
-        console.error('Error:', error); 
+        console.error('Error:', error);
         dispatch(CreatepinFailure(error.toString()));
     }
 };

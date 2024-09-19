@@ -43,7 +43,8 @@ SaveRouter.get('/save/:id', async (req, res) => {
 
         const save = await Savemodel.findById(id)
             .populate('user', 'username')
-            .populate('items', 'title image');
+            .populate('items', 'title image comments')
+           
 
         if (!save) {
             return res.status(404).json({ message: 'Save entry not found' });

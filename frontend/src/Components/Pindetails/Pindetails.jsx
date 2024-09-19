@@ -35,7 +35,7 @@ const Pindetail = () => {
         return <div>No details available</div>;
     }
 
-    // Main render
+    
     return (
         <div className={PDstyle.container}>
             <div className={PDstyle.cart}>

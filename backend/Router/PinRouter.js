@@ -10,6 +10,7 @@ router.post('/pins', uploadFile, authenticateToken, async (req, res) => {
     try {
         const { title } = req.body;
         const file = req.file;
+        console.log(file)
 
         if (!file) {
             return res.status(400).json({ message: 'No file uploaded' });
@@ -47,7 +48,47 @@ router.get('/getallpins', async (req, res) => {
     }
 });
 
+router.post('/comments/:id', authenticateToken, async (req, res) => {
+    const pin = await Pinmodel.findById(req.params.id);
 
+    if (!pin)
+        return res.status(400).json({
+            message: "No Pin with this id",
+        });
+
+    pin.comments.push({
+        userId: req.user.id,
+        name: req.user.username,
+        image: req.user.userimage,
+        content: req.body.content,
+    });
+
+    await pin.save();
+
+    res.json({
+        message: "Comment Added",
+        pin
+    })
+})
+router.delete('comments/:id', authenticateToken, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+        const pin = await Pinmodel.findById(id);
+
+        if (!pin) {
+            return res.status(404).json({ message: 'comment not found' });
+        }
+        if (!userId) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+        await Pinmodel.deleteOne({ _id: id });
+        res.status(200).json({ message: 'comment deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 router.get('/:id', async (req, res) => {
     try {
         const pin = await Pinmodel.findById(req.params.id).populate('user', 'username');

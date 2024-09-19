@@ -16,9 +16,10 @@ const Home = () => {
         <div className={Hstyle.container}>
             {loading && <p className={Hstyle.loading}>Loading...</p>}
             {error && <p className={Hstyle.error}>Error: {error}</p>}
-            <div className={Hstyle.pinsContainer}>
+            
                 {item && item.length > 0 ? (
                     item.map(pin => (
+                        
                         <div key={pin._id} className={Hstyle.pin}>
                             <Link to={`/pin/${pin._id}`}>
                                 <img src={pin.image.url} alt={pin.title} className={Hstyle.pinImage} />
@@ -33,7 +34,7 @@ const Home = () => {
                 ) : (
                     !loading && <p className={Hstyle.noPins}>No pins available</p>
                 )}
-            </div>
+          
         </div>
     );
 }

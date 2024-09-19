@@ -5,14 +5,32 @@ const pinSchema = new mongoose.Schema({
     image: {
         id: String,
         url: String,
-        hotspot: {
-            x: { type: Number, required: false },
-            y: { type: Number, required: false },
-            width: { type: Number, required: false },
-            height: { type: Number, required: false },
-        }
+
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    comments: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User',
+        },
+        name: {
+            type: String,
+            require: true
+        },
+        image: {
+            type: String,
+            require: true
+        },
+        content: {
+            type: String,
+            required: true,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+    }]
 
 });
 

@@ -6,7 +6,11 @@ const SaveSchema = new mongoose.Schema({
         required: true,
         ref: "User"
     },
-    items: [{ 
+    itemsaved: {
+        type: String,
+        required: true
+    },
+    items: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Pin"
     }]

@@ -93,7 +93,7 @@ router.delete('/pins/:pinId/comments/:commentId', authenticateToken, async (req,
 
 router.get('/:id', async (req, res) => {
     try {
-        const pin = await Pinmodel.findById(req.params.id).populate('user', 'username').populate("Pin", " saveitem");
+        const pin = await Pinmodel.findById(req.params.id).populate('user', 'username');
 
         if (!pin) {
             return res.status(404).json({ message: 'Pin not found' });

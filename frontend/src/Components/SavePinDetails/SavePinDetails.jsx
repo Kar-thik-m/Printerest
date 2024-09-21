@@ -26,7 +26,8 @@ const SavePinDetails = () => {
     }
 
     const { user, items } = savedetails;
-    const item = items[0]; // Assuming items is an array and we want the first one
+    const item = items[0];
+    console.log(item)
 
     return (
         <div className={sdStyle.container}>

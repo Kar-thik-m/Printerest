@@ -7,7 +7,7 @@ const initialState = {
     loading: false,
     saveitems: null,
     savedetails: null,
-    itemsave:false,
+   
     error: null,
 
 };
@@ -20,17 +20,17 @@ const SaveSlice = createSlice({
         SaveRequest(state) {
             state.loading = true;
             state.error = null;
-            state.itemsave=false
+           
         },
         SaveSuccess(state, action) {
             state.loading = false;
             state.saveitems = action.payload;
-            state.itemsave=true;
+          
         },
         SaveFailure(state, action) {
             state.loading = false;
             state.error = action.payload;
-            state.itemsave=false
+           
         },
         GetSaveRequest(state) {
             state.loading = true;

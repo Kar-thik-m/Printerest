@@ -46,7 +46,7 @@ export const PostSave = (id) => async (dispatch) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ items: id })
+            body: JSON.stringify({ items: id, itemsaved: "saved" })
         });
 
         if (!response.ok) {
@@ -65,7 +65,7 @@ export const PostSave = (id) => async (dispatch) => {
 export const SaveDetailsPin = (id) => async (dispatch) => {
     try {
         dispatch(SaveDetailsRequest());
-        
+
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user || !user.token) {
             throw new Error('User not authenticated');
@@ -85,7 +85,7 @@ export const SaveDetailsPin = (id) => async (dispatch) => {
         }
 
         const data = await response.json();
-       
+
         dispatch(SaveDetailsSuccess(data));
 
     } catch (error) {

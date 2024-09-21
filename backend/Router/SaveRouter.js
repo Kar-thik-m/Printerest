@@ -23,8 +23,8 @@ SaveRouter.post('/save', async (req, res) => {
 SaveRouter.get('/save/all', async (req, res) => {
     try {
         const saves = await Savemodel.find()
-            .populate('user', 'username')  
-            .populate('items', 'title image');  
+            .populate('user', 'username')
+            .populate('items', 'title image');
 
         res.status(200).json(saves);
     } catch (error) {
@@ -44,7 +44,7 @@ SaveRouter.get('/save/:id', async (req, res) => {
         const save = await Savemodel.findById(id)
             .populate('user', 'username')
             .populate('items', 'title image comments')
-           
+
 
         if (!save) {
             return res.status(404).json({ message: 'Save entry not found' });
@@ -56,6 +56,26 @@ SaveRouter.get('/save/:id', async (req, res) => {
     }
 });
 
+
+SaveRouter.delete('/unsave/:id', async (req, res) => {
+    try {
+        const { id } = req.params; // Use the ID from the URL parameters
+
+        if (!id) {
+            return res.status(400).json({ message: 'ID is required' });
+        }
+
+        const save = await Savemodel.findByIdAndDelete(id);
+
+        if (!save) {
+            return res.status(404).json({ message: 'Save entry not found' });
+        }
+
+        res.status(200).json({ message: 'Save entry deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 
 

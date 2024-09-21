@@ -7,7 +7,7 @@ import sdStyle from "../SavePinDetails/SavePinDetails.module.css";
 const SavePinDetails = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { savedetails, loading } = useSelector((state) => state.save);
+    const { savedetails, loading, error } = useSelector((state) => state.save);
 
     useEffect(() => {
         dispatch(SaveDetailsPin(id));
@@ -17,35 +17,41 @@ const SavePinDetails = () => {
         return <div>Loading...</div>;
     }
 
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
     if (!savedetails) {
         return <div>No details available</div>;
     }
+
+    const { user, items } = savedetails;
+    const item = items[0]; // Assuming items is an array and we want the first one
 
     return (
         <div className={sdStyle.container}>
             <div className={sdStyle.cart}>
                 <div className={sdStyle.imageside}>
                     <img
-                        src={savedetails.items[0].image.url}
-                        alt={savedetails.items[0].title}
+                        src={item.image.url}
+                        alt={item.title}
                         className={sdStyle.image}
                     />
                 </div>
                 <div className={sdStyle.contantside}>
                     <div className={sdStyle.head}>
-
-                        <i className={`fa 'fa-heart' : 'fa-heart-o'`} aria-hidden="true"></i>
+                        <i className={`fa ${item.saved ? 'fa-heart' : 'fa-heart-o'}`} aria-hidden="true"></i>
                         <i className="fa fa-download" aria-hidden="true"></i>
                         <div className={sdStyle.save}>
                             <b>Save</b>
                         </div>
                     </div>
                     <div className={sdStyle.username}>
-                        <div>{savedetails.user.username}</div>
+                        <div>{user.username}</div>
                         <button className={sdStyle.follow}>Follow</button>
                     </div>
                     <div className={sdStyle.title}>
-                        <div>{savedetails.items[0].title}</div>
+                        <div>{item.title}</div>
                     </div>
                     <div className={sdStyle.comment}>
                         <div style={{ margin: "10px" }}>

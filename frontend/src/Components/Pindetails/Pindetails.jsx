@@ -1,27 +1,50 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Getpindetails } from "../../Action/Pins";
 import PDstyle from "../Pindetails/Pin.module.css";
 import { PostSave } from "../../Action/Savepin";
+import { CreateSave } from "../../Action/Savepin";
+
+
 const Pindetail = () => {
+    const [isSaved, setIsSaved] = useState(false);
+
+
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [save, SavePindata] = useState(false);
+
     const { pindetails, loading, error } = useSelector((state) => state.pins);
+    const { saveitems } = useSelector((state) => state.save);
 
     useEffect(() => {
         dispatch(Getpindetails(id));
-
+        dispatch(CreateSave());
     }, [id, dispatch]);
 
-    const Savepin = () => {
-        SavePindata((save)=>save ? false : true);
-        if (!save) {
+    useEffect(() => {
+        if (Array.isArray(saveitems)) {
+            saveitems.map((item) => {
+                Array.isArray(item.items) && item.items.map((savedpin => {
+                    if (savedpin._id === id) {
+                        setIsSaved(true);
+                    }
+                }))
+
+            }
+            );
+        }
+
+    }, [saveitems, id]);
+
+
+    const handleSave = () => {
+        if (!isSaved) {
             dispatch(PostSave(id));
+            setIsSaved(true);
         }
     };
-
 
     if (loading) {
         return <div>Loading...</div>;
@@ -35,7 +58,6 @@ const Pindetail = () => {
         return <div>No details available</div>;
     }
 
-    
     return (
         <div className={PDstyle.container}>
             <div className={PDstyle.cart}>
@@ -44,10 +66,10 @@ const Pindetail = () => {
                 </div>
                 <div className={PDstyle.contant}>
                     <div className={PDstyle.head}>
-                        <i className={`fa ${save ? 'fa-heart' : 'fa-heart-o'}`} aria-hidden="true"></i>
+                        <i className={'fa-heart-o'} aria-hidden="true"></i>
                         <i className="fa fa-download" aria-hidden="true"></i>
-                        <div className={PDstyle.save} onClick={Savepin}>
-                            {save ? <b>Saved</b> : <b>Save</b>}
+                        <div className={PDstyle.save} onClick={handleSave}>
+                            <b>{isSaved ? <Link style={{textDecoration:"none",color:"white"}} to={"/profile"} >Saved</Link> : "Save"}</b>
                         </div>
                     </div>
                     <div className={PDstyle.username}>

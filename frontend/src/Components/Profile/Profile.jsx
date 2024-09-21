@@ -8,10 +8,10 @@ const Profile = () => {
     const [data, setData] = useState(false);
     const { loaduser } = useSelector((state) => (state.user));
     console.log(loaduser);
-    const CreateButton= () => {
+    const CreateButton = () => {
         setData(true);
     }
-    const SaveButton  = () => {
+    const SaveButton = () => {
         setData(false)
     }
 
@@ -24,8 +24,16 @@ const Profile = () => {
                 <div className={ProStyle.edit}>Edit Profile</div>
             </div>
             <div className={ProStyle.saveandcreade}>
-                <Link onClick={SaveButton}>Save</Link>
-                <Link onClick={CreateButton}>Create</Link>
+                <Link
+                    onClick={SaveButton}
+                    style={{ textDecoration: data === false ? "underline" : "none" }}
+                >
+                    Save
+                </Link>
+                <Link
+                    onClick={CreateButton} style={{ textDecoration: data === true ? "underline" : "none" }}>
+                    Create
+                </Link>
             </div>
             <div>
                 {data ? <div className={ProStyle.createlink}> <Link to={"/create"}>CreatePin</Link></div> : <SavePin />}

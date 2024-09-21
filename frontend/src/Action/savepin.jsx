@@ -2,7 +2,8 @@ import { Url } from "../../config";
 import {
     GetSaveRequest, GetSaveSuccess, GetSaveFailure,
     SaveRequest, SaveSuccess, SaveFailure,
-    SaveDetailsFailure, SaveDetailsSuccess, SaveDetailsRequest
+    SaveDetailsFailure, SaveDetailsSuccess, SaveDetailsRequest,
+    DeleteSaveFailure, DeleteSaveRequest, DeleteSaveSuccess
 } from "../Slice/SaveSlice";
 
 export const CreateSave = () => async (dispatch) => {
@@ -92,3 +93,33 @@ export const SaveDetailsPin = (id) => async (dispatch) => {
         dispatch(SaveDetailsFailure(error.message || 'An unexpected error occurred'));
     }
 };
+
+export const UnsavePin = (id) => async (dispatch) => {
+    try {
+        dispatch(DeleteSaveRequest());
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.token) {
+            throw new Error('User not authenticated');
+        }
+        const token = user.token;
+        const response = await fetch(`${Url}/saveitem/unsave/${id}`, {
+            method: 'DELETE', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            dispatch(DeleteSaveFailure(error));
+            return;
+        }
+
+        
+        dispatch(DeleteSaveSuccess(id));
+    } catch (error) {
+        dispatch(DeleteSaveFailure(error.message)); 
+    }
+};
+

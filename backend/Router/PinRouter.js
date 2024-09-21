@@ -48,8 +48,10 @@ router.get('/getallpins', async (req, res) => {
     }
 });
 
-router.post('/comments/:id', authenticateToken, async (req, res) => {
-    const pin = await Pinmodel.findById(req.params.id);
+router.post('/comments', authenticateToken, async (req, res) => {
+    const {id}=req.body;
+    
+    const pin = await Pinmodel.findById(id);
 
     if (!pin)
         return res.status(400).json({

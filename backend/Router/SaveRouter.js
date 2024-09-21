@@ -24,7 +24,8 @@ SaveRouter.get('/save/all', async (req, res) => {
     try {
         const saves = await Savemodel.find()
             .populate('user', 'username')
-            .populate('items', 'title image');
+            .populate('items', 'title image _id');
+            
 
         res.status(200).json(saves);
     } catch (error) {
@@ -59,7 +60,7 @@ SaveRouter.get('/save/:id', async (req, res) => {
 
 SaveRouter.delete('/unsave/:id', async (req, res) => {
     try {
-        const { id } = req.params; // Use the ID from the URL parameters
+        const { id } = req.params; 
 
         if (!id) {
             return res.status(400).json({ message: 'ID is required' });

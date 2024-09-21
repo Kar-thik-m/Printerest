@@ -145,3 +145,44 @@
     border-radius: 3rem;
     color: #e7eaee;
 }
+.commentItem{
+    margin: 1rem;
+}
+.commentuser{
+    display: flex;
+   
+}
+.commmentimage>img{
+    width:50px;
+    border-radius: 50%;
+}
+.userdetails{
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap:1px;
+}
+.userdetails>div:nth-child(1){
+    text-transform: capitalize;
+}
+.userdetails>div:nth-child(2){
+    width: auto;
+    padding: 10px;
+    
+}
+.userdetails>div:nth-child(3){
+    width: 100%;
+    display: flex;
+    align-items: center;
+   
+    color: #a7a4a4;
+}
+.emtypage{
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:7rem;
+    color:#a7a4a4;
+   
+}

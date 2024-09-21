@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 const Profile = () => {
     const [data, setData] = useState(false);
     const { loaduser } = useSelector((state) => (state.user));
-    console.log(loaduser);
+   
     const CreateButton = () => {
         setData(true);
     }

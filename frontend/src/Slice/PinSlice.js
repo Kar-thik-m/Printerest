@@ -6,6 +6,7 @@ const initialState = {
   error: null,
   item:null,
   pindetails:null,
+  Comments:null
 };
 
 const pinSlice = createSlice({
@@ -48,11 +49,23 @@ const pinSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    RequestComment(state){
+      state.loading = true;
+      state.error = null;
+    },
+    SuccessComment(state,action){
+      state.loading = false;
+      state.Comments = action.payload;
+    },
+  FailureComment(state,action){
+    state.loading = false;
+    state.error = action.payload;
+    },
   },
 });
 
 export const { pinRequest, pinSuccess, pinFailure, CreatepinRequest, CreatepinSuccess, CreatepinFailure,
-  pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess
+  pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess,RequestComment,SuccessComment,FailureComment
 } = pinSlice.actions;
 
 export default pinSlice.reducer;

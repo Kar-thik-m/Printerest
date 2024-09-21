@@ -30,8 +30,9 @@ const pinSchema = new mongoose.Schema({
             type: Date,
             default: Date.now,
         },
-    }]
-
+        
+    }],
+    
 });
 
 export const Pinmodel = mongoose.model('Pin', pinSchema);

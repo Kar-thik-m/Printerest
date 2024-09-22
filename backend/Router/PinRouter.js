@@ -72,8 +72,8 @@ router.post('/comments', authenticateToken, async (req, res) => {
         pin
     })
 })
-router.delete('/pins/:pinId/comments/:commentId', authenticateToken, async (req, res) => {
-    const { pinId, commentId } = req.params;
+router.delete('/deletecomment', authenticateToken, async (req, res) => {
+    const { pinId, commentId } = req.body;
 
     try {
         const pin = await Pinmodel.findById(pinId);

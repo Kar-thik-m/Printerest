@@ -77,13 +77,13 @@ export const postcomments = (id, content) => async (dispatch) => {
         if (!token) {
             throw new Error('No authentication token found');
         }
-        const response = await fetch(`${Url}/item/comments/${id}`, {
+        const response = await fetch(`${Url}/item/comments`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ content }),
+            body: JSON.stringify({ content,id }),
         });
 
         if (!response.ok) {

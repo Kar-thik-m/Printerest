@@ -11,8 +11,7 @@ const SaveSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Pin"
     }]
-}, {
-    timestamps: true 
+
 });
 
 

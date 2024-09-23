@@ -57,7 +57,7 @@ export const PostSave = (items) => async (dispatch) => {
         }
 
         const data = await response.json();
-        dispatch(SaveSuccess(data));
+        dispatch(SaveSuccess());
     } catch (error) {
         dispatch(SaveFailure(error.message));
     }

@@ -34,7 +34,7 @@ export const CreateSave = () => async (dispatch) => {
 }
 
 
-export const PostSave = (id) => async (dispatch) => {
+export const PostSave = (items) => async (dispatch) => {
     try {
         dispatch(SaveRequest());
 
@@ -47,7 +47,7 @@ export const PostSave = (id) => async (dispatch) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ items: id, itemsaved: "saved" })
+            body: JSON.stringify({ items })
         });
 
         if (!response.ok) {

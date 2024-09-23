@@ -61,11 +61,37 @@ const pinSlice = createSlice({
     state.loading = false;
     state.error = action.payload;
     },
+    deleteCommentRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    deleteCommentSuccess(state, action) {
+      state.loading = false;
+     
+      state.Comments= Comments.filter(item => item.id !== action.payload.id ); 
+    },
+    deleteCommentFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    deletePinRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    deletePinSuccess(state, action) {
+      state.loading = false;
+     
+    },
+    deletePinFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
 export const { pinRequest, pinSuccess, pinFailure, CreatepinRequest, CreatepinSuccess, CreatepinFailure,
-  pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess,RequestComment,SuccessComment,FailureComment
+  pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess,RequestComment,SuccessComment,FailureComment,
+  deleteCommentFailure,deleteCommentRequest,deleteCommentSuccess,deletePinFailure,deletePinRequest,deletePinSuccess
 } = pinSlice.actions;
 
 export default pinSlice.reducer;

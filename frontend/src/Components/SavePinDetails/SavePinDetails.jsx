@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { SaveDetailsPin, UnsavePin } from "../../Action/Savepin.jsx";
 import { postcomments } from "../../Action/Pins.jsx";
+import { DeletComment } from "../../Action/Pins.jsx";
 import sdStyle from "../SavePinDetails/SavePinDetails.module.css";
 
 const SavePinDetails = () => {
@@ -10,7 +11,7 @@ const SavePinDetails = () => {
     const dispatch = useDispatch();
     const [comment, setComment] = useState("");
     const [isSaved, setIsSaved] = useState(false);
-    
+
     const { savedetails, loading, error } = useSelector((state) => state.save);
     const { loaduser } = useSelector((state) => state.user);
     const item = savedetails?.items[0];
@@ -51,6 +52,11 @@ const SavePinDetails = () => {
         if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
         return `${Math.floor(seconds / 86400)} days ago`;
     };
+ 
+    const deleteComment = async (commentId) => {
+        await dispatch(DeletComment(item._id, commentId));
+        await dispatch(SaveDetailsPin(id));
+    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -89,7 +95,11 @@ const SavePinDetails = () => {
                                             <div>{c.name}</div>
                                             <div>{c.content}</div>
                                             <div>
-                                                {loaduser._id === c.userId && <i className="fa fa-ban" aria-hidden="true"></i>}
+                                                {loaduser._id === c.userId && <i 
+                                                style={{ cursor: "pointer", color: "red" }}
+                                                 className="fa fa-ban" aria-hidden="true"
+                                                 onClick={() => deleteComment(c._id)} 
+                                                 ></i>}
                                                 <b style={{ marginLeft: "1rem" }}>{formatTimeAgo(c.createdAt)}</b>
                                             </div>
                                         </div>

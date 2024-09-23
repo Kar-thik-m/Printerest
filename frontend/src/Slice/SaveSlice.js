@@ -62,7 +62,7 @@ const SaveSlice = createSlice({
         },
         DeleteSaveSuccess(state, action) {
             state.loading = false;
-            state.saveitems = state.saveitems.filter(item => item.id !== action.payload.id );
+           
             
         },
         DeleteSaveFailure(state, action) {

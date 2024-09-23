@@ -9,9 +9,11 @@ const SaveSchema = new mongoose.Schema({
     
     items: [{
         type: mongoose.Schema.Types.ObjectId,
-        
         ref: "Pin"
     }]
+}, {
+    timestamps: true 
 });
+
 
 export const Savemodel = mongoose.model('Save', SaveSchema);

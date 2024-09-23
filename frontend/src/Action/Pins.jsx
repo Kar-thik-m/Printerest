@@ -1,9 +1,11 @@
 import {
     pinRequest, pinFailure, pinSuccess, CreatepinRequest, CreatepinFailure, CreatepinSuccess,
-    pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess, RequestComment, SuccessComment, FailureComment
+    pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess, RequestComment, SuccessComment, FailureComment,
+    deleteCommentFailure,deleteCommentRequest,deleteCommentSuccess,deletePinFailure,deletePinRequest,deletePinSuccess
 } from "../Slice/PinSlice";
 
 import { Url } from "../../config";
+import { json } from "react-router-dom";
 
 
 export const GetPinsAll = () => async (dispatch) => {
@@ -83,19 +85,79 @@ export const postcomments = (id, content) => async (dispatch) => {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ content,id }),
+            body: JSON.stringify({ content, id }),
         });
-
         if (!response.ok) {
             const error = await response.text();
             dispatch(FailureComment(error));
             return; // Prevent further execution
         }
-
-         await response.json();
+        await response.json();
         dispatch(SuccessComment(content));
     } catch (error) {
-        console.error('Error posting comment:', error); 
+        console.error('Error posting comment:', error);
         dispatch(FailureComment(error.toString()));
     }
 };
+
+
+export const DeletComment = (pinId, commentId ) => async (dispatch) => {
+    try {
+        dispatch(deleteCommentRequest());
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.token) {
+            throw new Error('User not authenticated');
+        }
+        const token = user.token;
+        const response = await fetch(`${Url}/item/deletecomment`, {
+            method: 'DELETE', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ pinId, commentId })
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            dispatch(deleteCommentFailure(error));
+            return;
+        }
+
+        
+        dispatch(deleteCommentSuccess(commentId));
+    } catch (error) {
+        dispatch(deleteCommentFailure(error));
+    }
+}
+
+export const Deletepin=(id)=>async(dispatch)=>{
+    try {
+        
+        dispatch(deletePinRequest());
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.token) {
+            throw new Error('User not authenticated');
+        }
+        const token = user.token;
+        const response = await fetch(`${Url}/item/${id}`, {
+            method: 'DELETE', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({id})
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            dispatch(deletePinFailure(error));
+            return;
+        }
+
+        
+        dispatch(deletePinSuccess(id));
+    } catch (error) {
+        dispatch(deletePinFailure(error));
+    }
+}

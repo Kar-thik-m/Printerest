@@ -46,7 +46,10 @@
 .head > i {
     font-size: x-large;
 }
-
+.head>i:nth-child(2){
+    color: red;
+    cursor: pointer;
+}
 .save {
     padding: 10px 15px;
     background-color: rgb(253, 0, 0);

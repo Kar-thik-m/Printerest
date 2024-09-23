@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Getpindetails } from "../../Action/Pins.jsx";
+import { Getpindetails, postcomments, DeletComment,Deletepin } from "../../Action/Pins.jsx";
+import { PostSave } from "../../Action/Savepin.jsx";
 import PDstyle from "../Pindetails/Pin.module.css";
-import { CreateSave } from "../../Action/savepin.jsx"
-import { PostSave } from "../../Action/savepin.jsx";
-import { postcomments } from "../../Action/Pins.jsx";
+
 const Pindetail = () => {
     const [isSaved, setIsSaved] = useState(false);
-    const { loaduser } = useSelector((state) => (state.user));
-    
+    const { loaduser } = useSelector((state) => state.user);
+    const navigate=useNavigate();
     const { id } = useParams();
     const dispatch = useDispatch();
     const [comment, setComment] = useState("");
@@ -18,7 +17,7 @@ const Pindetail = () => {
 
     useEffect(() => {
         dispatch(Getpindetails(id));
-        dispatch(CreateSave());
+        dispatch(PostSave());
     }, [id, dispatch]);
 
     useEffect(() => {
@@ -29,7 +28,7 @@ const Pindetail = () => {
             setIsSaved(isPinSaved);
         }
     }, [saveitems, id]);
-    
+
     const formatTimeAgo = (dateString) => {
         const date = new Date(dateString);
         const now = new Date();
@@ -49,18 +48,38 @@ const Pindetail = () => {
     };
 
     const handleCommentChange = (e) => {
-        setComment(e.target.value); 
+        setComment(e.target.value);
     };
 
+    const handleCommentSubmit = async () => {
+        try {
+            if (comment.trim() === "") return;
+        await dispatch(postcomments(id, comment));
+        await dispatch(Getpindetails(id));
+        setComment("");
+        } catch (error) {
+           alert(error)
+        }
+    };
 
-const handleCommentSubmit = async() => {
-    if (comment.trim() === "") return; 
-    await dispatch(postcomments(id, comment));
-      await  dispatch(Getpindetails(id));
-        setComment(""); 
-    
-};
+    const deleteComment = async (commentId) => {
+      try {
+        await dispatch(DeletComment(id, commentId));
+        await dispatch(Getpindetails(id));
+      } catch (error) {
+        alert(error);
+      }
+    };
 
+    const DeletePin=async()=>{
+        try {
+           await dispatch(Deletepin(id))
+           await navigate('/')
+           
+        } catch (error) {
+            console.log(error)
+        }
+    }
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -82,12 +101,15 @@ const handleCommentSubmit = async() => {
                 <div className={PDstyle.contant}>
                     <div className={PDstyle.head}>
                         <i className='fa-heart-o' aria-hidden="true"></i>
+                        <i class="fa fa-trash" aria-hidden="true" onClick={DeletePin}></i>
                         <i className="fa fa-download" aria-hidden="true"></i>
                         <div className={PDstyle.save} onClick={handleSave}>
                             <b>
-                                {isSaved ?
-                                    <Link style={{ textDecoration: "none", color: "white" }} to="/profile">Saved</Link> :
-                                    "Save"}
+                                {isSaved ? (
+                                    <Link style={{ textDecoration: "none", color: "white" }} to="/profile">Saved</Link>
+                                ) : (
+                                    "Save"
+                                )}
                             </b>
                         </div>
                     </div>
@@ -112,10 +134,14 @@ const handleCommentSubmit = async() => {
                                             <div>{c.content}</div>
                                             <div>
                                                 {loaduser._id === c.userId && (
-                                                    <i className="fa fa-ban" aria-hidden="true"> </i>
+                                                    <i
+                                                        style={{ cursor: "pointer", color: "red" }}
+                                                        className="fa fa-ban"
+                                                        aria-hidden="true"
+                                                        onClick={() => deleteComment(c._id)} 
+                                                    ></i>
                                                 )}
-                                                    <b style={{ marginLeft: "1rem" }}>{formatTimeAgo(c.createdAt)}</b>
-                                              
+                                                <b style={{ marginLeft: "1rem" }}>{formatTimeAgo(c.createdAt)}</b>
                                             </div>
                                         </div>
                                     </div>
@@ -127,8 +153,14 @@ const handleCommentSubmit = async() => {
                     </div>
                     <div style={{ width: "100%", height: "10vh", display: "flex", alignItems: "center" }}>
                         <div className={PDstyle.commentContainer}>
-                            <input id="comment" className={PDstyle.commentTextarea} placeholder="Write your comment here..." onChange={handleCommentChange} />
-                            <button className={PDstyle.commentButton}   onClick={handleCommentSubmit}>Submit</button>
+                            <input
+                                id="comment"
+                                className={PDstyle.commentTextarea}
+                                placeholder="Write your comment here..."
+                                onChange={handleCommentChange}
+                                value={comment} 
+                            />
+                            <button className={PDstyle.commentButton} onClick={handleCommentSubmit}>Submit</button>
                         </div>
                     </div>
                 </div>

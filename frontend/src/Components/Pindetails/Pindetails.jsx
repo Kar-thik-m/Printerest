@@ -28,7 +28,7 @@ const Pindetail = () => {
             setIsSaved(isPinSaved);
         }
     }, [saveitems, id]);
-console.log(id)
+
     const formatTimeAgo = (dateString) => {
         const date = new Date(dateString);
         const now = new Date();
@@ -40,17 +40,20 @@ console.log(id)
         return `${Math.floor(seconds / 86400)} days ago`;
     };
 
-    const handleSave = async() => {
+    const handleSave = () => {
+        console.log(isSaved);
         if (!isSaved) {
-            if (items.length === 0) {
-                alert('Please select at least one item to save.');
-                return;
+            try {
+                
+              dispatch(PostSave(id));
+                
+                setIsSaved(true);
+            } catch (error) {
+                alert(error);
             }
-            
-            await dispatch(PostSave(id));
-            await setIsSaved(true);
         }
     };
+    
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);

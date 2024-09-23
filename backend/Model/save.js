@@ -1,3 +1,4 @@
+import { request } from 'express';
 import mongoose from 'mongoose';
 
 const SaveSchema = new mongoose.Schema({
@@ -9,6 +10,7 @@ const SaveSchema = new mongoose.Schema({
     
     items: [{
         type: mongoose.Schema.Types.ObjectId,
+        request:true,
         ref: "Pin"
     }]
 

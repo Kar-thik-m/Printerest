@@ -49,7 +49,7 @@ export const PostSave = (items) => async (dispatch) => {
             },
             body: JSON.stringify({ items })
         });
-
+console.log(items)
         if (!response.ok) {
             const error = await response.text();
             dispatch(SaveFailure(error));
@@ -57,7 +57,7 @@ export const PostSave = (items) => async (dispatch) => {
         }
 
         const data = await response.json();
-        dispatch(SaveSuccess());
+        dispatch(SaveSuccess(data));
     } catch (error) {
         dispatch(SaveFailure(error.message));
     }

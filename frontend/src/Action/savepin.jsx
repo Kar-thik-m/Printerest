@@ -37,7 +37,9 @@ export const CreateSave = () => async (dispatch) => {
 export const PostSave = (items) => async (dispatch) => {
     try {
         dispatch(SaveRequest());
-
+         if(!items){
+            console.log("items notfound")
+         }
         const user = JSON.parse(localStorage.getItem('user'));
         const token = user.token;
 
@@ -49,7 +51,7 @@ export const PostSave = (items) => async (dispatch) => {
             },
             body: JSON.stringify({ items })
         });
-console.log(items)
+
         if (!response.ok) {
             const error = await response.text();
             dispatch(SaveFailure(error));

@@ -9,10 +9,12 @@
 }
 
 .profileimage {
-    width: 10rem;
-    border-radius: 50%;
-
-
+    width: 150px; 
+    height: 150px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #ddd; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .profilename {

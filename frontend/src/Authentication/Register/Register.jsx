@@ -1,44 +1,54 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../Action/Users';
 import RStyle from "../Register/Register.module.css";
-import Logo from "../../assets/logo.jpeg"
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import Logo from "../../assets/logo.jpeg";
+
 const Register = () => {
     const navigate = useNavigate();
-    const {loading } = useSelector((state) => state.user);
+    const { loading } = useSelector((state) => state.user);
     const dispatch = useDispatch();
+    
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
+        image: null, 
     });
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        const { name, value, files } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
             [name]: value,
-        });
+            image: name === 'image' ? files[0] : prevData.image, 
+        }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(register(formData));
+        
+        const data = new FormData();
+        data.append('username', formData.username);
+        data.append('email', formData.email);
+        data.append('password', formData.password);
+        data.append('file', formData.image); 
+
+        dispatch(register(data)); 
     };
-  useEffect(() => {
-        if (loading===true) {
+
+    useEffect(() => {
+        if (loading === true) {
             navigate("/login"); 
         }
     }, [loading, navigate]);
+
     return (
         <div className={RStyle.whole}>
             <div className={RStyle.card}>
                 <div className={RStyle.logo}>
-                    <img src={Logo} className={RStyle.image}></img>
+                    <img src={Logo} className={RStyle.image} alt="Logo" />
                 </div>
                 <h2 className={RStyle.title}>Welcome to Printerest</h2>
                 <form onSubmit={handleSubmit} className={RStyle.form}>
@@ -78,12 +88,22 @@ const Register = () => {
                             className={RStyle.input}
                         />
                     </div>
+                    <div className={RStyle.inputGroup}>
+                        <label htmlFor="image" className={RStyle.label}>Profile Image:</label>
+                        <input
+                            type="file"
+                            id="image"
+                            name="image"
+                            accept="image/*"
+                            onChange={handleChange}
+                            className={RStyle.input}
+                        />
+                    </div>
                     <button type="submit" className={RStyle.button}>
                         Submit
                     </button>
                     <div className={RStyle.check}>
-                        <h4>you Have Account Click- <Link to="/login" className={RStyle.Login}>Login</Link> </h4>
-
+                        <h4>Already have an account? Click- <Link to="/login" className={RStyle.Login}>Login</Link></h4>
                     </div>
                 </form>
             </div>

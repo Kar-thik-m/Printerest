@@ -18,7 +18,7 @@ const Profile = () => {
     return (
         <div className={ProStyle.container}>
             <div className={ProStyle.profiles}>
-                <img className={ProStyle.profileimage} src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+                <img className={ProStyle.profileimage} src={loaduser.userimage.url} />
                 <div className={ProStyle.profilename}>{loaduser.username}</div>
                 <div className={ProStyle.gmail}>{loaduser.email.split('@')[0]}</div>
                 <div className={ProStyle.edit}>Edit Profile</div>

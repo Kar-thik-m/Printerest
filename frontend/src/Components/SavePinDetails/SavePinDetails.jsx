@@ -89,7 +89,7 @@ const SavePinDetails = () => {
                                 <div key={c._id} className={sdStyle.commentItem}>
                                     <div className={sdStyle.commentuser}>
                                         <div className={sdStyle.commentsImage}>
-                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzCW8ayM9K_iNzX81NSjgpGcl30jDvsTSiIg&s" alt="User" />
+                                            <img src={loaduser.userimage.url} alt="User" />
                                         </div>
                                         <div className={sdStyle.userdetails}>
                                             <div>{c.name}</div>

@@ -26,7 +26,7 @@ userRouter.post('/register', uploadFile, async (req, res) => {
             return res.status(409).json({ message: "User already exists" });
         }
 
-        
+
         const hash = await bcrypt.hash(payload.password, 10);
 
         const userdata = new usermodel({
@@ -87,4 +87,70 @@ userRouter.get('/profile', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+
+userRouter.post('/following', authenticateToken, async (req, res) => {
+    try {
+        const { OthersId } = req.body;
+        const myId = req.user.id; 
+
+        const myUser = await usermodel.findById(myId);
+        const otherUser = await usermodel.findById(OthersId);
+
+        if (!myUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (!otherUser) {
+            return res.status(404).json({ message: 'User to follow not found' });
+        }
+
+        
+        if (!myUser.following.includes(OthersId)) {
+            myUser.following.push(OthersId);
+            await myUser.save();
+        }
+
+        
+        if (!otherUser.followers.includes(myId)) {
+            otherUser.followers.push(myId);
+            await otherUser.save();
+        }
+
+        res.status(200).json({ message: 'Successfully followed the user', following: myUser.following });
+    } catch (error) {
+        console.error('Error following user:', error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+userRouter.post('/unfollow', authenticateToken, async (req, res) => {
+    try {
+        const { OthersId } = req.body; 
+        const myId = req.user.id; 
+
+        const myUser = await usermodel.findById(myId);
+        const otherUser = await usermodel.findById(OthersId);
+
+        if (!myUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (!otherUser) {
+            return res.status(404).json({ message: 'User to unfollow not found' });
+        }
+
+      
+        myUser.following = myUser.following.filter(userId => userId.toString() !== OthersId);
+        await myUser.save();
+
+        
+        otherUser.followers = otherUser.followers.filter(userId => userId.toString() !== myId);
+        await otherUser.save();
+
+        res.status(200).json({ message: 'Successfully unfollowed the user', following: myUser.following });
+    } catch (error) {
+        console.error('Error unfollowing user:', error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 export default userRouter;

@@ -19,7 +19,6 @@ router.post('/pins', uploadFile, authenticateToken, async (req, res) => {
         const fileurl = getUrl(file);
 
         const cloud = await cloudinary.v2.uploader.upload(fileurl.content);
-
         const user = req.user.id;
 
         const pin = new Pinmodel({
@@ -40,7 +39,7 @@ router.post('/pins', uploadFile, authenticateToken, async (req, res) => {
 
 router.get('/getallpins', async (req, res) => {
     try {
-        const pins = await Pinmodel.find().populate('user', 'username email').select('-user');
+        const pins = await Pinmodel.find().populate('user', 'username email userimage').select('-user');
         res.status(200).json(pins);
     } catch (error) {
         console.error(error);

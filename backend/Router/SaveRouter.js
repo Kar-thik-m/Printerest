@@ -26,16 +26,21 @@ SaveRouter.post('/save', async (req, res) => {
 
 SaveRouter.get('/save/all', async (req, res) => {
     try {
-        const saves = await Savemodel.find()
-            .populate('user', 'username')
-            .populate('items', 'title image _id');
-            
+        const userId = req.user.id;
+        if (userId) {
+            const saves = await Savemodel.find({ user: userId }) 
+                .populate('user', 'username userimage')
+                .populate('items', 'title image _id');
 
-        res.status(200).json(saves);
+            return res.status(200).json(saves); 
+        } else {
+            return res.status(400).json({ message: 'User not authenticated' });
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 
 SaveRouter.get('/save/:id', async (req, res) => {

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Getpindetails, postcomments, DeletComment,Deletepin } from "../../Action/Pins.jsx";
+import { Getpindetails, postcomments, DeletComment, Deletepin } from "../../Action/Pins.jsx";
 import { PostSave } from "../../Action/Savepin.jsx";
 import PDstyle from "../Pindetails/Pin.module.css";
 
 const Pindetail = () => {
     const [isSaved, setIsSaved] = useState(false);
     const { loaduser } = useSelector((state) => state.user);
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const { id } = useParams();
     const dispatch = useDispatch();
     const [comment, setComment] = useState("");
@@ -17,7 +17,7 @@ const Pindetail = () => {
 
     useEffect(() => {
         dispatch(Getpindetails(id));
-        dispatch(PostSave());
+       
     }, [id, dispatch]);
 
     useEffect(() => {
@@ -41,19 +41,19 @@ const Pindetail = () => {
     };
 
     const handleSave = () => {
-        console.log(isSaved);
+       
         if (!isSaved) {
             try {
-                
-              dispatch(PostSave(id));
-                
+
+                dispatch(PostSave(pindetails._id));
+
                 setIsSaved(true);
             } catch (error) {
                 alert(error);
             }
         }
     };
-    
+
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
@@ -62,28 +62,28 @@ const Pindetail = () => {
     const handleCommentSubmit = async () => {
         try {
             if (comment.trim() === "") return;
-        await dispatch(postcomments(id, comment));
-        await dispatch(Getpindetails(id));
-        setComment("");
+            await dispatch(postcomments(id, comment));
+            await dispatch(Getpindetails(id));
+            setComment("");
         } catch (error) {
-           alert(error)
+            alert(error)
         }
     };
 
     const deleteComment = async (commentId) => {
-      try {
-        await dispatch(DeletComment(id, commentId));
-        await dispatch(Getpindetails(id));
-      } catch (error) {
-        alert(error);
-      }
+        try {
+            await dispatch(DeletComment(id, commentId));
+            await dispatch(Getpindetails(id));
+        } catch (error) {
+            alert(error);
+        }
     };
 
-    const DeletePin=async()=>{
+    const DeletePin = async () => {
         try {
-           await dispatch(Deletepin(id))
-           await navigate('/')
-           
+            await dispatch(Deletepin(id))
+            await navigate('/')
+
         } catch (error) {
             console.log(error)
         }
@@ -135,7 +135,7 @@ const Pindetail = () => {
                                 <div key={c._id} className={PDstyle.commentItem}>
                                     <div className={PDstyle.commentuser}>
                                         <div className={PDstyle.commmentimage}>
-                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzCW8ayM9K_iNzX81NSjgpGcl30jDvsTSiIg&s" alt="User" />
+                                            <img src={loaduser.userimage.url} alt="User" />
                                         </div>
                                         <div className={PDstyle.userdetails}>
                                             <div>{c.name}</div>
@@ -146,7 +146,7 @@ const Pindetail = () => {
                                                         style={{ cursor: "pointer", color: "red" }}
                                                         className="fa fa-ban"
                                                         aria-hidden="true"
-                                                        onClick={() => deleteComment(c._id)} 
+                                                        onClick={() => deleteComment(c._id)}
                                                     ></i>
                                                 )}
                                                 <b style={{ marginLeft: "1rem" }}>{formatTimeAgo(c.createdAt)}</b>
@@ -166,7 +166,7 @@ const Pindetail = () => {
                                 className={PDstyle.commentTextarea}
                                 placeholder="Write your comment here..."
                                 onChange={handleCommentChange}
-                                value={comment} 
+                                value={comment}
                             />
                             <button className={PDstyle.commentButton} onClick={handleCommentSubmit}>Submit</button>
                         </div>

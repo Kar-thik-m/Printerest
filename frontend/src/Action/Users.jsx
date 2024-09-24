@@ -7,14 +7,13 @@ import { Url } from "../../config.js";
 
 export const register = (userData) => async (dispatch) => {
     dispatch(registerRequest());
+    console.log(userData)
 
     try {
         const response = await fetch(`${Url}/user/register`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
+            
+            body: userData,
         });
 
         if (!response.ok) {

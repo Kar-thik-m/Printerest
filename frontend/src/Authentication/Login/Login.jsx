@@ -22,9 +22,10 @@ const Login = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        dispatch(LoginApi(formData));
+        await dispatch(LoginApi(formData));
+
     };
 
     useEffect(() => {

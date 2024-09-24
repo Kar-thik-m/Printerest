@@ -5,7 +5,7 @@ import {
 } from "../Slice/PinSlice";
 
 import { Url } from "../../config";
-import { json } from "react-router-dom";
+
 
 
 export const GetPinsAll = () => async (dispatch) => {
@@ -25,6 +25,7 @@ export const GetPinsAll = () => async (dispatch) => {
 
 export const Getpindetails = (id) => async (dispatch) => {
     try {
+        
         dispatch(pinDetailsRequest());
         const response = await fetch(`${Url}/item/${id}`);
         if (!response.ok) {
@@ -90,7 +91,7 @@ export const postcomments = (id, content) => async (dispatch) => {
         if (!response.ok) {
             const error = await response.text();
             dispatch(FailureComment(error));
-            return; // Prevent further execution
+            return; 
         }
         await response.json();
         dispatch(SuccessComment(content));
@@ -104,6 +105,7 @@ export const postcomments = (id, content) => async (dispatch) => {
 export const DeletComment = (pinId, commentId ) => async (dispatch) => {
     try {
         dispatch(deleteCommentRequest());
+        
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user || !user.token) {
             throw new Error('User not authenticated');

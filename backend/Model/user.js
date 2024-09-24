@@ -13,19 +13,30 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    role :{
+    role: {
         type: String,
         default: 'user'
     },
-    userimage:{
+    userimage: {
         id: String,
         url: String,
-    }
+    },
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+    }]
+
 });
-userSchema.methods.getJwtToken = function(){
-    return jwt.sign({email: this.email}, process.env.SECRET_KEY, {
-         expiresIn: process.env.EXPIRES
-     })
- }
+userSchema.methods.getJwtToken = function () {
+    return jwt.sign({ email: this.email }, process.env.SECRET_KEY, {
+        expiresIn: process.env.EXPIRES
+    })
+}
 
 export const usermodel = mongoose.model('User', userSchema);

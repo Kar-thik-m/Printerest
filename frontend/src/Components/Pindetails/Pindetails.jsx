@@ -141,7 +141,7 @@ const Pindetail = () => {
                                             <div>{c.name}</div>
                                             <div>{c.content}</div>
                                             <div>
-                                                {loaduser._id === c.userId && (
+                                                {loaduser && loaduser._id === c.userId && (
                                                     <i
                                                         style={{ cursor: "pointer", color: "red" }}
                                                         className="fa fa-ban"

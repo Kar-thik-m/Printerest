@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GetPinsAll } from '../../Action/Pins';
 import Hstyle from "../Home/Home.module.css";
 import { Link } from 'react-router-dom';
+import { Loaduser } from '../../Action/Users';
 
 const Home = () => {
     const dispatch = useDispatch();
-    const { loaduser, isAuthenticated } = useSelector(state => state.user);
+
     const { item, loading, error } = useSelector(state => state.pins);
 
     useEffect(() => {
         dispatch(GetPinsAll());
+        dispatch(Loaduser)
     }, [dispatch]);
 
     return (
@@ -23,7 +25,7 @@ const Home = () => {
                         <img src={pin.image.url} alt={pin.title} className={Hstyle.pinImage} />
                         <div className={Hstyle.profileInfo}>
                             <div className={Hstyle.top}>
-                            <img src={isAuthenticated && loaduser ? loaduser.userimage.url : ""} alt="User" className={Hstyle.profileImage} />
+                                <img src={pin.user.userimage.url} alt="User" className={Hstyle.profileImage} />
 
                                 <div className={Hstyle.userName}>{pin.user.username}</div>
                             </div>

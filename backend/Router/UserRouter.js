@@ -75,7 +75,7 @@ userRouter.post('/login', async (req, res) => {
 userRouter.get('/profile', authenticateToken, async (req, res) => {
     try {
 
-        const finduser = await usermodel.findOne({ email: req.user.email });
+        const finduser = await usermodel.findOne({ email: req.user.email })
 
         if (!finduser) {
             return res.status(404).json({ message: 'User not found' });
@@ -92,7 +92,7 @@ userRouter.get('/profile', authenticateToken, async (req, res) => {
 userRouter.post('/following', authenticateToken, async (req, res) => {
     try {
         const { OthersId } = req.body;
-        const myId = req.user.id; 
+        const myId = req.user.id;
 
         const myUser = await usermodel.findById(myId);
         const otherUser = await usermodel.findById(OthersId);
@@ -104,13 +104,13 @@ userRouter.post('/following', authenticateToken, async (req, res) => {
             return res.status(404).json({ message: 'User to follow not found' });
         }
 
-        
+
         if (!myUser.following.includes(OthersId)) {
             myUser.following.push(OthersId);
             await myUser.save();
         }
 
-        
+
         if (!otherUser.followers.includes(myId)) {
             otherUser.followers.push(myId);
             await otherUser.save();
@@ -125,8 +125,8 @@ userRouter.post('/following', authenticateToken, async (req, res) => {
 
 userRouter.post('/unfollow', authenticateToken, async (req, res) => {
     try {
-        const { OthersId } = req.body; 
-        const myId = req.user.id; 
+        const { OthersId } = req.body;
+        const myId = req.user.id;
 
         const myUser = await usermodel.findById(myId);
         const otherUser = await usermodel.findById(OthersId);
@@ -138,11 +138,11 @@ userRouter.post('/unfollow', authenticateToken, async (req, res) => {
             return res.status(404).json({ message: 'User to unfollow not found' });
         }
 
-      
+
         myUser.following = myUser.following.filter(userId => userId.toString() !== OthersId);
         await myUser.save();
 
-        
+
         otherUser.followers = otherUser.followers.filter(userId => userId.toString() !== myId);
         await otherUser.save();
 
@@ -152,5 +152,23 @@ userRouter.post('/unfollow', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+userRouter.get('/profilefollows', authenticateToken, async (req, res) => {
+    try {
+        const userId=req.user.id
+        const userfollws = await usermodel.findById(userId)
+            .populate('followers', 'username email userimage') 
+            .populate('following', 'username email userimage'); 
+
+        if (!userfollws) {
+            throw new Error('User not found');
+        }
+
+        res.status(200).json(userfollws);
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+})
 
 export default userRouter;

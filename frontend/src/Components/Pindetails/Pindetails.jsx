@@ -17,7 +17,7 @@ const Pindetail = () => {
 
     useEffect(() => {
         dispatch(Getpindetails(id));
-       
+
     }, [id, dispatch]);
 
     useEffect(() => {
@@ -41,7 +41,7 @@ const Pindetail = () => {
     };
 
     const handleSave = () => {
-       
+
         if (!isSaved) {
             try {
 
@@ -109,17 +109,26 @@ const Pindetail = () => {
                 <div className={PDstyle.contant}>
                     <div className={PDstyle.head}>
                         <i className='fa-heart-o' aria-hidden="true"></i>
-                        <i class="fa fa-trash" aria-hidden="true" onClick={DeletePin}></i>
+                        {loaduser && loaduser._id === pindetails.user._id && (
+                            <i class="fa fa-trash" aria-hidden="true" onClick={DeletePin}></i>
+                        )
+
+                        }
                         <i className="fa fa-download" aria-hidden="true"></i>
-                        <div className={PDstyle.save} onClick={handleSave}>
-                            <b>
-                                {isSaved ? (
-                                    <Link style={{ textDecoration: "none", color: "white" }} to="/profile">Saved</Link>
-                                ) : (
-                                    "Save"
-                                )}
-                            </b>
-                        </div>
+                        {loaduser && loaduser._id !== pindetails.user._id && (
+                            <div className={PDstyle.save} onClick={handleSave}>
+                                <b>
+                                    {isSaved ? (
+                                        <Link style={{ textDecoration: "none", color: "white" }} to="/profile">Saved</Link>
+                                    ) : (
+                                        "Save"
+                                    )}
+                                </b>
+                            </div>
+                        )
+
+                        }
+
                     </div>
                     <div className={PDstyle.username}>
                         <div>{pindetails.user.username}</div>
@@ -136,7 +145,7 @@ const Pindetail = () => {
                                     <div className={PDstyle.commentuser}>
                                         <div className={PDstyle.commmentimage}>
                                             <img src={c.image} alt="User" />
-                                            
+
                                         </div>
                                         <div className={PDstyle.userdetails}>
                                             <div>{c.name}</div>

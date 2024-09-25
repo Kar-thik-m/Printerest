@@ -2,9 +2,9 @@ import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { SaveDetailsPin, UnsavePin } from "../../Action/Savepin.jsx";
-import { postcomments } from "../../Action/Pins.jsx";
+import { postcomments, } from "../../Action/Pins.jsx";
 import { DeletComment } from "../../Action/Pins.jsx";
-import { Follow,UnFollow } from "../../Action/Users.jsx";
+import { Follow, UnFollow } from "../../Action/Users.jsx";
 import sdStyle from "../SavePinDetails/SavePinDetails.module.css";
 
 const SavePinDetails = () => {
@@ -38,7 +38,7 @@ const SavePinDetails = () => {
         setIsSaved(false);
     }, [dispatch, id]);
 
-   
+
     const handleFollow = async () => {
         if (loaduser && item) {
             setIsFollowing(true);
@@ -85,7 +85,7 @@ const SavePinDetails = () => {
         if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
         return `${Math.floor(seconds / 86400)} days ago`;
     };
- 
+
     const deleteComment = async (commentId) => {
         await dispatch(DeletComment(item._id, commentId));
         await dispatch(SaveDetailsPin(id));
@@ -130,11 +130,11 @@ const SavePinDetails = () => {
                                             <div>{c.name}</div>
                                             <div>{c.content}</div>
                                             <div>
-                                                {loaduser._id === c.userId && <i 
-                                                style={{ cursor: "pointer", color: "red" }}
-                                                 className="fa fa-ban" aria-hidden="true"
-                                                 onClick={() => deleteComment(c._id)} 
-                                                 ></i>}
+                                                {loaduser._id === c.userId && <i
+                                                    style={{ cursor: "pointer", color: "red" }}
+                                                    className="fa fa-ban" aria-hidden="true"
+                                                    onClick={() => deleteComment(c._id)}
+                                                ></i>}
                                                 <b style={{ marginLeft: "1rem" }}>{formatTimeAgo(c.createdAt)}</b>
                                             </div>
                                         </div>

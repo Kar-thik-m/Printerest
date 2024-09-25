@@ -7,10 +7,18 @@ const SaveSchema = new mongoose.Schema({
         required: true,
         ref: "User"
     },
-    
+    ownuserId: {
+        type: String
+    },
+    ownusername: {
+        type: String
+    },
+    ownuserimage: {
+        type: String
+    },
     items: [{
         type: mongoose.Schema.Types.ObjectId,
-        request:true,
+        request: true,
         ref: "Pin"
     }]
 

@@ -7,7 +7,7 @@ import {
     DeletComment,
     Deletepin
 } from "../../Action/Pins.jsx";
-import { PostSave } from "../../Action/Savepin.jsx";
+import { PostSave } from "../../Action/savepin.jsx";
 import PDstyle from "../Pindetails/Pin.module.css";
 import { Follow, UnFollow } from "../../Action/Users.jsx";
 

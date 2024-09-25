@@ -6,18 +6,14 @@ const SaveRouter = express.Router();
 
 SaveRouter.post('/save', async (req, res) => {
     try {
-        const {items, ownuserId, ownusername, ownuserimage}=req.body;
-
+        const {items}=req.body;
         if (!req.user || !req.user.id) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
         
         const save = new Savemodel({
             user: req.user.id,
-            items: items,
-            ownuserId:ownuserId,
-            ownusername:ownusername,
-            ownuserimage:ownuserimage
+            items: items
         });
         await save.save();
         res.status(201).json(save);

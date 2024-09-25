@@ -30,8 +30,8 @@ const Pindetail = () => {
 
     useEffect(() => {
         if (Array.isArray(saveitems)) {
-            const isPinSaved = saveitems.some(item =>
-                Array.isArray(item.items) && item.items.some(savedpin => savedpin._id === id)
+            const isPinSaved = saveitems.map(item =>
+                Array.isArray(item.items) && item.items.map(savedpin => savedpin._id === id)
             );
             setIsSaved(isPinSaved);
         }
@@ -59,7 +59,7 @@ const Pindetail = () => {
         if (!isSaved) {
             setIsSaved(true);
             try {
-                await dispatch(PostSave(pindetails._id));
+                await dispatch(PostSave(pindetails._id,));
             } catch (error) {
                 setIsSaved(false);
                 alert(error);

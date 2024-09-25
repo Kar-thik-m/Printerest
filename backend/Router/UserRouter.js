@@ -98,10 +98,10 @@ userRouter.post('/following', authenticateToken, async (req, res) => {
         const otherUser = await usermodel.findById(OthersId);
 
         if (!myUser) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found',myUser });
         }
         if (!otherUser) {
-            return res.status(404).json({ message: 'User to follow not found' });
+            return res.status(404).json({ message: 'User to follow not found',otherUser });
         }
 
 
@@ -132,10 +132,10 @@ userRouter.post('/unfollow', authenticateToken, async (req, res) => {
         const otherUser = await usermodel.findById(OthersId);
 
         if (!myUser) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' ,});
         }
         if (!otherUser) {
-            return res.status(404).json({ message: 'User to unfollow not found' });
+            return res.status(404).json({ message: 'User to unfollow not found',});
         }
 
 

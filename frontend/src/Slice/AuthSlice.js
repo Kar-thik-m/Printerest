@@ -5,8 +5,11 @@ const authSlice = createSlice({
     initialState: {
         loading: true,
         isAuthenticated: false,
-      loaduser:null,
-        error: null
+        loaduser: null,
+        error: null,
+        following: [],
+        followfllowing: [],
+
     },
     reducers: {
         loginRequest(state) {
@@ -47,7 +50,7 @@ const authSlice = createSlice({
         },
         loadUserFail(state) {
             state.loading = false;
-            
+
         },
         logoutSuccess(state) {
             state.loading = false;
@@ -63,13 +66,47 @@ const authSlice = createSlice({
         loadUserSuccess(state, action) {
             state.loading = false;
             state.isAuthenticated = true;
-            state.loaduser = action.payload; 
+            state.loaduser = action.payload;
         },
         loadUserFail(state, action) {
             state.loading = false;
             state.error = action.payload;
         },
-       
+        followingRequest(state) {
+            state.loading = true;
+        },
+        followingSuccess(state, action) {
+            state.loading = false;
+            state.isAuthenticated = true;
+            state.following = action.payload;
+        },
+        followingFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        unfollowRequest(state) {
+            state.loading = true;
+        },
+        unfollowSuccess(state, action) {
+            state.loading = false;
+            const unfollowId = action.payload;
+            state.following = following.filter(user => user !== unfollowId);
+        },
+        unfollowFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        getfollowsRequest(state) {
+            state.loading = true;
+        },
+        getfollowsSuccess(state, action) {
+            state.loading = false;
+            state.followfllowing = action.payload;
+        },
+        getfollowsFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
 
@@ -86,7 +123,15 @@ export const {
     loadUserRequest,
     loadUserSuccess,
     loadUserFail,
-   
+    followingFail,
+    followingRequest,
+    followingSuccess,
+    unfollowFail,
+    unfollowRequest,
+    unfollowSuccess,
+    getfollowsFail,getfollowsRequest,
+    getfollowsSuccess
+
 } = actions;
 
 export default reducer;

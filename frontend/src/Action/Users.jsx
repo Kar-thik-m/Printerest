@@ -1,7 +1,9 @@
 
 import {
     loginRequest, loginFail, loginSuccess, registerFail, registerRequest, registerSuccess,
-    loadUserRequest, loadUserFail, loadUserSuccess
+    loadUserRequest, loadUserFail, loadUserSuccess,
+    followingFail, followingRequest, followingSuccess, unfollowFail, unfollowRequest, unfollowSuccess,
+    getfollowsFail, getfollowsRequest, getfollowsSuccess
 } from "../Slice/AuthSlice.js";
 import { Url } from "../../config.js";
 
@@ -12,7 +14,7 @@ export const register = (userData) => async (dispatch) => {
     try {
         const response = await fetch(`${Url}/user/register`, {
             method: 'POST',
-            
+
             body: userData,
         });
 
@@ -31,7 +33,7 @@ export const register = (userData) => async (dispatch) => {
             dispatch(registerFail("Unexpected response format."));
         }
 
-        
+
     } catch (error) {
         dispatch(registerFail(error.toString()));
     }
@@ -60,7 +62,7 @@ export const LoginApi = (userData) => async (dispatch) => {
         }
 
         const data = await response.json();
-        
+
         if (data && data.token) {
             localStorage.setItem("user", JSON.stringify(data));
             dispatch(loginSuccess(data));
@@ -80,7 +82,7 @@ export const Loaduser = async (dispatch) => {
 
 
         const user = JSON.parse(localStorage.getItem('user'));
-        const token =  user.token ; 
+        const token = user.token;
 
         const response = await fetch(`${Url}/user/profile`, {
             headers: {
@@ -99,3 +101,100 @@ export const Loaduser = async (dispatch) => {
     }
 };
 
+
+export const Follow = (OthersId) => async (dispatch) => {
+    try {
+        dispatch(followingRequest());
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = user?.token;
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+        const response = await fetch(`${Url}/user/following`, {
+            method: 'POST',
+            headers: {
+
+                'Authorization': `Bearer ${token}`,
+
+            },
+            body: JSON.stringify({ OthersId }),
+        });
+
+        if (!response.ok) {
+
+            const errorText = await response.text();
+
+            throw new Error(errorText || 'Network response was not ok');
+        }
+
+        await response.json();
+        dispatch(followingSuccess(OthersId));
+    } catch (error) {
+        console.error('Error:', error);
+        dispatch(followingFail(error.toString()));
+    }
+
+}
+
+
+export const UnFollow = (OthersId) => async (dispatch) => {
+    try {
+        
+        dispatch(unfollowRequest());
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = user?.token;
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+        console.log(OthersId)
+        const response = await fetch(`${Url}/user/unfollow`, {
+            method: 'POST',
+            headers: {
+
+                'Authorization': `Bearer ${token}`,
+
+            },
+            body: JSON.stringify({ OthersId }),
+        });
+
+        if (!response.ok) {
+
+            const errorText = await response.text();
+
+            throw new Error(errorText || 'Network response was not ok');
+        }
+
+        await response.json();
+        dispatch(unfollowSuccess(OthersId));
+    } catch (error) {
+        console.error('Error:', error);
+        dispatch(unfollowFail(error.toString()));
+    }
+}
+
+
+
+export const userFollwsdetails = async (dispatch) => {
+    try {
+        dispatch(getfollowsRequest());
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = user?.token;
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+        const response = await fetch(`${Url}/user/profilefollows`);
+
+        if (!response.ok) {
+
+            const errorText = await response.text();
+
+            throw new Error(errorText || 'Network response was not ok');
+        }
+
+        const data = await response.json();
+        dispatch(getfollowsSuccess(data));
+    } catch (error) {
+        console.error('Error:', error);
+        dispatch(getfollowsFail(error.toString()));
+    }
+}

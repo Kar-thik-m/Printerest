@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Getpindetails, postcomments, DeletComment, Deletepin } from "../../Action/Pins.jsx";
 import { PostSave } from "../../Action/Savepin.jsx";
 import PDstyle from "../Pindetails/Pin.module.css";
+import { Follow, UnFollow } from "../../Action/Users.jsx";
 
 const Pindetail = () => {
     const [isSaved, setIsSaved] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false);
     const { loaduser } = useSelector((state) => state.user);
     const navigate = useNavigate();
     const { id } = useParams();
@@ -17,7 +19,6 @@ const Pindetail = () => {
 
     useEffect(() => {
         dispatch(Getpindetails(id));
-
     }, [id, dispatch]);
 
     useEffect(() => {
@@ -28,6 +29,12 @@ const Pindetail = () => {
             setIsSaved(isPinSaved);
         }
     }, [saveitems, id]);
+
+    useEffect(() => {
+        if (loaduser && pindetails && pindetails.user) {
+            setIsFollowing(loaduser.following.includes(pindetails.user._id));
+        }
+    }, [loaduser, pindetails]);
 
     const formatTimeAgo = (dateString) => {
         const date = new Date(dateString);
@@ -40,20 +47,39 @@ const Pindetail = () => {
         return `${Math.floor(seconds / 86400)} days ago`;
     };
 
-    const handleSave = () => {
-
+    const handleSave = async () => {
         if (!isSaved) {
             try {
-
-                dispatch(PostSave(pindetails._id));
-
+                await dispatch(PostSave(pindetails._id));
                 setIsSaved(true);
             } catch (error) {
-                alert(error);
+                alert(error.message);
             }
         }
     };
 
+    const handleFollow = async () => {
+        if (loaduser && pindetails && pindetails.user) {
+            try {
+                await dispatch(Follow(pindetails.user._id));
+               
+                setIsFollowing(true);
+            } catch (error) {
+                alert("Error following user: " + error.message);
+            }
+        }
+    };
+
+    const handleUnfollow = async () => {
+        if (loaduser && pindetails && pindetails.user) {
+            try {
+                await dispatch(UnFollow(pindetails.user._id));
+                setIsFollowing(false);
+            } catch (error) {
+                alert("Error unfollowing user: " + error.message);
+            }
+        }
+    };
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
@@ -66,7 +92,7 @@ const Pindetail = () => {
             await dispatch(Getpindetails(id));
             setComment("");
         } catch (error) {
-            alert(error)
+            alert(error.message);
         }
     };
 
@@ -75,19 +101,19 @@ const Pindetail = () => {
             await dispatch(DeletComment(id, commentId));
             await dispatch(Getpindetails(id));
         } catch (error) {
-            alert(error);
+            alert(error.message);
         }
     };
 
     const DeletePin = async () => {
         try {
-            await dispatch(Deletepin(id))
-            await navigate('/')
-
+            await dispatch(Deletepin(id));
+            await navigate('/');
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -109,13 +135,11 @@ const Pindetail = () => {
                 <div className={PDstyle.contant}>
                     <div className={PDstyle.head}>
                         <i className='fa-heart-o' aria-hidden="true"></i>
-                        {loaduser && loaduser._id === pindetails.user._id && (
-                            <i class="fa fa-trash" aria-hidden="true" onClick={DeletePin}></i>
-                        )
-
-                        }
+                        {loaduser && loaduser._id === pindetails.user?._id && (
+                            <i className="fa fa-trash" aria-hidden="true" onClick={DeletePin}></i>
+                        )}
                         <i className="fa fa-download" aria-hidden="true"></i>
-                        {loaduser && loaduser._id !== pindetails.user._id && (
+                        {loaduser && loaduser._id !== pindetails.user?._id && (
                             <div className={PDstyle.save} onClick={handleSave}>
                                 <b>
                                     {isSaved ? (
@@ -125,14 +149,13 @@ const Pindetail = () => {
                                     )}
                                 </b>
                             </div>
-                        )
-
-                        }
-
+                        )}
                     </div>
                     <div className={PDstyle.username}>
-                        <div>{pindetails.user.username}</div>
-                        <button className={PDstyle.follow}>Follow</button>
+                        <div>{pindetails.user?.username}</div>
+                        <button className={PDstyle.follow} onClick={isFollowing ? handleUnfollow : handleFollow}>
+                            {isFollowing ? 'Unfollow' : 'Follow'}
+                        </button>
                     </div>
                     <div className={PDstyle.title}>
                         <div>{pindetails.title}</div>
@@ -145,7 +168,6 @@ const Pindetail = () => {
                                     <div className={PDstyle.commentuser}>
                                         <div className={PDstyle.commmentimage}>
                                             <img src={c.image} alt="User" />
-
                                         </div>
                                         <div className={PDstyle.userdetails}>
                                             <div>{c.name}</div>

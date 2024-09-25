@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Getpindetails, postcomments, DeletComment, Deletepin } from "../../Action/Pins.jsx";
+import {
+    Getpindetails,
+    postcomments,
+    DeletComment,
+    Deletepin
+} from "../../Action/Pins.jsx";
 import { PostSave } from "../../Action/Savepin.jsx";
 import PDstyle from "../Pindetails/Pin.module.css";
 import { Follow, UnFollow } from "../../Action/Users.jsx";
 
 const Pindetail = () => {
     const [isSaved, setIsSaved] = useState(false);
+    const [comment, setComment] = useState("");
     const [isFollowing, setIsFollowing] = useState(false);
+
     const { loaduser } = useSelector((state) => state.user);
+    const { pindetails, loading, error } = useSelector((state) => state.pins);
+    const { saveitems } = useSelector((state) => state.save);
+
     const navigate = useNavigate();
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [comment, setComment] = useState("");
-    const { pindetails, loading, error } = useSelector((state) => state.pins);
-    const { saveitems } = useSelector((state) => state.save);
 
     useEffect(() => {
         dispatch(Getpindetails(id));
@@ -31,7 +38,7 @@ const Pindetail = () => {
     }, [saveitems, id]);
 
     useEffect(() => {
-        if (loaduser && pindetails && pindetails.user) {
+        if (loaduser && pindetails?.user) {
             setIsFollowing(loaduser.following.includes(pindetails.user._id));
         }
     }, [loaduser, pindetails]);
@@ -40,6 +47,7 @@ const Pindetail = () => {
         const date = new Date(dateString);
         const now = new Date();
         const seconds = Math.floor((now - date) / 1000);
+
         if (seconds < 5) return "Just now";
         if (seconds < 60) return `${seconds} seconds ago`;
         if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
@@ -49,34 +57,36 @@ const Pindetail = () => {
 
     const handleSave = async () => {
         if (!isSaved) {
+            setIsSaved(true);
             try {
                 await dispatch(PostSave(pindetails._id));
-                setIsSaved(true);
             } catch (error) {
-                alert(error.message);
+                setIsSaved(false);
+                alert(error);
             }
         }
     };
 
     const handleFollow = async () => {
-        if (loaduser && pindetails && pindetails.user) {
+        if (loaduser && pindetails?.user) {
+            setIsFollowing(true);
             try {
                 await dispatch(Follow(pindetails.user._id));
-               
-                setIsFollowing(true);
             } catch (error) {
-                alert("Error following user: " + error.message);
+                setIsFollowing(false);
+                alert(error);
             }
         }
     };
 
     const handleUnfollow = async () => {
-        if (loaduser && pindetails && pindetails.user) {
+        if (loaduser && pindetails?.user) {
+            setIsFollowing(false);
             try {
                 await dispatch(UnFollow(pindetails.user._id));
-                setIsFollowing(false);
             } catch (error) {
-                alert("Error unfollowing user: " + error.message);
+                setIsFollowing(true);
+                alert(error);
             }
         }
     };
@@ -86,13 +96,14 @@ const Pindetail = () => {
     };
 
     const handleCommentSubmit = async () => {
+        if (comment.trim() === "") return;
+
         try {
-            if (comment.trim() === "") return;
             await dispatch(postcomments(id, comment));
             await dispatch(Getpindetails(id));
             setComment("");
         } catch (error) {
-            alert(error.message);
+            alert(error);
         }
     };
 
@@ -101,11 +112,11 @@ const Pindetail = () => {
             await dispatch(DeletComment(id, commentId));
             await dispatch(Getpindetails(id));
         } catch (error) {
-            alert(error.message);
+            alert(error);
         }
     };
 
-    const DeletePin = async () => {
+    const deletePin = async () => {
         try {
             await dispatch(Deletepin(id));
             await navigate('/');
@@ -135,11 +146,11 @@ const Pindetail = () => {
                 <div className={PDstyle.contant}>
                     <div className={PDstyle.head}>
                         <i className='fa-heart-o' aria-hidden="true"></i>
-                        {loaduser && loaduser._id === pindetails.user?._id && (
-                            <i className="fa fa-trash" aria-hidden="true" onClick={DeletePin}></i>
+                        {loaduser && loaduser._id === pindetails.user._id && (
+                            <i className="fa fa-trash" aria-hidden="true" onClick={deletePin}></i>
                         )}
                         <i className="fa fa-download" aria-hidden="true"></i>
-                        {loaduser && loaduser._id !== pindetails.user?._id && (
+                        {loaduser && loaduser._id !== pindetails.user._id && (
                             <div className={PDstyle.save} onClick={handleSave}>
                                 <b>
                                     {isSaved ? (
@@ -152,10 +163,10 @@ const Pindetail = () => {
                         )}
                     </div>
                     <div className={PDstyle.username}>
-                        <div>{pindetails.user?.username}</div>
-                        <button className={PDstyle.follow} onClick={isFollowing ? handleUnfollow : handleFollow}>
-                            {isFollowing ? 'Unfollow' : 'Follow'}
-                        </button>
+                        <div>{pindetails.user.username}</div>
+                        <div onClick={isFollowing ? handleUnfollow : handleFollow}>
+                            {isFollowing ? <div className={PDstyle.unfollow}  >Unfollow</div> : <div className={PDstyle.follow}>Follow</div>}
+                        </div>
                     </div>
                     <div className={PDstyle.title}>
                         <div>{pindetails.title}</div>

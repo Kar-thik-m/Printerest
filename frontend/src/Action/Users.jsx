@@ -110,11 +110,13 @@ export const Follow = (OthersId) => async (dispatch) => {
         if (!token) {
             throw new Error('No authentication token found');
         }
+        console.log(JSON.stringify({ OthersId }))
         const response = await fetch(`${Url}/user/following`, {
             method: 'POST',
             headers: {
 
                 'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
 
             },
             body: JSON.stringify({ OthersId }),
@@ -152,11 +154,13 @@ export const UnFollow = (OthersId) => async (dispatch) => {
             headers: {
 
                 'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
 
             },
             body: JSON.stringify({ OthersId }),
-        });
 
+        });
+console.log(JSON.stringify({ OthersId }));
         if (!response.ok) {
 
             const errorText = await response.text();

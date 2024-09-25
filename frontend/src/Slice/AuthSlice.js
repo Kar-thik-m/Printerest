@@ -7,8 +7,8 @@ const authSlice = createSlice({
         isAuthenticated: false,
         loaduser: null,
         error: null,
-        following: [],
-        followfllowing: [],
+        following: null,
+        followfllowing: null,
 
     },
     reducers: {
@@ -89,8 +89,8 @@ const authSlice = createSlice({
         },
         unfollowSuccess(state, action) {
             state.loading = false;
-            const unfollowId = action.payload;
-            state.following = following.filter(user => user !== unfollowId);
+            
+           
         },
         unfollowFail(state, action) {
             state.loading = false;

@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { SaveDetailsPin, UnsavePin } from "../../Action/Savepin.jsx";
 import { postcomments } from "../../Action/Pins.jsx";
 import { DeletComment } from "../../Action/Pins.jsx";
+import { Follow,UnFollow } from "../../Action/Users.jsx";
 import sdStyle from "../SavePinDetails/SavePinDetails.module.css";
 
 const SavePinDetails = () => {
@@ -11,7 +12,7 @@ const SavePinDetails = () => {
     const dispatch = useDispatch();
     const [comment, setComment] = useState("");
     const [isSaved, setIsSaved] = useState(false);
-
+    const [isFollowing, setIsFollowing] = useState(false);
     const { savedetails, loading, error } = useSelector((state) => state.save);
     const { loaduser } = useSelector((state) => state.user);
     const item = savedetails?.items[0];
@@ -26,10 +27,42 @@ const SavePinDetails = () => {
         }
     }, [savedetails]);
 
+    useEffect(() => {
+        if (item) {
+            setIsFollowing(loaduser.following.includes(item._id));
+        }
+    }, [loaduser, item]);
+
     const unsave = useCallback(() => {
         dispatch(UnsavePin(id));
         setIsSaved(false);
     }, [dispatch, id]);
+
+   
+    const handleFollow = async () => {
+        if (loaduser && item) {
+            setIsFollowing(true);
+            try {
+                await dispatch(Follow(item._id));
+            } catch (error) {
+                setIsFollowing(false);
+                alert(error);
+            }
+        }
+    };
+
+    const handleUnfollow = async () => {
+        if (loaduser && item) {
+            setIsFollowing(false);
+            try {
+                await dispatch(UnFollow(item._id));
+            } catch (error) {
+                setIsFollowing(true);
+                alert(error);
+            }
+        }
+    };
+
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
@@ -77,7 +110,9 @@ const SavePinDetails = () => {
                     </div>
                     <div className={sdStyle.username}>
                         <div>{savedetails.user.username}</div>
-                        <button className={sdStyle.follow}>Follow</button>
+                        <div onClick={isFollowing ? handleUnfollow : handleFollow}>
+                            {isFollowing ? <div className={sdStyle.unfollow}  >Unfollow</div> : <div className={sdStyle.follow}>Follow</div>}
+                        </div>
                     </div>
                     <div className={sdStyle.title}>
                         <div>{item.title}</div>

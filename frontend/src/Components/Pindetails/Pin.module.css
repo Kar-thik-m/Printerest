@@ -85,9 +85,9 @@
 }
 
 .follow {
-    margin: 1rem;
-    padding: 10px 25px; 
-    background-color: #fafbfc; 
+    
+    padding: 10px ; 
+    background-color: #b7bbbe; 
     border: none; 
     border-radius: 5px; 
     font-size: 16px; 
@@ -96,12 +96,22 @@
     transition: all 0.3s ease; 
     outline: none; 
     text-align: center;
+    
+}
+.unfollow {
+    padding: 10px; 
+    background-color: #262727; 
+    border: none; 
+    border-radius: 5px; 
+    font-size: 14px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    outline: none; 
+    text-align: center;
+    color: aliceblue;
 }
 
-.follow:hover {
-    background-color: #e7eaee; 
-    box-shadow: 0 4px 8px rgba(156, 153, 153, 0.2); 
-}
 
 .title {
     width: 80%;

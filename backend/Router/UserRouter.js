@@ -93,6 +93,7 @@ userRouter.post('/following', authenticateToken, async (req, res) => {
     try {
         const { OthersId } = req.body;
         const myId = req.user.id;
+        console.log('Request to follow user with ID:', OthersId);
 
         const myUser = await usermodel.findById(myId);
         const otherUser = await usermodel.findById(OthersId);
@@ -101,7 +102,7 @@ userRouter.post('/following', authenticateToken, async (req, res) => {
             return res.status(404).json({ message: 'User not found',myUser });
         }
         if (!otherUser) {
-            return res.status(404).json({ message: 'User to follow not found',"ans":OthersId });
+            return res.status(404).json({ message: 'User to follow not found'});
         }
 
 

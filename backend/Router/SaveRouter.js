@@ -52,7 +52,7 @@ SaveRouter.get('/save/:id', async (req, res) => {
         }
 
         const save = await Savemodel.findById(id)
-            .populate('user', 'username.url _id')
+            .populate('user', 'username image.url  _id')
             .populate('items', 'title image comments')
 
 

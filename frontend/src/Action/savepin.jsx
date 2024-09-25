@@ -34,12 +34,12 @@ export const CreateSave = () => async (dispatch) => {
 }
 
 
-export const PostSave = (items) => async (dispatch) => {
+export const PostSave = (items, createrUserId) => async (dispatch) => {
     try {
         dispatch(SaveRequest());
-         if(!items){
+        if (!items) {
             console.log("items notfound")
-         }
+        }
         const user = JSON.parse(localStorage.getItem('user'));
         const token = user.token;
 
@@ -105,7 +105,7 @@ export const UnsavePin = (id) => async (dispatch) => {
         }
         const token = user.token;
         const response = await fetch(`${Url}/saveitem/unsave/${id}`, {
-            method: 'DELETE', 
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -118,10 +118,10 @@ export const UnsavePin = (id) => async (dispatch) => {
             return;
         }
 
-        
+
         dispatch(DeleteSaveSuccess(id));
     } catch (error) {
-        dispatch(DeleteSaveFailure(error.message)); 
+        dispatch(DeleteSaveFailure(error.message));
     }
 };
 

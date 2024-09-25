@@ -101,7 +101,7 @@ userRouter.post('/following', authenticateToken, async (req, res) => {
             return res.status(404).json({ message: 'User not found',myUser });
         }
         if (!otherUser) {
-            return res.status(404).json({ message: 'User to follow not found',message:OthersId });
+            return res.status(404).json({ message: 'User to follow not found',"ans":OthersId });
         }
 
 

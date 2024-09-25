@@ -135,7 +135,8 @@ const Pindetail = () => {
                                 <div key={c._id} className={PDstyle.commentItem}>
                                     <div className={PDstyle.commentuser}>
                                         <div className={PDstyle.commmentimage}>
-                                            <img src={loaduser.userimage.url} alt="User" />
+                                            <img src={c.image} alt="User" />
+                                            
                                         </div>
                                         <div className={PDstyle.userdetails}>
                                             <div>{c.name}</div>

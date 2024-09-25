@@ -60,7 +60,7 @@ router.post('/comments', authenticateToken, async (req, res) => {
     pin.comments.push({
         userId: req.user.id,
         name: req.user.username,
-        image: req.user.userimage,
+        image: req.user.userimage.url,
         content: req.body.content,
     });
 

@@ -23,8 +23,15 @@ export const register = (userData) => async (dispatch) => {
         }
 
         const data = await response.json();
-        dispatch(registerSuccess(data));
+        if (data && data.token) {
+            localStorage.setItem("user", JSON.stringify(data));
+            dispatch(registerSuccess(data));
 
+        } else {
+            dispatch(registerFail("Unexpected response format."));
+        }
+
+        
     } catch (error) {
         dispatch(registerFail(error.toString()));
     }
@@ -53,7 +60,7 @@ export const LoginApi = (userData) => async (dispatch) => {
         }
 
         const data = await response.json();
-        // Ensure data contains expected properties before saving to localStorage
+        
         if (data && data.token) {
             localStorage.setItem("user", JSON.stringify(data));
             dispatch(loginSuccess(data));

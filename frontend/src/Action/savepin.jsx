@@ -65,36 +65,7 @@ export const PostSave = (items, createrUserId) => async (dispatch) => {
     }
 };
 
-export const SaveDetailsPin = (id) => async (dispatch) => {
-    try {
-        dispatch(SaveDetailsRequest());
 
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user || !user.token) {
-            throw new Error('User not authenticated');
-        }
-        const token = user.token;
-
-        const response = await fetch(`${Url}/saveitem/save/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) {
-            const error = await response.text();
-            dispatch(SaveDetailsFailure(error));
-            return;
-        }
-
-        const data = await response.json();
-
-        dispatch(SaveDetailsSuccess(data));
-
-    } catch (error) {
-        dispatch(SaveDetailsFailure(error.message || 'An unexpected error occurred'));
-    }
-};
 
 export const UnsavePin = (id) => async (dispatch) => {
     try {

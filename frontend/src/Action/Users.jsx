@@ -6,8 +6,8 @@ import {
     getfollowsFail, getfollowsRequest, getfollowsSuccess, updateProfileFail, updateProfileRequest, updateProfileSuccess,
     alluserFail, alluserRequest, alluserSuccess
 } from "../Slice/AuthSlice.js";
-import { Url } from "../../config.js";
 
+import { Url } from "../../Config.js";
 export const register = (userData) => async (dispatch) => {
     dispatch(registerRequest());
     console.log(userData)

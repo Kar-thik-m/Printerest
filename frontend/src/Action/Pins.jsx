@@ -4,7 +4,7 @@ import {
     deleteCommentFailure,deleteCommentRequest,deleteCommentSuccess,deletePinFailure,deletePinRequest,deletePinSuccess
 } from "../Slice/PinSlice";
 
-import { Url } from "../../config";
+import { Url } from "../../Config";
 
 
 

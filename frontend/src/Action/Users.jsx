@@ -3,7 +3,8 @@ import {
     loginRequest, loginFail, loginSuccess, registerFail, registerRequest, registerSuccess,
     loadUserRequest, loadUserFail, loadUserSuccess,
     followingFail, followingRequest, followingSuccess, unfollowFail, unfollowRequest, unfollowSuccess,
-    getfollowsFail, getfollowsRequest, getfollowsSuccess
+    getfollowsFail, getfollowsRequest, getfollowsSuccess, updateProfileFail, updateProfileRequest, updateProfileSuccess,
+    alluserFail, alluserRequest, alluserSuccess
 } from "../Slice/AuthSlice.js";
 import { Url } from "../../config.js";
 
@@ -55,7 +56,7 @@ export const LoginApi = (userData) => async (dispatch) => {
         });
 
         if (!response.ok) {
-            // Check if response has JSON data, otherwise handle non-JSON errors
+
             const errorData = await response.text();
             dispatch(loginFail(errorData));
             return;
@@ -141,7 +142,7 @@ export const Follow = (OthersId) => async (dispatch) => {
 
 export const UnFollow = (OthersId) => async (dispatch) => {
     try {
-        
+
         dispatch(unfollowRequest());
         const user = JSON.parse(localStorage.getItem('user'));
         const token = user?.token;
@@ -160,7 +161,7 @@ export const UnFollow = (OthersId) => async (dispatch) => {
             body: JSON.stringify({ OthersId }),
 
         });
-console.log(JSON.stringify({ OthersId }));
+        console.log(JSON.stringify({ OthersId }));
         if (!response.ok) {
 
             const errorText = await response.text();
@@ -202,3 +203,71 @@ export const userFollwsdetails = async (dispatch) => {
         dispatch(getfollowsFail(error.toString()));
     }
 }
+
+
+export const updateProfile = (userData, userId) => async (dispatch) => {
+    try {
+        dispatch(updateProfileRequest());
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = user?.token;
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
+        const formData = new FormData();
+        if (userData.username) {
+            formData.append('username', userData.username);
+        }
+        if (userData.file) {
+            formData.append('file', userData.file);
+        }
+
+        const response = await fetch(`${Url}/user/updateprofile/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Network response was not ok');
+        }
+
+        const data = await response.json();
+        dispatch(updateProfileSuccess(data));
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        dispatch(updateProfileFail(error.toString()));
+    }
+};
+
+
+export const getProfileunique = (id) => async (dispatch) => {
+    try {
+        dispatch(alluserRequest());
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = user?.token;
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+        const response = await fetch(`${Url}/user/profile/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            dispatch(alluserFail(error));
+            return; 
+        }
+
+        const data = await response.json();
+        dispatch(alluserSuccess(data));
+    } catch (error) {
+        dispatch(alluserFail(error.toString()));
+    }
+};

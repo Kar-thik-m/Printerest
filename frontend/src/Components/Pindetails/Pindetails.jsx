@@ -164,9 +164,9 @@ const Pindetail = () => {
                     </div>
                     <div className={PDstyle.username}>
                         <div>{pindetails.user.username}</div>
-                        <div onClick={isFollowing ? handleUnfollow : handleFollow}>
+                        {loaduser && loaduser._id !== pindetails.user._id && (<div onClick={isFollowing ? handleUnfollow : handleFollow}>
                             {isFollowing ? <div className={PDstyle.unfollow}  >Unfollow</div> : <div className={PDstyle.follow}>Follow</div>}
-                        </div>
+                        </div>)}
                     </div>
                     <div className={PDstyle.title}>
                         <div>{pindetails.title}</div>

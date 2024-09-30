@@ -1,0 +1,61 @@
+.labeltext,
+.labelfile {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.labeltext label,
+.labelfile label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.labeltext input,
+.labelfile input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.labeltext input:focus,
+.labelfile input:focus {
+    border-color: #0073e6;
+    outline: none;
+}
+
+.buttonupdate {
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buttonupdate:hover {
+    background-color: #005bb5;
+}
+
+form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+@media (max-width: 480px) {
+    .buttonupdate {
+        width: 100%;
+    }
+}

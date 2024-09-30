@@ -25,7 +25,8 @@ const Home = () => {
                         <img src={pin.image.url} alt={pin.title} className={Hstyle.pinImage} />
                         <div className={Hstyle.profileInfo}>
                             <div className={Hstyle.top}>
-                                <img src={pin.user.userimage.url} alt="User" className={Hstyle.profileImage} />
+
+                                <Link to={`/profile/${pin.user._id}`}  >  <img src={pin.user.userimage.url} alt="User" className={Hstyle.profileImage} /></Link>
 
                                 <div className={Hstyle.userName}>{pin.user.username}</div>
                             </div>

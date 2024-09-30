@@ -5,68 +5,69 @@
 }
 
 .cart {
-   width: 80wh;
-   height: 80vh;
+    width: 90%;
+    max-width: 1200px;
+    height: auto;
     box-shadow: 0 4px 8px rgba(13, 0, 0, 0.5);
     display: flex;
     flex-direction: row;
     border-radius: 1rem;
     background-color: white;
-    
+    overflow: hidden;
 }
 
 .imageside {
     flex: 1;
-    
 }
 
 .image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius:10px 0px 0px 10px ;
+    border-radius: 10px 0 0 10px;
     transition: transform 0.3s ease;
-   
 }
 
 .contant {
     flex: 1;
-    height: 100vh;
+    height: auto;
     border-radius: 0 5% 5% 0;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
 .head {
     width: 90%;
     padding: 10px;
     display: flex;
-    align-items: center; 
-    justify-content: space-between; 
+    align-items: center;
+    justify-content: space-between;
     gap: 2rem;
 }
 
 .head > i {
     font-size: x-large;
 }
-.head>i:nth-child(2){
+
+.head > i:nth-child(2) {
     color: red;
     cursor: pointer;
 }
+
 .save {
     padding: 10px 15px;
     background-color: rgb(253, 0, 0);
     color: aliceblue;
     border-radius: 10%;
-    margin-left: auto; 
+    margin-left: auto;
     margin-right: 10px;
-    font-weight: bold; 
+    font-weight: bold;
 }
 
 .save:hover {
-    background-color: rgb(200, 0, 0); 
-    box-shadow: 0 6px 12px rgba(219, 141, 141, 0.6); 
-    cursor: pointer; 
+    background-color: rgb(200, 0, 0);
+    box-shadow: 0 6px 12px rgba(219, 141, 141, 0.6);
+    cursor: pointer;
 }
 
 .username {
@@ -84,38 +85,30 @@
     margin: 1rem;
 }
 
-.follow {
-    
-    padding: 10px ; 
-    background-color: #b7bbbe; 
-    border: none; 
-    border-radius: 5px; 
-    font-size: 16px; 
-    font-weight: bold; 
-    cursor: pointer; 
-    transition: all 0.3s ease; 
-    outline: none; 
-    text-align: center;
-    
-}
+.follow,
 .unfollow {
-    padding: 10px; 
-    background-color: #262727; 
-    border: none; 
-    border-radius: 5px; 
-    font-size: 14px; 
-    font-weight: bold; 
-    cursor: pointer; 
-    transition: all 0.3s ease; 
-    outline: none; 
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
     text-align: center;
+}
+
+.follow {
+    background-color: #b7bbbe;
+}
+
+.unfollow {
+    background-color: #262727;
     color: aliceblue;
 }
 
-
 .title {
     width: 80%;
-    
     font-size: large;
     text-align: center;
     letter-spacing: 1px;
@@ -124,7 +117,7 @@
 .comment {
     width: 100%;
     height: 40vh;
-    overflow: scroll;
+    overflow-y: auto;
 }
 
 .commentContainer {
@@ -132,7 +125,7 @@
     align-items: center;
     width: 80%;
     height: auto;
-    border: 2px solid #a7a4a4; 
+    border: 2px solid #a7a4a4;
     margin: 1rem;
     border-radius: 3rem;
 }
@@ -146,7 +139,7 @@
 
 .commentTextarea:focus,
 .commentButton:focus {
-    outline: none; 
+    outline: none;
 }
 
 .commentButton {
@@ -162,46 +155,92 @@
     border-radius: 3rem;
     color: #e7eaee;
 }
-.commentItem{
+
+.commentItem {
     margin: 1rem;
 }
-.commentuser{
+
+.commentuser {
     display: flex;
-   
 }
-.commmentimage>img{
-    width:50px;
+
+.commmentimage > img {
+    width: 50px;
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
 }
-.userdetails{
+
+.userdetails {
     margin: 1rem;
     display: flex;
     flex-direction: column;
-    gap:1px;
+    gap: 1px;
 }
-.userdetails>div:nth-child(1){
+
+.userdetails > div:nth-child(1) {
     text-transform: capitalize;
 }
-.userdetails>div:nth-child(2){
+
+.userdetails > div:nth-child(2) {
     width: auto;
     padding: 10px;
-    
 }
-.userdetails>div:nth-child(3){
+
+.userdetails > div:nth-child(3) {
     width: 100%;
     display: flex;
     align-items: center;
-   
     color: #a7a4a4;
 }
-.emtypage{
-  
+
+.emtypage {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top:7rem;
-    color:#a7a4a4;
-   
+    margin-top: 7rem;
+    color: #a7a4a4;
+}
+
+@media (max-width: 768px) {
+    .cart {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .imageside,
+    .contant {
+        width: 100%;
+    }
+
+    .title {
+        font-size: medium;
+    }
+
+    .comment {
+        height: 30vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .save {
+        margin: 10px 0;
+    }
+
+    .username {
+        font-size: medium;
+    }
+
+    .commentTextarea {
+        width: 100%;
+    }
+
+    .commentButton {
+        padding: 8px;
+    }
 }

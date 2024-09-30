@@ -9,7 +9,7 @@ const authSlice = createSlice({
         error: null,
         following: null,
         followfllowing: null,
-
+        uservariant: null 
     },
     reducers: {
         loginRequest(state) {
@@ -40,17 +40,16 @@ const authSlice = createSlice({
             state.error = action.payload;
         },
         loadUserRequest(state) {
-            state.isAuthenticated = false;
             state.loading = true;
         },
         loadUserSuccess(state, action) {
             state.loading = false;
             state.isAuthenticated = true;
-            state.user = action.payload.user;
+            state.loaduser = action.payload; // Fixed to loaduser
         },
-        loadUserFail(state) {
+        loadUserFail(state, action) {
             state.loading = false;
-
+            state.error = action.payload;
         },
         logoutSuccess(state) {
             state.loading = false;
@@ -58,18 +57,6 @@ const authSlice = createSlice({
             state.user = null;
         },
         logoutFail(state, action) {
-            state.error = action.payload;
-        },
-        loadUserRequest(state) {
-            state.loading = true;
-        },
-        loadUserSuccess(state, action) {
-            state.loading = false;
-            state.isAuthenticated = true;
-            state.loaduser = action.payload;
-        },
-        loadUserFail(state, action) {
-            state.loading = false;
             state.error = action.payload;
         },
         followingRequest(state) {
@@ -89,8 +76,6 @@ const authSlice = createSlice({
         },
         unfollowSuccess(state, action) {
             state.loading = false;
-            
-           
         },
         unfollowFail(state, action) {
             state.loading = false;
@@ -104,6 +89,30 @@ const authSlice = createSlice({
             state.followfllowing = action.payload;
         },
         getfollowsFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        updateProfileRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        updateProfileSuccess(state, action) {
+            state.loading = false;
+            state.uservariant = { ...state.uservariant, ...action.payload }; 
+        },
+        updateProfileFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        alluserRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        alluserSuccess(state, action) {
+            state.loading = false;
+            state.uservariant = action.payload; // Fixed spelling here
+        },
+        alluserFail(state, action) {
             state.loading = false;
             state.error = action.payload;
         },
@@ -129,9 +138,15 @@ export const {
     unfollowFail,
     unfollowRequest,
     unfollowSuccess,
-    getfollowsFail,getfollowsRequest,
-    getfollowsSuccess
-
+    getfollowsFail, 
+    getfollowsRequest,
+    getfollowsSuccess,
+    updateProfileFail,
+    updateProfileRequest,
+    updateProfileSuccess,
+    alluserFail,
+    alluserRequest,
+    alluserSuccess
 } = actions;
 
 export default reducer;

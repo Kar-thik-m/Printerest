@@ -4,6 +4,7 @@ import { authenticateToken } from '../Middleware/Authentication.js';
 import getUrl from '../Utils/urlgenerator.js';
 import cloudinary from "cloudinary";
 import uploadFile from '../Utils/multerAccess.js';
+import fetch from 'node-fetch';
 const router = express.Router();
 
 router.post('/pins', uploadFile, authenticateToken, async (req, res) => {
@@ -128,5 +129,42 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 });
 
+
+
+
+router.get('/download/:id', async (req, res) => {
+    try {
+        const pin = await Pinmodel.findById(req.params.id);
+
+        if (!pin) {
+            return res.status(404).json({ message: 'Pin not found' });
+        }
+
+        const imageUrl = pin.image.url;
+
+
+        const response = await fetch(imageUrl);
+        if (!response.ok) {
+            return res.status(500).json({ message: 'Failed to fetch image from Cloudinary' });
+        }
+
+        const contentType = response.headers.get('content-type');
+
+        const buffer = await response.buffer();
+
+
+        res.set({
+            'Content-Type': contentType,
+            'Content-Disposition': `attachment; filename="${pin.image.id}.jpg"`
+        });
+
+
+        res.send(buffer);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 export default router;

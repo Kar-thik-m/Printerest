@@ -2,7 +2,7 @@ import {
     pinRequest, pinFailure, pinSuccess, CreatepinRequest, CreatepinFailure, CreatepinSuccess,
     pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess, RequestComment, SuccessComment, FailureComment,
     deleteCommentFailure,deleteCommentRequest,deleteCommentSuccess,deletePinFailure,deletePinRequest,deletePinSuccess,
-    DownloadPinRequest,DownloadPinSuccess,DownloadinFailure
+    DownloadPinRequest,DownloadPinSuccess,DownloadinFailure,searchFail,searchRequest,searchSuccess
 } from "../Slice/PinSlice";
 
 import { Url } from "../../Config";
@@ -205,3 +205,19 @@ export const DownloadPin = (title,id) => async (dispatch) => {
         dispatch(DownloadinFailure(error))
     }
 };
+
+
+export const SearchPin=(searchTerm)=>async(dispatch)=>{
+    try {
+        dispatch(searchRequest());
+        const response = await fetch(`${Url}/item/search?query=${(searchTerm)}`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch");
+        }
+        const data = await response.json();
+        dispatch(searchSuccess(data));
+        
+    } catch (err) {
+        dispatch(searchFail(err))
+    }
+}

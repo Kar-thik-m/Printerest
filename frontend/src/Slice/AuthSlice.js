@@ -9,7 +9,8 @@ const authSlice = createSlice({
         error: null,
         following: null,
         followfllowing: null,
-        uservariant: null 
+        uservariant: null ,
+        
     },
     reducers: {
         loginRequest(state) {
@@ -116,6 +117,7 @@ const authSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+       
     }
 });
 

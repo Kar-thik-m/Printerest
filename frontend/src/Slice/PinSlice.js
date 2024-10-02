@@ -98,13 +98,25 @@ const pinSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    searchRequest(state) {
+      state.loading = true;
+      state.error = null;
+  },
+  searchSuccess(state, action) {
+      state.loading = false;
+      state.searchResults = action.payload; 
+  },
+  searchFail(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+  },
   },
 });
 
 export const { pinRequest, pinSuccess, pinFailure, CreatepinRequest, CreatepinSuccess, CreatepinFailure,
   pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess, RequestComment, SuccessComment, FailureComment,
   deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, deletePinFailure, deletePinRequest, deletePinSuccess,
-  DownloadPinRequest,DownloadPinSuccess,DownloadinFailure
+  DownloadPinRequest,DownloadPinSuccess,DownloadinFailure,searchFail,searchRequest,searchSuccess
 } = pinSlice.actions;
 
 export default pinSlice.reducer;

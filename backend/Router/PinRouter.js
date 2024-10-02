@@ -93,6 +93,29 @@ router.delete('/deletecomment', authenticateToken, async (req, res) => {
     }
 });
 
+
+router.get('/search', authenticateToken, async (req, res) => {
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(400).json({ message: 'Search query is required' });
+    }
+
+    try {
+
+        const pins = await Pinmodel.find({
+            title: { $regex: query, $options: 'i' }
+
+
+        }).populate('user', 'username email userimage');
+
+        res.status(200).json(pins);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         const pin = await Pinmodel.findById(req.params.id).populate('user');
@@ -166,5 +189,11 @@ router.get('/download/:id', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+
+
+
+
+
 
 export default router;

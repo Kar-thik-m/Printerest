@@ -1,7 +1,8 @@
 import {
     pinRequest, pinFailure, pinSuccess, CreatepinRequest, CreatepinFailure, CreatepinSuccess,
     pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess, RequestComment, SuccessComment, FailureComment,
-    deleteCommentFailure,deleteCommentRequest,deleteCommentSuccess,deletePinFailure,deletePinRequest,deletePinSuccess
+    deleteCommentFailure,deleteCommentRequest,deleteCommentSuccess,deletePinFailure,deletePinRequest,deletePinSuccess,
+    DownloadPinRequest,DownloadPinSuccess,DownloadinFailure
 } from "../Slice/PinSlice";
 
 import { Url } from "../../Config";
@@ -163,3 +164,41 @@ export const Deletepin=(id)=>async(dispatch)=>{
         dispatch(deletePinFailure(error));
     }
 }
+
+export const DownloadPin = (title, id) => async (dispatch) => {
+    try {
+        dispatch(DownloadPinRequest());
+        
+        // Retrieve user token
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = user?.token;
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
+        const response = await fetch(`${Url}/download/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to download image');
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${title}.jpg`); // Use the title or any desired naming convention
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link); // Clean up
+        dispatch(DownloadPinSuccess());
+    } catch (error) {
+        console.error('Error downloading the pin image:', error);
+        dispatch(DownloadinFailure(error.toString())); // Ensure error is passed as a string
+        alert('Failed to download the image');
+    }
+};

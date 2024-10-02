@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
- 
+
   loading: null,
   error: null,
-  item:null,
-  pindetails:null,
-  Comments:null
+  item: null,
+  pindetails: null,
+  Comments: null
 };
 
 const pinSlice = createSlice({
@@ -35,7 +35,7 @@ const pinSlice = createSlice({
     },
     CreatepinSuccess(state, action) {
       state.loading = false;
-      state.item=action.payload
+      state.item = action.payload
     },
     pinDetailsRequest(state) {
       state.loading = true;
@@ -49,17 +49,17 @@ const pinSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    RequestComment(state){
+    RequestComment(state) {
       state.loading = true;
       state.error = null;
     },
-    SuccessComment(state,action){
+    SuccessComment(state, action) {
       state.loading = false;
       state.Comments = action.payload;
     },
-  FailureComment(state,action){
-    state.loading = false;
-    state.error = action.payload;
+    FailureComment(state, action) {
+      state.loading = false;
+      state.error = action.payload;
     },
     deleteCommentRequest(state) {
       state.loading = true;
@@ -67,8 +67,8 @@ const pinSlice = createSlice({
     },
     deleteCommentSuccess(state, action) {
       state.loading = false;
-     
-      state.Comments= Comments.filter(item => item.id !== action.payload.id ); 
+
+      state.Comments = Comments.filter(item => item.id !== action.payload.id);
     },
     deleteCommentFailure(state, action) {
       state.loading = false;
@@ -80,9 +80,21 @@ const pinSlice = createSlice({
     },
     deletePinSuccess(state, action) {
       state.loading = false;
-     
+
     },
     deletePinFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    DownloadPinRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    DownloadPinSuccess(state, action) {
+      state.loading = false;
+
+    },
+    DownloadinFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
@@ -90,8 +102,9 @@ const pinSlice = createSlice({
 });
 
 export const { pinRequest, pinSuccess, pinFailure, CreatepinRequest, CreatepinSuccess, CreatepinFailure,
-  pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess,RequestComment,SuccessComment,FailureComment,
-  deleteCommentFailure,deleteCommentRequest,deleteCommentSuccess,deletePinFailure,deletePinRequest,deletePinSuccess
+  pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess, RequestComment, SuccessComment, FailureComment,
+  deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, deletePinFailure, deletePinRequest, deletePinSuccess,
+  DownloadPinRequest,DownloadPinSuccess,DownloadinFailure
 } = pinSlice.actions;
 
 export default pinSlice.reducer;

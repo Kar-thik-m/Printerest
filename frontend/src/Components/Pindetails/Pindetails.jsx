@@ -152,7 +152,13 @@ const Pindetail = () => {
         }
     };
 
-   
+    const handleDownload = () => {
+        dispatch(DownloadPin(pindetails.title, pindetails._id));
+    };
+    
+ 
+    
+    
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -176,7 +182,7 @@ const Pindetail = () => {
                                 {loadingState.delete && <CircularProgress size={24} />}
                             </i>
                         )}
-                        <i className="fa fa-download" aria-hidden="true"></i>
+                        <i className="fa fa-download" aria-hidden="true" onClick={handleDownload}>download</i>
                         {loaduser && loaduser._id !== pindetails.user._id && (
                             <div className={PDstyle.save} onClick={handleSave}>
                                 <b>

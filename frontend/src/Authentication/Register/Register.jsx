@@ -4,17 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../Action/Users';
 import RStyle from "../Register/Register.module.css";
 import Logo from "../../assets/logo.jpeg";
-
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 const Register = () => {
     const navigate = useNavigate();
     const { loading } = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
-        image: null, 
+        image: null,
     });
 
     const handleChange = (e) => {
@@ -22,25 +23,25 @@ const Register = () => {
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
-            image: name === 'image' ? files[0] : prevData.image, 
+            image: name === 'image' ? files[0] : prevData.image,
         }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const data = new FormData();
         data.append('username', formData.username);
         data.append('email', formData.email);
         data.append('password', formData.password);
-        data.append('file', formData.image); 
+        data.append('file', formData.image);
 
-        dispatch(register(data)); 
+        dispatch(register(data));
     };
 
     useEffect(() => {
         if (loading === true) {
-            navigate("/login"); 
+            navigate("/login");
         }
     }, [loading, navigate]);
 
@@ -100,7 +101,14 @@ const Register = () => {
                         />
                     </div>
                     <button type="submit" className={RStyle.button}>
-                        Submit
+                        {loading ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <CircularProgress size={24} color="inherit" sx={{ marginRight: '10px' }} />
+                                Loading...
+                            </Box>
+                        ) : (
+                            'Submit'
+                        )}
                     </button>
                     <div className={RStyle.check}>
                         <h4>Already have an account? Click- <Link to="/login" className={RStyle.Login}>Login</Link></h4>

@@ -4,11 +4,13 @@ import { LoginApi } from '../../Action/Users';
 import Lstyle from "../Login/Login.module.css";
 import Logo from "../../assets/logo.jpeg";
 import { Link, useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isAuthenticated } = useSelector((state) => state.user);
+    const { isAuthenticated,loading } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -69,8 +71,15 @@ const Login = () => {
                 <div className={Lstyle.forget}>
                     <b>Forget password</b>
                 </div>
-                <button type="submit" className={Lstyle.button}>
-                    Submit
+                <button type="submit" className={Lstyle.button} disabled={loading}>
+                    {loading ? (
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <CircularProgress size={24} color="inherit" sx={{ marginRight: '10px' }} />
+                            Loading...
+                        </Box>
+                    ) : (
+                        'Submit'
+                    )}
                 </button>
                 <div className={Lstyle.check}>
                     <h4>You don't have an account? Click- <Link to="/register" className={Lstyle.register}>Register</Link></h4>

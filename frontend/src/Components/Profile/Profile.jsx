@@ -4,11 +4,13 @@ import { Link, useParams } from "react-router-dom";
 import SavePin from "../SavePin/SavePin";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileunique, Follow, UnFollow } from "../../Action/Users";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Profile = () => {
     const [isCreating, setIsCreating] = useState(false);
     const { id } = useParams();
-    const { loaduser, uservariant } = useSelector((state) => state.user);
+    const { loaduser, uservariant, loading } = useSelector((state) => state.user);
     const [modalType, setModalType] = useState(null);
     const [isFollowing, setIsFollowing] = useState(false);
     
@@ -37,6 +39,15 @@ const Profile = () => {
             alert(error.message);
         }
     };
+
+  
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <>

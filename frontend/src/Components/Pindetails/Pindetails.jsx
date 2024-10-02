@@ -10,11 +10,20 @@ import {
 import { PostSave } from "../../Action/savepin.jsx";
 import PDstyle from "../Pindetails/Pin.module.css";
 import { Follow, UnFollow } from "../../Action/Users.jsx";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Pindetail = () => {
     const [isSaved, setIsSaved] = useState(false);
     const [comment, setComment] = useState("");
     const [isFollowing, setIsFollowing] = useState(false);
+    const [loadingState, setLoadingState] = useState({
+        save: false,
+        follow: false,
+        unfollow: false,
+        comment: false,
+        delete: false,
+    });
 
     const { loaduser } = useSelector((state) => state.user);
     const { pindetails, loading, error } = useSelector((state) => state.pins);
@@ -30,8 +39,8 @@ const Pindetail = () => {
 
     useEffect(() => {
         if (Array.isArray(saveitems)) {
-            const isPinSaved = saveitems.map(item =>
-                Array.isArray(item.items) && item.items.map(savedpin => savedpin._id === id)
+            const isPinSaved = saveitems.some(item =>
+                Array.isArray(item.items) && item.items.some(savedpin => savedpin._id === id)
             );
             setIsSaved(isPinSaved);
         }
@@ -57,36 +66,45 @@ const Pindetail = () => {
 
     const handleSave = async () => {
         if (!isSaved) {
-            setIsSaved(true);
+            setLoadingState(prev => ({ ...prev, save: true }));
             try {
-                await dispatch(PostSave(pindetails._id,));
+                await dispatch(PostSave(pindetails._id));
+                setIsSaved(true);
             } catch (error) {
                 setIsSaved(false);
                 alert(error);
+            } finally {
+                setLoadingState(prev => ({ ...prev, save: false }));
             }
         }
     };
 
     const handleFollow = async () => {
         if (loaduser && pindetails?.user) {
-            setIsFollowing(true);
+            setLoadingState(prev => ({ ...prev, follow: true }));
             try {
                 await dispatch(Follow(pindetails.user._id));
+                setIsFollowing(true);
             } catch (error) {
                 setIsFollowing(false);
                 alert(error);
+            } finally {
+                setLoadingState(prev => ({ ...prev, follow: false }));
             }
         }
     };
 
     const handleUnfollow = async () => {
         if (loaduser && pindetails?.user) {
-            setIsFollowing(false);
+            setLoadingState(prev => ({ ...prev, unfollow: true }));
             try {
                 await dispatch(UnFollow(pindetails.user._id));
+                setIsFollowing(false);
             } catch (error) {
                 setIsFollowing(true);
                 alert(error);
+            } finally {
+                setLoadingState(prev => ({ ...prev, unfollow: false }));
             }
         }
     };
@@ -98,36 +116,43 @@ const Pindetail = () => {
     const handleCommentSubmit = async () => {
         if (comment.trim() === "") return;
 
+        setLoadingState(prev => ({ ...prev, comment: true }));
         try {
             await dispatch(postcomments(id, comment));
             await dispatch(Getpindetails(id));
             setComment("");
         } catch (error) {
             alert(error);
+        } finally {
+            setLoadingState(prev => ({ ...prev, comment: false }));
         }
     };
 
     const deleteComment = async (commentId) => {
+        setLoadingState(prev => ({ ...prev, comment: true }));
         try {
             await dispatch(DeletComment(id, commentId));
             await dispatch(Getpindetails(id));
         } catch (error) {
             alert(error);
+        } finally {
+            setLoadingState(prev => ({ ...prev, comment: false }));
         }
     };
 
     const deletePin = async () => {
+        setLoadingState(prev => ({ ...prev, delete: true }));
         try {
             await dispatch(Deletepin(id));
             await navigate('/');
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoadingState(prev => ({ ...prev, delete: false }));
         }
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+   
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -147,26 +172,32 @@ const Pindetail = () => {
                     <div className={PDstyle.head}>
                         <i className='fa-heart-o' aria-hidden="true"></i>
                         {loaduser && loaduser._id === pindetails.user._id && (
-                            <i className="fa fa-trash" aria-hidden="true" onClick={deletePin}></i>
+                            <i className="fa fa-trash" aria-hidden="true" onClick={deletePin}>
+                                {loadingState.delete && <CircularProgress size={24} />}
+                            </i>
                         )}
                         <i className="fa fa-download" aria-hidden="true"></i>
                         {loaduser && loaduser._id !== pindetails.user._id && (
                             <div className={PDstyle.save} onClick={handleSave}>
                                 <b>
-                                    {isSaved ? (
-                                        <Link style={{ textDecoration: "none", color: "white" }} to="/profile">Saved</Link>
-                                    ) : (
-                                        "Save"
-                                    )}
+                                    {loadingState.save ? <CircularProgress size={24} /> : (isSaved ? <Link style={{ textDecoration: "none", color: "white" }} to="/profile">Saved</Link> : "Save")}
                                 </b>
                             </div>
                         )}
                     </div>
                     <div className={PDstyle.username}>
                         <div>{pindetails.user.username}</div>
-                        {loaduser && loaduser._id !== pindetails.user._id && (<div onClick={isFollowing ? handleUnfollow : handleFollow}>
-                            {isFollowing ? <div className={PDstyle.unfollow}  >Unfollow</div> : <div className={PDstyle.follow}>Follow</div>}
-                        </div>)}
+                        {loaduser && loaduser._id !== pindetails.user._id && (
+                            <div onClick={isFollowing ? handleUnfollow : handleFollow}>
+                                {loadingState.follow || loadingState.unfollow ? (
+                                    <CircularProgress size={24} />
+                                ) : (
+                                    <div className={isFollowing ? PDstyle.unfollow : PDstyle.follow}>
+                                        {isFollowing ? "Unfollow" : "Follow"}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                     <div className={PDstyle.title}>
                         <div>{pindetails.title}</div>
@@ -186,11 +217,14 @@ const Pindetail = () => {
                                             <div>
                                                 {loaduser && loaduser._id === c.userId && (
                                                     <i
+                                                    
                                                         style={{ cursor: "pointer", color: "red" }}
                                                         className="fa fa-ban"
                                                         aria-hidden="true"
                                                         onClick={() => deleteComment(c._id)}
-                                                    ></i>
+                                                    >
+                                                       {loadingState.comment && <CircularProgress size={24} />} 
+                                                    </i>
                                                 )}
                                                 <b style={{ marginLeft: "1rem" }}>{formatTimeAgo(c.createdAt)}</b>
                                             </div>
@@ -211,7 +245,9 @@ const Pindetail = () => {
                                 onChange={handleCommentChange}
                                 value={comment}
                             />
-                            <button className={PDstyle.commentButton} onClick={handleCommentSubmit}>Submit</button>
+                            <button className={PDstyle.commentButton} onClick={handleCommentSubmit}>
+                                {loadingState.comment ? <CircularProgress size={24} /> : "Submit"}
+                            </button>
                         </div>
                     </div>
                 </div>

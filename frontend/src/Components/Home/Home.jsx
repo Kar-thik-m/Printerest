@@ -4,6 +4,7 @@ import { GetPinsAll } from '../../Action/Pins';
 import Hstyle from "../Home/Home.module.css";
 import { Link } from 'react-router-dom';
 import { Loaduser } from '../../Action/Users';
+import Loading from '../Layouts/Loader/Loading';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const Home = () => {
 
     return (
         <div className={Hstyle.container}>
-            {loading && <p className={Hstyle.loading}>Loading...</p>}
+            {loading && <Loading />}
             {error && <p className={Hstyle.error}>Error: {error}</p>}
             {item && item.length > 0 ? (
                 item.map(pin => (

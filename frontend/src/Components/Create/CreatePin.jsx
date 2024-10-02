@@ -1,17 +1,18 @@
-import React, { useRef } from 'react'; 
+import React, { useRef, useState } from 'react'; 
 import { useDispatch } from 'react-redux';
-import { createPin } from '../../Action/Pins'; // Ensure this path is correct
+import { createPin } from '../../Action/Pins'; 
 import Cstyle from '../Create/Create.module.css';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const CreatePin = () => {
     const titleRef = useRef(null);
     const imageRef = useRef(null);
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        
         const title = titleRef.current.value;
         const file = imageRef.current.files[0];
 
@@ -24,18 +25,17 @@ const CreatePin = () => {
         formData.append('title', title);
         formData.append('file', file);
 
-        try {
-            
-            await dispatch(createPin(formData));
+        setLoading(true); 
 
+        try {
+            await dispatch(createPin(formData));
             titleRef.current.value = '';
             imageRef.current.value = '';
-
-        
         } catch (error) {
-           
             console.error('Error creating pin:', error);
             alert('Failed to create pin. Please try again.');
+        } finally {
+            setLoading(false); 
         }
     };
 
@@ -62,7 +62,9 @@ const CreatePin = () => {
                         required
                     />
                 </div>
-                <button type="submit" className={Cstyle.button}>Create Pin</button>
+                <button type="submit" className={Cstyle.button} disabled={loading}>
+                    {loading ? <CircularProgress size={24} /> : "Create Pin"}
+                </button>
             </form>
         </div>
     );

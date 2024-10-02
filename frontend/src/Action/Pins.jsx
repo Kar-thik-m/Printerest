@@ -165,40 +165,43 @@ export const Deletepin=(id)=>async(dispatch)=>{
     }
 }
 
-export const DownloadPin = (title, id) => async (dispatch) => {
+export const DownloadPin = (title,id) => async (dispatch) => {
     try {
+    
         dispatch(DownloadPinRequest());
-        
-        // Retrieve user token
+     
         const user = JSON.parse(localStorage.getItem('user'));
         const token = user?.token;
         if (!token) {
             throw new Error('No authentication token found');
         }
 
-        const response = await fetch(`${Url}/download/${id}`, {
+        const response = await fetch(`${Url}/item/download/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
         });
 
+       
+        console.log('Response Status:', response.status);
+        
         if (!response.ok) {
-            throw new Error('Failed to download image');
+            const errorText = await response.text(); 
+            throw new Error(`Failed to download image: ${response.status} ${errorText}`);
         }
 
-        const blob = await response.blob();
+        const arrayBuffer = await response.arrayBuffer(); 
+        const blob = new Blob([arrayBuffer]); 
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `${title}.jpg`); // Use the title or any desired naming convention
+        link.setAttribute('download', `${title}.jpg`); 
         document.body.appendChild(link);
         link.click();
-        link.parentNode.removeChild(link); // Clean up
+        link.parentNode.removeChild(link);
         dispatch(DownloadPinSuccess());
     } catch (error) {
-        console.error('Error downloading the pin image:', error);
-        dispatch(DownloadinFailure(error.toString())); // Ensure error is passed as a string
-        alert('Failed to download the image');
+        dispatch(DownloadinFailure(error))
     }
 };

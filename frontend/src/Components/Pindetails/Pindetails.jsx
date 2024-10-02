@@ -5,7 +5,8 @@ import {
     Getpindetails,
     postcomments,
     DeletComment,
-    Deletepin
+    Deletepin,
+    DownloadPin
 } from "../../Action/Pins.jsx";
 import { PostSave } from "../../Action/savepin.jsx";
 import PDstyle from "../Pindetails/Pin.module.css";
@@ -23,6 +24,7 @@ const Pindetail = () => {
         unfollow: false,
         comment: false,
         delete: false,
+        download: false,
     });
 
     const { loaduser } = useSelector((state) => state.user);
@@ -152,13 +154,20 @@ const Pindetail = () => {
         }
     };
 
-    const handleDownload = () => {
-        dispatch(DownloadPin(pindetails.title, pindetails._id));
+    const handleDownload = async () => {
+        setLoadingState(prev => ({ ...prev, download: true })); 
+        try {
+            await dispatch(DownloadPin(pindetails.title, id)); 
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingState(prev => ({ ...prev, download: false })); 
+        }
     };
-    
- 
-    
-    
+
+
+
+
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -182,7 +191,7 @@ const Pindetail = () => {
                                 {loadingState.delete && <CircularProgress size={24} />}
                             </i>
                         )}
-                        <i className="fa fa-download" aria-hidden="true" onClick={handleDownload}>download</i>
+                        {loadingState.download ? <CircularProgress size={24} /> : <i className="fa fa-download" aria-hidden="true" onClick={handleDownload}></i>}
                         {loaduser && loaduser._id !== pindetails.user._id && (
                             <div className={PDstyle.save} onClick={handleSave}>
                                 <b>
@@ -223,13 +232,13 @@ const Pindetail = () => {
                                             <div>
                                                 {loaduser && loaduser._id === c.userId && (
                                                     <i
-                                                    
+
                                                         style={{ cursor: "pointer", color: "red" }}
                                                         className="fa fa-ban"
                                                         aria-hidden="true"
                                                         onClick={() => deleteComment(c._id)}
                                                     >
-                                                       {loadingState.comment && <CircularProgress size={24} />} 
+                                                        {loadingState.comment && <CircularProgress size={24} />}
                                                     </i>
                                                 )}
                                                 <b style={{ marginLeft: "1rem" }}>{formatTimeAgo(c.createdAt)}</b>

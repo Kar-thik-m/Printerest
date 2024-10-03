@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import ProtectRoute from "./Components/PrivateRoute/ProtectRoute.jsx";
 import Profile from "./Components/Profile/Profile.jsx";
 import Updateprofile from "./Components/Profile/Update/UpdateProfile.jsx";
+import SearchPin from "./Components/SearchPins/SearchPin.jsx";
 import { useDispatch } from "react-redux";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile/:id" element=<ProtectRoute element={<Profile />} /> />
           <Route path="/updateprofile/:id" element=<ProtectRoute element={<Updateprofile />} /> />
+          <Route path='/search/:keyword' element=<ProtectRoute element={<SearchPin />} /> />
           <Route path="*" element={<div>Not Found</div>} />
         </Routes>
 

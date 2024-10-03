@@ -1,8 +1,8 @@
 import {
     pinRequest, pinFailure, pinSuccess, CreatepinRequest, CreatepinFailure, CreatepinSuccess,
     pinDetailsFailure, pinDetailsRequest, pinDetailsSuccess, RequestComment, SuccessComment, FailureComment,
-    deleteCommentFailure,deleteCommentRequest,deleteCommentSuccess,deletePinFailure,deletePinRequest,deletePinSuccess,
-    DownloadPinRequest,DownloadPinSuccess,DownloadinFailure,searchFail,searchRequest,searchSuccess
+    deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, deletePinFailure, deletePinRequest, deletePinSuccess,
+    DownloadPinRequest, DownloadPinSuccess, DownloadinFailure, searchFail, searchRequest, searchSuccess
 } from "../Slice/PinSlice";
 
 import { Url } from "../../Config";
@@ -26,7 +26,7 @@ export const GetPinsAll = () => async (dispatch) => {
 
 export const Getpindetails = (id) => async (dispatch) => {
     try {
-        
+
         dispatch(pinDetailsRequest());
         const response = await fetch(`${Url}/item/${id}`);
         if (!response.ok) {
@@ -92,7 +92,7 @@ export const postcomments = (id, content) => async (dispatch) => {
         if (!response.ok) {
             const error = await response.text();
             dispatch(FailureComment(error));
-            return; 
+            return;
         }
         await response.json();
         dispatch(SuccessComment(content));
@@ -103,17 +103,17 @@ export const postcomments = (id, content) => async (dispatch) => {
 };
 
 
-export const DeletComment = (pinId, commentId ) => async (dispatch) => {
+export const DeletComment = (pinId, commentId) => async (dispatch) => {
     try {
         dispatch(deleteCommentRequest());
-        
+
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user || !user.token) {
             throw new Error('User not authenticated');
         }
         const token = user.token;
         const response = await fetch(`${Url}/item/deletecomment`, {
-            method: 'DELETE', 
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -127,16 +127,16 @@ export const DeletComment = (pinId, commentId ) => async (dispatch) => {
             return;
         }
 
-        
+
         dispatch(deleteCommentSuccess(commentId));
     } catch (error) {
         dispatch(deleteCommentFailure(error));
     }
 }
 
-export const Deletepin=(id)=>async(dispatch)=>{
+export const Deletepin = (id) => async (dispatch) => {
     try {
-        
+
         dispatch(deletePinRequest());
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user || !user.token) {
@@ -144,12 +144,12 @@ export const Deletepin=(id)=>async(dispatch)=>{
         }
         const token = user.token;
         const response = await fetch(`${Url}/item/${id}`, {
-            method: 'DELETE', 
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({id})
+            body: JSON.stringify({ id })
         });
 
         if (!response.ok) {
@@ -158,18 +158,18 @@ export const Deletepin=(id)=>async(dispatch)=>{
             return;
         }
 
-        
+
         dispatch(deletePinSuccess(id));
     } catch (error) {
         dispatch(deletePinFailure(error));
     }
 }
 
-export const DownloadPin = (title,id) => async (dispatch) => {
+export const DownloadPin = (title, id) => async (dispatch) => {
     try {
-    
+
         dispatch(DownloadPinRequest());
-     
+
         const user = JSON.parse(localStorage.getItem('user'));
         const token = user?.token;
         if (!token) {
@@ -183,20 +183,20 @@ export const DownloadPin = (title,id) => async (dispatch) => {
             },
         });
 
-       
+
         console.log('Response Status:', response.status);
-        
+
         if (!response.ok) {
-            const errorText = await response.text(); 
+            const errorText = await response.text();
             throw new Error(`Failed to download image: ${response.status} ${errorText}`);
         }
 
-        const arrayBuffer = await response.arrayBuffer(); 
-        const blob = new Blob([arrayBuffer]); 
+        const arrayBuffer = await response.arrayBuffer();
+        const blob = new Blob([arrayBuffer]);
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `${title}.jpg`); 
+        link.setAttribute('download', `${title}.jpg`);
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -207,16 +207,26 @@ export const DownloadPin = (title,id) => async (dispatch) => {
 };
 
 
-export const SearchPin=(searchTerm)=>async(dispatch)=>{
+export const SearchPin = (searchTerm) => async (dispatch) => {
     try {
         dispatch(searchRequest());
-        const response = await fetch(`${Url}/item/search?query=${(searchTerm)}`);
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.token) {
+            throw new Error('User not authenticated');
+        }
+        const token = user.token;
+        const response = await fetch(`${Url}/item/search?query=${(searchTerm)}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
         if (!response.ok) {
             throw new Error("Failed to fetch");
         }
         const data = await response.json();
         dispatch(searchSuccess(data));
-        
+
     } catch (err) {
         dispatch(searchFail(err))
     }

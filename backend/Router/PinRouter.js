@@ -29,7 +29,7 @@ router.post('/pins', uploadFile, authenticateToken, async (req, res) => {
         });
         await pin.save();
 
-        res.status(201).json(pin);
+        res.status(201).json({ message: 'Pin created successfully', pin });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -41,7 +41,7 @@ router.post('/pins', uploadFile, authenticateToken, async (req, res) => {
 router.get('/getallpins', async (req, res) => {
     try {
         const pins = await Pinmodel.find().populate('user', 'username email userimage').select('-user');
-        res.status(200).json(pins);
+        res.status(200).json({ message: 'Pins fetched successfully', pins });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
@@ -109,7 +109,7 @@ router.get('/search', authenticateToken, async (req, res) => {
 
         }).populate('user', 'username email userimage');
 
-        res.status(200).json(pins);
+        res.status(200).json({ message: 'Pins fetched successfully', pins });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -124,7 +124,7 @@ router.get('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Pin not found' });
         }
 
-        res.status(200).json(pin);
+        res.status(200).json({ message: 'Pin fetched successfully', pin });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });

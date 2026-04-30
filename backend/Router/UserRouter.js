@@ -81,7 +81,7 @@ userRouter.get('/profile', authenticateToken, async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.status(200).json(finduser);
+        res.status(200).json({ message: 'Profile fetched successfully', user: finduser });
     } catch (error) {
 
         res.status(500).json({ message: 'Internal server error' });
@@ -165,7 +165,7 @@ userRouter.get('/profilefollows', authenticateToken, async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.status(200).json(userfollws);
+        res.status(200).json({ message: 'Profile follows fetched successfully', follows: userfollws });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -183,7 +183,7 @@ userRouter.get('/profile/:id', authenticateToken, async (req, res) => {
         if (!isprofile) {
             return res.status(404).json({ message: 'Profile not found' });
         }
-        res.status(200).json(isprofile);
+        res.status(200).json({ message: 'Profile fetched successfully', profile: isprofile });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });

@@ -16,7 +16,7 @@ SaveRouter.post('/save', async (req, res) => {
             items: items
         });
         await save.save();
-        res.status(201).json(save);
+        res.status(201).json({ message: 'Saved successfully', save });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -32,7 +32,7 @@ SaveRouter.get('/save/all', async (req, res) => {
                 .populate('user', 'username userimage')
                 .populate('items', 'title image _id');
 
-            return res.status(200).json(saves); 
+            return res.status(200).json({ message: 'Saves fetched successfully', saves }); 
         } else {
             return res.status(401).json({ message: 'User not authenticated' });
         }
@@ -60,7 +60,7 @@ SaveRouter.get('/save/:id', async (req, res) => {
             return res.status(404).json({ message: 'Save entry not found' });
         }
 
-        res.status(200).json(save);
+        res.status(200).json({ message: 'Save fetched successfully', save });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

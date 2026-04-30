@@ -4,12 +4,11 @@ import { LoginApi } from '../../Action/Users';
 import Logo from "../../assets/logo.jpeg";
 import { Link, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isAuthenticated,loading } = useSelector((state) => state.user);
+    const { isAuthenticated, loading } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -17,16 +16,12 @@ const Login = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         await dispatch(LoginApi(formData));
-
     };
 
     useEffect(() => {
@@ -36,54 +31,87 @@ const Login = () => {
     }, [isAuthenticated, navigate]);
 
     return (
-        <div className="w-full max-w-[400px] mx-auto my-[20px] p-[20px] rounded-[8px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] bg-white backdrop-blur-[10px]">
-            <div className="w-full text-center p-[10px]">
-                <img src={Logo} className="w-[50px] h-[50px]" alt="Logo" />
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl">
+                <div className="flex flex-col items-center">
+                    <img src={Logo} className="w-16 h-16 rounded-full object-cover mb-4" alt="Printerest Logo" />
+                    <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
+                        Welcome to Printerest
+                    </h2>
+                    <p className="mt-2 text-center text-sm text-gray-600">
+                        Find new ideas to try
+                    </p>
+                </div>
+
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                    <div className="space-y-4">
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 ml-1 mb-1">
+                                Email
+                            </label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                required
+                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm transition-colors"
+                                placeholder="Email address"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 ml-1 mb-1">
+                                Password
+                            </label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                required
+                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm transition-colors"
+                                placeholder="Password"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                        <div className="text-sm">
+                            <a href="#" className="font-semibold text-gray-900 hover:text-gray-700">
+                                Forgot your password?
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-full text-white bg-[#E60023] hover:bg-[#ad081b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {loading ? (
+                                <span className="flex items-center">
+                                    <CircularProgress size={20} color="inherit" className="mr-2" />
+                                    Logging in...
+                                </span>
+                            ) : (
+                                'Log in'
+                            )}
+                        </button>
+                    </div>
+                </form>
+
+                <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-600">
+                        Not on Printerest yet?{' '}
+                        <Link to="/register" className="font-bold text-gray-900 hover:underline">
+                            Sign up
+                        </Link>
+                    </p>
+                </div>
             </div>
-            <h2 className="text-center text-[#333] mb-[20px]">Welcome to Printerest</h2>
-            <h4 className="text-center text-[#333] mb-[20px]">Login</h4>
-            <form onSubmit={handleSubmit} className="flex flex-col">
-                <div className="mb-[15px]">
-                    <label htmlFor="email" className="text-[14px] text-[#555] mb-[5px] block font-bold">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="w-full p-[10px] border border-[#ccc] rounded-[4px] text-[14px] box-border"
-                    />
-                </div>
-                <div className="mb-[15px]">
-                    <label htmlFor="password" className="text-[14px] text-[#555] mb-[5px] block font-bold">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        className="w-full p-[10px] border border-[#ccc] rounded-[4px] text-[14px] box-border"
-                    />
-                </div>
-                <div className="p-[10px]">
-                    <b>Forget password</b>
-                </div>
-                <button type="submit" className="w-full p-[10px] border-none rounded-[4px] bg-[#007bff] text-white text-[16px] cursor-pointer transition-colors duration-300 hover:bg-[#0056b3] flex justify-center items-center" disabled={loading}>
-                    {loading ? (
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <CircularProgress size={24} color="inherit" sx={{ marginRight: '10px' }} />
-                            Loading...
-                        </Box>
-                    ) : (
-                        'Submit'
-                    )}
-                </button>
-                <div>
-                    <h4>You don't have an account? Click- <Link to="/register" className="no-underline text-[#5c8ce4] text-[16px] font-bold">Register</Link></h4>
-                </div>
-            </form>
         </div>
     );
 };

@@ -10,7 +10,7 @@ const Updateprofile = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const { loaduser } = useSelector(state => state.user);
-    
+
     const [username, setUsername] = useState('');
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -61,11 +61,11 @@ const Updateprofile = () => {
             {loading && <Loading />}
             <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
                 <form onSubmit={handleSubmit} className="bg-white rounded-[32px] shadow-xl w-full max-w-4xl p-10 flex flex-col md:flex-row gap-10">
-                    
+
                     {/* Left Side: Profile Image Uploader */}
                     <div className="w-full md:w-5/12 flex flex-col items-center justify-center">
                         <div className="w-full max-w-[300px] aspect-square relative bg-gray-100 rounded-full flex flex-col items-center justify-center border-2 border-dashed border-gray-300 hover:border-gray-400 hover:bg-gray-200 transition-all cursor-pointer overflow-hidden group shadow-sm">
-                            
+
                             {imagePreview ? (
                                 <>
                                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
@@ -85,12 +85,12 @@ const Updateprofile = () => {
                             )}
 
                             {/* Hidden file input */}
-                            <input 
-                                type="file" 
-                                id="file" 
-                                ref={imageRef} 
+                            <input
+                                type="file"
+                                id="file"
+                                ref={imageRef}
                                 onChange={handleFileChange}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 accept="image/*"
                             />
                         </div>
@@ -98,11 +98,11 @@ const Updateprofile = () => {
 
                     {/* Right Side: Details & Actions */}
                     <div className="w-full md:w-7/12 flex flex-col pt-2">
-                        
+
                         {/* Action Bar */}
                         <div className="flex justify-end mb-10">
-                            <button 
-                                type="submit" 
+                            <button
+                                type="submit"
                                 disabled={loading || !username.trim()}
                                 className={`px-6 py-3 rounded-full font-bold text-[16px] transition-colors flex items-center justify-center ${loading || !username.trim() ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#e60023] hover:bg-[#ad081b] text-white shadow-md'}`}
                             >
@@ -112,7 +112,7 @@ const Updateprofile = () => {
 
                         {/* Form Inputs */}
                         <div className="flex flex-col gap-6 pl-2">
-                            
+
                             <div className="flex flex-col gap-2 mb-4">
                                 <label htmlFor="username" className="text-sm font-semibold text-gray-600 uppercase tracking-wider ml-1">Username</label>
                                 <input
@@ -126,16 +126,7 @@ const Updateprofile = () => {
                                 />
                             </div>
 
-                            {/* Extra placeholder fields for Pinterest aesthetic */}
-                            <div className="w-full text-lg text-gray-400 border-b-2 border-gray-100 pb-2 mt-4 select-none cursor-text opacity-70">
-                                Tell your story
-                                <span className="text-sm ml-2 text-gray-300">(Coming soon)</span>
-                            </div>
-                            
-                            <div className="w-full text-lg text-gray-400 border-b-2 border-gray-100 pb-2 mt-6 select-none cursor-text opacity-70">
-                                Add your website link
-                                <span className="text-sm ml-2 text-gray-300">(Coming soon)</span>
-                            </div>
+
                         </div>
 
                     </div>

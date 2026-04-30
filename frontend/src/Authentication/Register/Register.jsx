@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../Action/Users';
 import Logo from "../../assets/logo.jpeg";
 import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
+
 const Register = () => {
     const navigate = useNavigate();
     const { loading } = useSelector((state) => state.user);
@@ -16,14 +16,18 @@ const Register = () => {
         password: '',
         image: null,
     });
+    
+    const [previewUrl, setPreviewUrl] = useState(null);
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-            image: name === 'image' ? files[0] : prevData.image,
-        }));
+        
+        if (name === 'image' && files && files[0]) {
+            setFormData((prev) => ({ ...prev, image: files[0] }));
+            setPreviewUrl(URL.createObjectURL(files[0]));
+        } else if (name !== 'image') {
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleSubmit = (e) => {
@@ -33,7 +37,7 @@ const Register = () => {
         data.append('username', formData.username);
         data.append('email', formData.email);
         data.append('password', formData.password);
-        data.append('file', formData.image);
+        if (formData.image) data.append('file', formData.image);
 
         dispatch(register(data));
     };
@@ -45,74 +49,120 @@ const Register = () => {
     }, [loading, navigate]);
 
     return (
-        <div>
-            <div className="w-full max-w-[400px] mx-auto my-[7vh] p-[20px] rounded-[8px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] bg-white">
-                <div className="w-full text-center p-[10px]">
-                    <img src={Logo} className="w-[50px] h-[50px]" alt="Logo" />
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl">
+                <div className="flex flex-col items-center">
+                    <img src={Logo} className="w-16 h-16 rounded-full object-cover mb-4" alt="Printerest Logo" />
+                    <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
+                        Join Printerest
+                    </h2>
+                    <p className="mt-2 text-center text-sm text-gray-600">
+                        Find your next great idea
+                    </p>
                 </div>
-                <h2 className="text-center text-[#333] mb-[20px]">Welcome to Printerest</h2>
-                <form onSubmit={handleSubmit} className="flex flex-col">
-                    <div className="mb-[15px]">
-                        <label htmlFor="username" className="text-[14px] text-[#555] mb-[5px] block">Username:</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            required
-                            className="w-full p-[10px] border border-[#ccc] rounded-[4px] text-[14px] box-border"
-                        />
+
+                <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+                    <div className="space-y-4">
+                        <div>
+                            <label htmlFor="username" className="block text-sm font-medium text-gray-700 ml-1 mb-1">
+                                Username
+                            </label>
+                            <input
+                                id="username"
+                                name="username"
+                                type="text"
+                                required
+                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm transition-colors"
+                                placeholder="Username"
+                                value={formData.username}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 ml-1 mb-1">
+                                Email
+                            </label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                required
+                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm transition-colors"
+                                placeholder="Email address"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 ml-1 mb-1">
+                                Password
+                            </label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                required
+                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm transition-colors"
+                                placeholder="Create a password"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="image" className="block text-sm font-medium text-gray-700 ml-1 mb-2">
+                                Profile Picture
+                            </label>
+                            <div className="flex items-center space-x-4">
+                                <div className="h-16 w-16 rounded-full overflow-hidden bg-gray-100 border border-gray-300 flex-shrink-0 flex justify-center items-center">
+                                    {previewUrl ? (
+                                        <img src={previewUrl} alt="Preview" className="h-full w-full object-cover" />
+                                    ) : (
+                                        <svg className="h-8 w-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    )}
+                                </div>
+                                <label className="cursor-pointer bg-gray-100 py-2 px-4 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500">
+                                    <span>Choose file</span>
+                                    <input
+                                        id="image"
+                                        name="image"
+                                        type="file"
+                                        accept="image/*"
+                                        className="sr-only"
+                                        onChange={handleChange}
+                                    />
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div className="mb-[15px]">
-                        <label htmlFor="email" className="text-[14px] text-[#555] mb-[5px] block">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            className="w-full p-[10px] border border-[#ccc] rounded-[4px] text-[14px] box-border"
-                        />
-                    </div>
-                    <div className="mb-[15px]">
-                        <label htmlFor="password" className="text-[14px] text-[#555] mb-[5px] block">Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                            className="w-full p-[10px] border border-[#ccc] rounded-[4px] text-[14px] box-border"
-                        />
-                    </div>
-                    <div className="mb-[15px]">
-                        <label htmlFor="image" className="text-[14px] text-[#555] mb-[5px] block">Profile Image:</label>
-                        <input
-                            type="file"
-                            id="image"
-                            name="image"
-                            accept="image/*"
-                            onChange={handleChange}
-                            className="w-full p-[10px] border border-[#ccc] rounded-[4px] text-[14px] box-border file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-[#333] hover:file:bg-gray-200"
-                        />
-                    </div>
-                    <button type="submit" className="w-full p-[10px] border-none rounded-[4px] bg-[#007bff] text-white text-[16px] cursor-pointer transition-colors duration-300 hover:bg-[#0056b3] flex justify-center items-center">
-                        {loading ? (
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <CircularProgress size={24} color="inherit" sx={{ marginRight: '10px' }} />
-                                Loading...
-                            </Box>
-                        ) : (
-                            'Submit'
-                        )}
-                    </button>
+
                     <div>
-                        <h4>Already have an account? Click- <Link to="/login" className="no-underline text-[#5c8ce4] text-[16px] font-bold">Login</Link></h4>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-full text-white bg-[#E60023] hover:bg-[#ad081b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+                        >
+                            {loading ? (
+                                <span className="flex items-center">
+                                    <CircularProgress size={20} color="inherit" className="mr-2" />
+                                    Signing up...
+                                </span>
+                            ) : (
+                                'Continue'
+                            )}
+                        </button>
                     </div>
                 </form>
+                
+                <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-600">
+                        Already a member?{' '}
+                        <Link to="/login" className="font-bold text-gray-900 hover:underline">
+                            Log in
+                        </Link>
+                    </p>
+                </div>
             </div>
         </div>
     );

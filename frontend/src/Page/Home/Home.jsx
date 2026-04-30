@@ -17,32 +17,69 @@ const Home = () => {
     }, [dispatch]);
 
     return (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] auto-rows-[300px] gap-4 p-4">
-
+        <div className="max-w-[2000px] mx-auto p-4 md:p-6 lg:p-8">
             {loading && <Loading />}
-            {error && <p className="text-center text-red-500 text-lg">Error: {error}</p>}
+            {error && <p className="text-center text-red-500 text-lg py-10 font-medium">Error: {error}</p>}
+
             {item && item.length > 0 ? (
-                item.map(pin => (
-                    <div key={pin._id} className="group relative rounded-lg overflow-hidden transition-transform duration-200 ease-in hover:scale-105 h-auto">
-                        <img src={pin.image.url} alt={pin.title} className="w-full h-[30vh] md:h-[40vh] object-cover" />
-                        <div className="absolute top-0 left-0 w-full h-[40vh] text-[#f0f8ff] bg-black/70 rounded-lg opacity-0 transition-opacity duration-300 ease-in group-hover:opacity-100 text-[14px] md:text-base">
-                            <div className="flex justify-between items-center p-2">
+                <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 md:gap-6">
+                    {item.map(pin => (
+                        <div key={pin._id} className="break-inside-avoid mb-4 md:mb-6 flex flex-col">
+                            {/* Image and Hover Overlay */}
+                            <div className="relative group rounded-2xl overflow-hidden cursor-pointer bg-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
 
-                                <Link to={`/profile/${pin.user._id}`}  >  <img src={pin.user.userimage.url} alt="User" className="m-2.5 mr-2 w-[36px] h-[36px] md:w-[42px] md:h-[42px] rounded-full object-cover p-[1px] bg-[#ff0000]" /></Link>
+                                <Link to={`/pin/${pin._id}`} className="w-full h-auto object-cover block rounded-2xl">
+                                    <img src={pin.image.url} alt={pin.title} className="w-full h-auto object-cover block rounded-2xl" loading="lazy" />
+                                </Link>
 
-                                <div className="m-4 cursor-pointer font-bold py-2 px-4 md:py-2.5 md:px-5 bg-[#eba6a6] text-white no-underline rounded-xl transition-all duration-300 ease-in hover:bg-[#dd2a45] hover:-translate-y-0.5 text-[14px] md:text-base">{pin.user.username}</div>
+                                <div className="absolute  inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out flex flex-col justify-between p-3 rounded-2xl pointer-events-none">
+                                    {/* Top: Save Button */}
+                                    {/* <div className="flex justify-end pointer-events-auto">
+                                        <Link className="bg-[#e60023] text-white font-bold py-3 px-5 rounded-full text-[15px] hover:bg-[#ad081b] transition-colors duration-200">
+                                            Save
+                                        </Link>
+                                    </div> */}
+
+                                    <div className="flex items-end justify-between pointer-events-auto">
+                                        <div className="flex items-center gap-2">
+                                            <Link to={`/profile/${pin.user._id}`}>
+                                                <img src={pin.user.userimage?.url || 'https://via.placeholder.com/150'} alt="User" className="w-8 h-8 rounded-full object-cover hover:opacity-80 transition-opacity" />
+                                            </Link>
+                                            <span className="text-white text-sm font-semibold truncate drop-shadow-md">{pin.user.username}</span>
+                                        </div>
+                                        {/* 
+                                        <div className="flex gap-2">
+                                            <button className="bg-white/80 backdrop-blur-md w-8 h-8 rounded-full flex items-center justify-center text-gray-900 hover:bg-white transition-colors duration-200">
+                                                <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                            </button>
+                                            <button className="bg-white/80 backdrop-blur-md w-8 h-8 rounded-full flex items-center justify-center text-gray-900 hover:bg-white transition-colors duration-200">
+                                                <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
+                                            </button>
+                                        </div> */}
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <Link to={`/pin/${pin._id}`} className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 py-2 px-4 md:py-2.5 md:px-5 bg-[#eba6a6] text-white no-underline rounded-xl transition-all duration-300 ease-in hover:bg-[#dd2a45] hover:-translate-x-1/2 hover:-translate-y-[52%] text-[14px] md:text-base">View</Link>
-                            </div>
+
+                            {/* <div className="flex items-center gap-2 mt-2 px-1">
+                                <Link to={`/profile/${pin.user._id}`}>
+                                    <img src={pin.user.userimage?.url || 'https://via.placeholder.com/150'} alt="User" className="w-7 h-7 rounded-full object-cover hover:opacity-80 transition-opacity shadow-sm" />
+                                </Link>
+                                <span className="text-gray-900 text-sm font-semibold truncate hover:underline cursor-pointer">{pin.user.username}</span>
+                            </div> */}
                         </div>
-                    </div>
-                ))
-
+                    ))}
+                </div>
             ) : (
-                !loading && <p className="text-center text-lg text-[#777]">No pins available</p>
+                !loading && (
+                    <div className="flex flex-col items-center justify-center py-20">
+                        <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                            <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <p className="text-center text-xl text-gray-600 font-medium">No pins available</p>
+                        <p className="text-center text-gray-500 mt-2">Try uploading some new pins to get started!</p>
+                    </div>
+                )
             )}
-
         </div>
     );
 }

@@ -54,7 +54,7 @@ router.post('/comments', authenticateToken, async (req, res) => {
     const pin = await Pinmodel.findById(id);
 
     if (!pin)
-        return res.status(400).json({
+        return res.status(404).json({
             message: "No Pin with this id",
         });
 
@@ -67,7 +67,7 @@ router.post('/comments', authenticateToken, async (req, res) => {
 
     await pin.save();
 
-    res.json({
+    res.status(201).json({
         message: "Comment Added",
         pin
     })
@@ -140,8 +140,8 @@ router.delete('/:id', authenticateToken, async (req, res) => {
         if (!pin) {
             return res.status(404).json({ message: 'Pin not found' });
         }
-        if (!userId) {
-            return res.status(403).json({ message: 'Unauthorized' });
+        if (pin.user.toString() !== userId.toString()) {
+            return res.status(403).json({ message: 'Forbidden: You do not own this pin' });
         }
         await cloudinary.v2.uploader.destroy(pin.image.id);
         await Pinmodel.deleteOne({ _id: id });

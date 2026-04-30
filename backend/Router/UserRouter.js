@@ -162,13 +162,13 @@ userRouter.get('/profilefollows', authenticateToken, async (req, res) => {
             .populate('following', 'username email userimage');
 
         if (!userfollws) {
-            throw new Error('User not found');
+            return res.status(404).json({ message: 'User not found' });
         }
 
         res.status(200).json(userfollws);
     } catch (error) {
         console.error(error);
-        throw error;
+        res.status(500).json({ message: 'Internal server error' });
     }
 })
 
@@ -176,12 +176,12 @@ userRouter.get('/profile/:id', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) {
-            return res.status(404).json({ message: 'id not found' });
+            return res.status(400).json({ message: 'Profile ID is required' });
         }
         const isprofile = await usermodel.findById(id).populate("followers", "username userimage.url")
             .populate('following', 'username userimage')
         if (!isprofile) {
-            return res.status(404).json({ message: 'isprofile not found' });
+            return res.status(404).json({ message: 'Profile not found' });
         }
         res.status(200).json(isprofile);
     } catch (error) {
@@ -218,10 +218,10 @@ userRouter.put('/updateprofile/:id', authenticateToken, uploadFile, async (req, 
         }
         const updatedUser = await existingUser.save();
 
-        res.json({ message: 'Profile updated successfully', user: updatedUser });
+        res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
     } catch (error) {
         console.error(error.message);
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 });
 

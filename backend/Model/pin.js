@@ -32,7 +32,10 @@ const pinSchema = new mongoose.Schema({
         },
         
     }],
-    
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
 });
 
 export const Pinmodel = mongoose.model('Pin', pinSchema);

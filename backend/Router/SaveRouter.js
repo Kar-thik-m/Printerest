@@ -34,7 +34,7 @@ SaveRouter.get('/save/all', async (req, res) => {
 
             return res.status(200).json(saves); 
         } else {
-            return res.status(400).json({ message: 'User not authenticated' });
+            return res.status(401).json({ message: 'User not authenticated' });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });

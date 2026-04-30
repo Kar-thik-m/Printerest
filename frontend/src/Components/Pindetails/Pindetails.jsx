@@ -41,10 +41,12 @@ const Pindetail = () => {
 
     useEffect(() => {
         if (Array.isArray(saveitems)) {
-            const isPinSaved = saveitems.some(item =>
-                Array.isArray(item.items) && item.items.some(savedpin => savedpin._id === id)
+            const isPinSaved = saveitems.map(item =>
+                Array.isArray(item.items) && item.items.map(savedpin => savedpin._id === id)
             );
             setIsSaved(isPinSaved);
+            console.log(isPinSaved);
+
         }
     }, [saveitems, id]);
 

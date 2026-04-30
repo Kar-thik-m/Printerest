@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProStyle from "../Profile/Profile.module.css";
 import { Link, useParams } from "react-router-dom";
-import SavePin from "../SavePin/SavePin";
+import SavePin from "../../Components/SavePin/SavePin";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileunique, Follow, UnFollow } from "../../Action/Users";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -13,7 +13,7 @@ const Profile = () => {
     const { loaduser, uservariant, loading } = useSelector((state) => state.user);
     const [modalType, setModalType] = useState(null);
     const [isFollowing, setIsFollowing] = useState(false);
-    
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -40,7 +40,7 @@ const Profile = () => {
         }
     };
 
-  
+
     if (loading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginApi } from '../../Action/Users';
-import Lstyle from "../Login/Login.module.css";
 import Logo from "../../assets/logo.jpeg";
 import { Link, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -37,15 +36,15 @@ const Login = () => {
     }, [isAuthenticated, navigate]);
 
     return (
-        <div className={Lstyle.card}>
-            <div className={Lstyle.logo}>
-                <img src={Logo} className={Lstyle.image} alt="Logo" />
+        <div className="w-full max-w-[400px] mx-auto my-[20px] p-[20px] rounded-[8px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] bg-white backdrop-blur-[10px]">
+            <div className="w-full text-center p-[10px]">
+                <img src={Logo} className="w-[50px] h-[50px]" alt="Logo" />
             </div>
-            <h2 className={Lstyle.title}>Welcome to Printerest</h2>
-            <h4 className={Lstyle.title}>Login</h4>
-            <form onSubmit={handleSubmit} className={Lstyle.form}>
-                <div className={Lstyle.inputGroup}>
-                    <label htmlFor="email" className={Lstyle.label}>Email:</label>
+            <h2 className="text-center text-[#333] mb-[20px]">Welcome to Printerest</h2>
+            <h4 className="text-center text-[#333] mb-[20px]">Login</h4>
+            <form onSubmit={handleSubmit} className="flex flex-col">
+                <div className="mb-[15px]">
+                    <label htmlFor="email" className="text-[14px] text-[#555] mb-[5px] block font-bold">Email:</label>
                     <input
                         type="email"
                         id="email"
@@ -53,11 +52,11 @@ const Login = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className={Lstyle.input}
+                        className="w-full p-[10px] border border-[#ccc] rounded-[4px] text-[14px] box-border"
                     />
                 </div>
-                <div className={Lstyle.inputGroup}>
-                    <label htmlFor="password" className={Lstyle.label}>Password:</label>
+                <div className="mb-[15px]">
+                    <label htmlFor="password" className="text-[14px] text-[#555] mb-[5px] block font-bold">Password:</label>
                     <input
                         type="password"
                         id="password"
@@ -65,13 +64,13 @@ const Login = () => {
                         value={formData.password}
                         onChange={handleChange}
                         required
-                        className={Lstyle.input}
+                        className="w-full p-[10px] border border-[#ccc] rounded-[4px] text-[14px] box-border"
                     />
                 </div>
-                <div className={Lstyle.forget}>
+                <div className="p-[10px]">
                     <b>Forget password</b>
                 </div>
-                <button type="submit" className={Lstyle.button} disabled={loading}>
+                <button type="submit" className="w-full p-[10px] border-none rounded-[4px] bg-[#007bff] text-white text-[16px] cursor-pointer transition-colors duration-300 hover:bg-[#0056b3] flex justify-center items-center" disabled={loading}>
                     {loading ? (
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <CircularProgress size={24} color="inherit" sx={{ marginRight: '10px' }} />
@@ -81,8 +80,8 @@ const Login = () => {
                         'Submit'
                     )}
                 </button>
-                <div className={Lstyle.check}>
-                    <h4>You don't have an account? Click- <Link to="/register" className={Lstyle.register}>Register</Link></h4>
+                <div>
+                    <h4>You don't have an account? Click- <Link to="/register" className="no-underline text-[#5c8ce4] text-[16px] font-bold">Register</Link></h4>
                 </div>
             </form>
         </div>

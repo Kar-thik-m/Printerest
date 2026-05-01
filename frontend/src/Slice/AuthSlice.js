@@ -9,8 +9,8 @@ const authSlice = createSlice({
         error: null,
         following: null,
         followfllowing: null,
-        uservariant: null ,
-        
+        uservariant: null,
+        message: null
     },
     reducers: {
         loginRequest(state) {
@@ -42,11 +42,13 @@ const authSlice = createSlice({
         },
         loadUserRequest(state) {
             state.loading = true;
+            state.message = null;
         },
         loadUserSuccess(state, action) {
             state.loading = false;
             state.isAuthenticated = true;
-            state.loaduser = action.payload; // Fixed to loaduser
+            state.loaduser = action.payload.user || action.payload;
+            state.message = action.payload.message || null;
         },
         loadUserFail(state, action) {
             state.loading = false;
@@ -62,11 +64,13 @@ const authSlice = createSlice({
         },
         followingRequest(state) {
             state.loading = true;
+            state.message = null;
         },
         followingSuccess(state, action) {
             state.loading = false;
             state.isAuthenticated = true;
-            state.following = action.payload;
+            state.following = action.payload.following || action.payload;
+            state.message = action.payload.message || null;
         },
         followingFail(state, action) {
             state.loading = false;
@@ -74,9 +78,12 @@ const authSlice = createSlice({
         },
         unfollowRequest(state) {
             state.loading = true;
+            state.message = null;
         },
         unfollowSuccess(state, action) {
             state.loading = false;
+            state.following = action.payload.following || action.payload;
+            state.message = action.payload.message || null;
         },
         unfollowFail(state, action) {
             state.loading = false;
@@ -84,10 +91,12 @@ const authSlice = createSlice({
         },
         getfollowsRequest(state) {
             state.loading = true;
+            state.message = null;
         },
         getfollowsSuccess(state, action) {
             state.loading = false;
-            state.followfllowing = action.payload;
+            state.followfllowing = action.payload.follows || action.payload;
+            state.message = action.payload.message || null;
         },
         getfollowsFail(state, action) {
             state.loading = false;
@@ -96,10 +105,12 @@ const authSlice = createSlice({
         updateProfileRequest(state) {
             state.loading = true;
             state.error = null;
+            state.message = null;
         },
         updateProfileSuccess(state, action) {
             state.loading = false;
-            state.uservariant = { ...state.uservariant, ...action.payload }; 
+            state.uservariant = { ...state.uservariant, ...(action.payload.user || action.payload) }; 
+            state.message = action.payload.message || null;
         },
         updateProfileFail(state, action) {
             state.loading = false;
@@ -108,10 +119,12 @@ const authSlice = createSlice({
         alluserRequest(state) {
             state.loading = true;
             state.error = null;
+            state.message = null;
         },
         alluserSuccess(state, action) {
             state.loading = false;
-            state.uservariant = action.payload; // Fixed spelling here
+            state.uservariant = action.payload.profile || action.payload;
+            state.message = action.payload.message || null;
         },
         alluserFail(state, action) {
             state.loading = false;

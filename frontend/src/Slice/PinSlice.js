@@ -6,7 +6,8 @@ const initialState = {
   error: null,
   item: null,
   pindetails: null,
-  Comments: null
+  Comments: null,
+  message: null
 };
 
 const pinSlice = createSlice({
@@ -16,10 +17,12 @@ const pinSlice = createSlice({
     pinRequest(state) {
       state.loading = true;
       state.error = null;
+      state.message = null;
     },
     pinSuccess(state, action) {
       state.loading = false;
-      state.item = action.payload;
+      state.item = action.payload.pins || action.payload;
+      state.message = action.payload.message || null;
     },
     pinFailure(state, action) {
       state.loading = false;
@@ -32,18 +35,22 @@ const pinSlice = createSlice({
     CreatepinRequest(state) {
       state.loading = true;
       state.error = null;
+      state.message = null;
     },
     CreatepinSuccess(state, action) {
       state.loading = false;
-      state.item = action.payload
+      state.item = action.payload.pin || action.payload;
+      state.message = action.payload.message || null;
     },
     pinDetailsRequest(state) {
       state.loading = true;
       state.error = null;
+      state.message = null;
     },
     pinDetailsSuccess(state, action) {
       state.loading = false;
-      state.pindetails = action.payload;
+      state.pindetails = action.payload.pin || action.payload;
+      state.message = action.payload.message || null;
     },
     pinDetailsFailure(state, action) {
       state.loading = false;
@@ -101,10 +108,12 @@ const pinSlice = createSlice({
     searchRequest(state) {
       state.loading = true;
       state.error = null;
+      state.message = null;
   },
   searchSuccess(state, action) {
       state.loading = false;
-      state.searchResults = action.payload; 
+      state.searchResults = action.payload.pins || action.payload;
+      state.message = action.payload.message || null;
   },
   searchFail(state, action) {
       state.loading = false;

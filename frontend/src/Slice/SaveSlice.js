@@ -8,7 +8,7 @@ const initialState = {
     saveitems: null,
     savedetails: null,
     error: null,
-
+    message: null
 };
 
 
@@ -19,12 +19,12 @@ const SaveSlice = createSlice({
         SaveRequest(state) {
             state.loading = true;
             state.error = null;
-           
+            state.message = null;
         },
         SaveSuccess(state, action) {
             state.loading = false;
-            state.saveitems = action.payload;
-          
+            state.saveitems = action.payload.save || action.payload;
+            state.message = action.payload.message || null;
         },
         SaveFailure(state, action) {
             state.loading = false;
@@ -34,10 +34,12 @@ const SaveSlice = createSlice({
         GetSaveRequest(state) {
             state.loading = true;
             state.error = null;
+            state.message = null;
         },
         GetSaveSuccess(state, action) {
             state.loading = false;
-            state.saveitems = action.payload;
+            state.saveitems = action.payload.saves || action.payload.save || action.payload;
+            state.message = action.payload.message || null;
         },
         GetSaveFailure(state, action) {
             state.loading = false;
@@ -46,10 +48,12 @@ const SaveSlice = createSlice({
         SaveDetailsRequest(state) {
             state.loading = true;
             state.error = null;
+            state.message = null;
         },
         SaveDetailsSuccess(state, action) {
             state.loading = false;
-            state.savedetails = action.payload;
+            state.savedetails = action.payload.save || action.payload;
+            state.message = action.payload.message || null;
         },
         SaveDetailsFailure(state, action) {
             state.loading = false;

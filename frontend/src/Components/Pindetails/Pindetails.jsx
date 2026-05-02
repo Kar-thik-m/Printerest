@@ -12,6 +12,8 @@ import { PostSave } from "../../Action/savepin.jsx";
 import { Follow, UnFollow } from "../../Action/Users.jsx";
 import CircularProgress from '@mui/material/CircularProgress';
 import Loading from '../../Components/Layouts/Loader/Loading';
+import Notification from "../../Components/Notifications/Notifications";
+import { setNotification, clearNotification } from "../../Slice/PinSlice";
 
 const Pindetail = () => {
     const [isSaved, setIsSaved] = useState(false);
@@ -27,7 +29,7 @@ const Pindetail = () => {
     });
 
     const { loaduser } = useSelector((state) => state.user);
-    const { pindetails, error, loading } = useSelector((state) => state.pins);
+    const { pindetails, error, loading, message, status, showNotification, timer } = useSelector((state) => state.pins);
     const { saveitems } = useSelector((state) => state.save);
 
     const navigate = useNavigate();
@@ -74,7 +76,10 @@ const Pindetail = () => {
                 setIsSaved(true);
             } catch (error) {
                 setIsSaved(false);
-                alert(error);
+                dispatch(setNotification({
+                    message: error.message || 'Failed to save pin',
+                    status: 'error'
+                }));
             } finally {
                 setLoadingState(prev => ({ ...prev, save: false }));
             }
@@ -89,7 +94,10 @@ const Pindetail = () => {
                 setIsFollowing(true);
             } catch (error) {
                 setIsFollowing(false);
-                alert(error);
+                dispatch(setNotification({
+                    message: error.message || 'Failed to follow user',
+                    status: 'error'
+                }));
             } finally {
                 setLoadingState(prev => ({ ...prev, follow: false }));
             }
@@ -104,7 +112,10 @@ const Pindetail = () => {
                 setIsFollowing(false);
             } catch (error) {
                 setIsFollowing(true);
-                alert(error);
+                dispatch(setNotification({
+                    message: error.message || 'Failed to unfollow user',
+                    status: 'error'
+                }));
             } finally {
                 setLoadingState(prev => ({ ...prev, unfollow: false }));
             }
@@ -124,7 +135,10 @@ const Pindetail = () => {
             await dispatch(Getpindetails(id));
             setComment("");
         } catch (error) {
-            alert(error);
+            dispatch(setNotification({
+                message: error.message || 'Failed to post comment',
+                status: 'error'
+            }));
         } finally {
             setLoadingState(prev => ({ ...prev, comment: false }));
         }
@@ -136,7 +150,10 @@ const Pindetail = () => {
             await dispatch(DeletComment(id, commentId));
             await dispatch(Getpindetails(id));
         } catch (error) {
-            alert(error);
+            dispatch(setNotification({
+                message: error.message || 'Failed to delete comment',
+                status: 'error'
+            }));
         } finally {
             setLoadingState(prev => ({ ...prev, comment: false }));
         }
@@ -298,6 +315,13 @@ const Pindetail = () => {
                     </div>
                 </div>
             </div>
+            <Notification
+                message={message}
+                status={status}
+                show={showNotification}
+                duration={timer}
+                onClear={clearNotification}
+            />
         </>
     );
 };

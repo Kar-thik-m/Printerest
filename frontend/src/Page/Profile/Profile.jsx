@@ -4,11 +4,14 @@ import SavePin from "../../Components/SavePin/SavePin";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileunique, Follow, UnFollow } from "../../Action/Users";
 import Loading from '../../Components/Layouts/Loader/Loading';
+import Notification from "../../Components/Notifications/Notifications";
+import { setNotification, clearNotification } from "../../Slice/AuthSlice";
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState('saved'); // 'saved' or 'created'
     const { id } = useParams();
     const { loaduser, uservariant, loading } = useSelector((state) => state.user);
+    const { message, status, showNotification, timer } = useSelector((state) => state.user);
     const [modalType, setModalType] = useState(null);
     const [isFollowing, setIsFollowing] = useState(false);
 
@@ -34,7 +37,10 @@ const Profile = () => {
             await dispatch(action(uservariant._id));
             setIsFollowing(!isFollowing);
         } catch (error) {
-            alert(error.message);
+            dispatch(setNotification({
+                message: error.message || 'Action failed',
+                status: 'error'
+            }));
         }
     };
 
@@ -154,7 +160,10 @@ const Profile = () => {
                                                         try {
                                                             await dispatch(action(userId));
                                                         } catch (error) {
-                                                            alert(error.message);
+                                                            dispatch(setNotification({
+                                                                message: error.message || 'Action failed',
+                                                                status: 'error'
+                                                            }));
                                                         }
                                                     }}
                                                 >
@@ -169,6 +178,13 @@ const Profile = () => {
                     </div>
                 </div>
             )}
+            <Notification
+                message={message}
+                status={status}
+                show={showNotification}
+                duration={timer}
+                onClear={clearNotification}
+            />
         </div>
     );
 };

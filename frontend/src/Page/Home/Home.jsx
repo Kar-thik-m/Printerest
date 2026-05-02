@@ -4,6 +4,8 @@ import { GetPinsAll } from '../../Action/Pins';
 import { Link } from 'react-router-dom';
 import { Loaduser } from '../../Action/Users';
 import Loading from '../../Components/Layouts/Loader/Loading';
+import Notification from '../../Components/Notifications/Notifications';
+import { clearNotification } from '../../Slice/PinSlice';
 
 
 
@@ -11,7 +13,7 @@ import Loading from '../../Components/Layouts/Loader/Loading';
 const Home = () => {
     const dispatch = useDispatch();
 
-    const { item, loading, error } = useSelector(state => state.pins);
+    const { item, loading, error, message, status, showNotification, timer } = useSelector(state => state.pins);
 
 
     useEffect(() => {
@@ -83,6 +85,13 @@ const Home = () => {
                     </div>
                 )
             )}
+            <Notification
+                message={message}
+                status={status}
+                show={showNotification}
+                duration={timer}
+                onClear={clearNotification}
+            />
         </div>
     );
 }

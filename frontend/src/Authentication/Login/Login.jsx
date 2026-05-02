@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginApi } from '../../Action/Users';
+import { clearNotification } from '../../Slice/AuthSlice';
 import Logo from "../../assets/logo.jpeg";
 import { Link, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
+import Notification from '../../Components/Notifications/Notifications';
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isAuthenticated, loading } = useSelector((state) => state.user);
+    const { message, status, showNotification, timer } = useSelector(state => state.user);
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -32,7 +36,7 @@ const Login = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl">
+            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl">
                 <div className="flex flex-col items-center">
                     <img src={Logo} className="w-16 h-16 rounded-full object-cover mb-4" alt="Printerest Logo" />
                     <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
@@ -112,6 +116,13 @@ const Login = () => {
                     </p>
                 </div>
             </div>
+            <Notification
+                message={message}
+                status={status}
+                show={showNotification}
+                duration={timer}
+                onClear={clearNotification}
+            />
         </div>
     );
 };

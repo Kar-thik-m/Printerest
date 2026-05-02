@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPin } from '../../Action/Pins';
+import { setNotification, clearNotification } from '../../Slice/PinSlice';
 import CircularProgress from '@mui/material/CircularProgress';
 import Loading from '../../Components/Layouts/Loader/Loading';
 import { Link } from 'react-router-dom';
+import Notification from '../../Components/Notifications/Notifications';
 
 const CreatePin = () => {
     const titleRef = useRef(null);
@@ -12,6 +14,8 @@ const CreatePin = () => {
     const [loading, setLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
     const { isAuthenticated, loaduser } = useSelector((state) => state.user);
+    const { message, status, showNotification, timer } = useSelector(state => state.pins);
+
 
     // Handle image preview generation
     const handleImageChange = (e) => {
@@ -33,7 +37,12 @@ const CreatePin = () => {
         const file = imageRef.current.files[0];
 
         if (!title || !file) {
-            alert('Title and image are required.');
+            dispatch(setNotification({
+                message: 'Title and image are required.',
+                status: 'error',
+                timer: 3000,
+                showNotification: true,
+            }));
             return;
         }
 
@@ -50,7 +59,10 @@ const CreatePin = () => {
             setImagePreview(null);
         } catch (error) {
             console.error('Error creating pin:', error);
-            alert('Failed to create pin. Please try again.');
+            dispatch(setNotification({
+                message: error.message || 'Failed to create pin. Please try again.',
+                status: 'error'
+            }));
         } finally {
             setLoading(false);
         }
@@ -60,7 +72,7 @@ const CreatePin = () => {
         <>
             {loading && <Loading />}
             <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-                <form onSubmit={handleSubmit} className="bg-white rounded-[32px] shadow-xl w-full max-w-4xl p-10 flex flex-col md:flex-row gap-10">
+                <form onSubmit={handleSubmit} className="bg-white rounded-[32px] w-full max-w-4xl p-10 flex flex-col md:flex-row gap-10">
 
                     {/* Left Side: Image Uploader */}
                     <div className="w-full md:w-5/12 flex flex-col">
@@ -70,7 +82,7 @@ const CreatePin = () => {
                                 <>
                                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <div className="bg-white px-6 py-3 rounded-full font-bold text-gray-900 shadow-lg transition-transform transform scale-95 group-hover:scale-100">
+                                        <div className="bg-white px-6 py-3 rounded-full font-bold text-gray-900 transition-transform transform scale-95 group-hover:scale-100">
                                             Change Image
                                         </div>
                                     </div>
@@ -106,7 +118,7 @@ const CreatePin = () => {
                             <button
                                 type="submit"
                                 disabled={loading || !imagePreview}
-                                className={`px-6 py-3 rounded-full font-bold text-[16px] transition-colors flex items-center justify-center ${loading || !imagePreview ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#e60023] hover:bg-[#ad081b] text-white shadow-md'}`}
+                                className={`px-6 py-3 rounded-full font-bold text-[16px] transition-colors flex items-center justify-center ${loading || !imagePreview ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#e60023] hover:bg-[#ad081b] text-white'}`}
                             >
                                 {loading ? <CircularProgress size={20} color="inherit" /> : "Save"}
                             </button>
@@ -149,6 +161,14 @@ const CreatePin = () => {
                     </div>
                 </form>
             </div>
+
+            <Notification
+                message={message}
+                status={status}
+                show={showNotification}
+                duration={timer}
+                onClear={clearNotification}
+            />
         </>
     );
 };

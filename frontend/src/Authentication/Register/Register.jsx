@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../Action/Users';
+import { clearNotification } from '../../Slice/AuthSlice';
 import Logo from "../../assets/logo.jpeg";
 import CircularProgress from '@mui/material/CircularProgress';
 
+import Loading from '../../Components/Layouts/Loader/Loading';
+import Notification from '../../Components/Notifications/Notifications';
+
+
 const Register = () => {
     const navigate = useNavigate();
-    const { loading } = useSelector((state) => state.user);
+    const { loading, message, status, showNotification, timer } = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
@@ -16,12 +21,12 @@ const Register = () => {
         password: '',
         image: null,
     });
-    
+
     const [previewUrl, setPreviewUrl] = useState(null);
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
-        
+
         if (name === 'image' && files && files[0]) {
             setFormData((prev) => ({ ...prev, image: files[0] }));
             setPreviewUrl(URL.createObjectURL(files[0]));
@@ -50,7 +55,8 @@ const Register = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl">
+
+            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl">
                 <div className="flex flex-col items-center">
                     <img src={Logo} className="w-16 h-16 rounded-full object-cover mb-4" alt="Printerest Logo" />
                     <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
@@ -154,7 +160,7 @@ const Register = () => {
                         </button>
                     </div>
                 </form>
-                
+
                 <div className="mt-6 text-center">
                     <p className="text-sm text-gray-600">
                         Already a member?{' '}
@@ -164,6 +170,13 @@ const Register = () => {
                     </p>
                 </div>
             </div>
+            <Notification
+                message={message}
+                status={status}
+                show={showNotification}
+                duration={timer}
+                onClear={clearNotification}
+            />
         </div>
     );
 };

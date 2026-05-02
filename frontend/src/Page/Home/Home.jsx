@@ -4,12 +4,15 @@ import { GetPinsAll } from '../../Action/Pins';
 import { Link } from 'react-router-dom';
 import { Loaduser } from '../../Action/Users';
 import Loading from '../../Components/Layouts/Loader/Loading';
-import Notifications from '../../Components/Notifications/Notifications';
+
+
+
 
 const Home = () => {
     const dispatch = useDispatch();
 
     const { item, loading, error } = useSelector(state => state.pins);
+
 
     useEffect(() => {
         dispatch(GetPinsAll());
@@ -26,7 +29,7 @@ const Home = () => {
                     {item.map(pin => (
                         <div key={pin._id} className="break-inside-avoid mb-4 md:mb-6 flex flex-col">
                             {/* Image and Hover Overlay */}
-                            <div className="relative group rounded-2xl overflow-hidden cursor-pointer bg-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+                            <div className="relative group rounded-2xl overflow-hidden cursor-pointer bg-gray-100 transition-all duration-300">
 
                                 <Link to={`/pin/${pin._id}`} className="w-full h-auto object-cover block rounded-2xl">
                                     <img src={pin.image.url} alt={pin.title} className="w-full h-auto object-cover block rounded-2xl" loading="lazy" />
@@ -45,7 +48,7 @@ const Home = () => {
                                             <Link to={`/profile/${pin.user._id}`}>
                                                 <img src={pin.user.userimage?.url || 'https://via.placeholder.com/150'} alt="User" className="w-8 h-8 rounded-full object-cover hover:opacity-80 transition-opacity" />
                                             </Link>
-                                            <span className="text-white text-sm font-semibold truncate drop-shadow-md">{pin.user.username}</span>
+                                            <span className="text-white text-sm font-semibold truncate">{pin.user.username}</span>
                                         </div>
                                         {/* 
                                         <div className="flex gap-2">

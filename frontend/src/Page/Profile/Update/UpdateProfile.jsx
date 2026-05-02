@@ -1,15 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../../../Action/Users';
+import { setNotification, clearNotification } from '../../../Slice/AuthSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Loading from '../../../Components/Layouts/Loader/Loading';
+import Notification from '../../../Components/Notifications/Notifications';
 
 const Updateprofile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
     const { loaduser } = useSelector(state => state.user);
+    const { message, status, showNotification, timer } = useSelector(state => state.user);
+
 
     const [username, setUsername] = useState('');
     const [file, setFile] = useState(null);
@@ -50,7 +54,10 @@ const Updateprofile = () => {
             navigate(`/profile/${id}`); // Go back to profile after success
         } catch (error) {
             console.error('Error updating profile:', error);
-            alert('Failed to update profile. Please try again.');
+            dispatch(setNotification({
+                message: error.message || 'Failed to update profile. Please try again.',
+                status: 'error'
+            }));
         } finally {
             setLoading(false);
         }
@@ -60,17 +67,17 @@ const Updateprofile = () => {
         <>
             {loading && <Loading />}
             <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-                <form onSubmit={handleSubmit} className="bg-white rounded-[32px] shadow-xl w-full max-w-4xl p-10 flex flex-col md:flex-row gap-10">
+                <form onSubmit={handleSubmit} className="bg-white rounded-[32px] w-full max-w-4xl p-10 flex flex-col md:flex-row gap-10">
 
                     {/* Left Side: Profile Image Uploader */}
                     <div className="w-full md:w-5/12 flex flex-col items-center justify-center">
-                        <div className="w-full max-w-[300px] aspect-square relative bg-gray-100 rounded-full flex flex-col items-center justify-center border-2 border-dashed border-gray-300 hover:border-gray-400 hover:bg-gray-200 transition-all cursor-pointer overflow-hidden group shadow-sm">
+                        <div className="w-full max-w-[300px] aspect-square relative bg-gray-100 rounded-full flex flex-col items-center justify-center border-2 border-dashed border-gray-300 hover:border-gray-400 hover:bg-gray-200 transition-all cursor-pointer overflow-hidden group">
 
                             {imagePreview ? (
                                 <>
                                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <div className="bg-white px-6 py-3 rounded-full font-bold text-gray-900 shadow-lg transition-transform transform scale-95 group-hover:scale-100">
+                                        <div className="bg-white px-6 py-3 rounded-full font-bold text-gray-900 transition-transform transform scale-95 group-hover:scale-100">
                                             Change Photo
                                         </div>
                                     </div>
@@ -104,7 +111,7 @@ const Updateprofile = () => {
                             <button
                                 type="submit"
                                 disabled={loading || !username.trim()}
-                                className={`px-6 py-3 rounded-full font-bold text-[16px] transition-colors flex items-center justify-center ${loading || !username.trim() ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#e60023] hover:bg-[#ad081b] text-white shadow-md'}`}
+                                className={`px-6 py-3 rounded-full font-bold text-[16px] transition-colors flex items-center justify-center ${loading || !username.trim() ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#e60023] hover:bg-[#ad081b] text-white'}`}
                             >
                                 {loading ? <CircularProgress size={20} color="inherit" /> : "Save"}
                             </button>
@@ -131,7 +138,15 @@ const Updateprofile = () => {
 
                     </div>
                 </form>
+
             </div>
+            <Notification
+                message={message}
+                status={status}
+                show={showNotification}
+                duration={timer}
+                onClear={clearNotification}
+            />
         </>
     );
 };

@@ -49,7 +49,7 @@ const Profile = () => {
                 <img 
                     src={uservariant.userimage?.url || 'https://via.placeholder.com/150'} 
                     alt="Profile" 
-                    className="w-32 h-32 rounded-full object-cover shadow-sm mb-4"
+                    className="w-32 h-32 rounded-full object-cover mb-4"
                 />
                 
                 <h1 className="text-[36px] font-bold text-gray-900 mb-1 tracking-tight">{uservariant.username}</h1>
@@ -120,9 +120,9 @@ const Profile = () => {
             {/* Follow/Following Modals */}
             {(modalType === 'following' || modalType === 'followers') && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity" onClick={() => toggleModal(modalType)}>
-                    <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-[480px] max-h-[85vh] flex flex-col overflow-hidden animate-fade-in-up" onClick={e => e.stopPropagation()}>
+                    <div className="bg-white rounded-[32px] w-full max-w-[480px] max-h-[85vh] flex flex-col overflow-hidden animate-fade-in-up" onClick={e => e.stopPropagation()}>
                         
-                        <div className="p-6 pb-4 flex justify-center items-center relative shadow-sm z-10">
+                        <div className="p-6 pb-4 flex justify-center items-center relative z-10">
                             <h2 className="text-[20px] font-bold text-gray-900 text-center">
                                 {modalType === "following" ? "Following" : "Followers"}
                             </h2>
@@ -142,7 +142,7 @@ const Profile = () => {
                                     return (
                                         <div key={userId} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-2xl transition-colors mb-1 cursor-pointer">
                                             <div className="flex items-center gap-3">
-                                                <img src={item.userimage?.url || 'https://via.placeholder.com/150'} alt={item.username || 'User'} className="w-[50px] h-[50px] rounded-full object-cover shadow-sm" />
+                                                <img src={item.userimage?.url || 'https://via.placeholder.com/150'} alt={item.username || 'User'} className="w-[50px] h-[50px] rounded-full object-cover" />
                                                 <span className="font-bold text-gray-900 text-[16px]">{item.username || 'Pinterest User'}</span>
                                             </div>
                                             {loaduser?._id !== userId && (

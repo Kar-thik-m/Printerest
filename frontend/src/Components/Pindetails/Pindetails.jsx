@@ -181,7 +181,7 @@ const Pindetail = () => {
         <>
             {loading && <Loading />}
             <div className="min-h-screen bg-gray-100 flex justify-center py-6 px-4 sm:px-6 lg:px-8">
-                <div className="bg-white rounded-[32px] shadow-xl overflow-hidden flex flex-col md:flex-row max-w-5xl w-full max-h-[85vh]">
+                <div className="bg-white rounded-[32px] overflow-hidden flex flex-col md:flex-row max-w-5xl w-full max-h-[85vh]">
 
                     {/* Left Side: Image */}
                     <div className="w-full md:w-1/2 bg-black flex items-center justify-center relative group">
@@ -225,7 +225,7 @@ const Pindetail = () => {
                         {/* User Profile Banner */}
                         <div className="flex justify-between items-center mb-8">
                             <Link to={`/profile/${pindetails.user._id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                                <img src={pindetails.user.userimage?.url || 'https://via.placeholder.com/150'} alt="User" className="w-12 h-12 rounded-full object-cover shadow-sm" />
+                                <img src={pindetails.user.userimage?.url || 'https://via.placeholder.com/150'} alt="User" className="w-12 h-12 rounded-full object-cover" />
                                 <div className="flex flex-col">
                                     <span className="text-gray-900 font-bold text-[16px] hover:underline">{pindetails.user.username}</span>
                                     <span className="text-gray-500 text-[14px]">Owner</span>
@@ -287,7 +287,7 @@ const Pindetail = () => {
                                     {comment.trim() && (
                                         <button
                                             onClick={handleCommentSubmit}
-                                            className="absolute cursor-pointer right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-colors shadow-md"
+                                            className="absolute cursor-pointer right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-colors"
                                         >
                                             {loadingState.comment ? <CircularProgress size={16} color="inherit" /> : <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd" /></svg>}
                                         </button>

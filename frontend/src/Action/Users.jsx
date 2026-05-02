@@ -24,7 +24,6 @@ export const register = (userData) => async (dispatch) => {
             dispatch(registerFail(errorData.message));
             return;
         }
-
         const data = await response.json();
         if (data && data.token) {
             localStorage.setItem("user", JSON.stringify(data));
@@ -36,6 +35,7 @@ export const register = (userData) => async (dispatch) => {
 
 
     } catch (error) {
+
         dispatch(registerFail(error.toString()));
     }
 };
@@ -63,10 +63,12 @@ export const LoginApi = (userData) => async (dispatch) => {
         }
 
         const data = await response.json();
+        console.log(data)
 
         if (data && data.token) {
             localStorage.setItem("user", JSON.stringify(data));
             dispatch(loginSuccess(data));
+            console.log(data)
         } else {
             dispatch(loginFail("Unexpected response format."));
         }
@@ -262,7 +264,7 @@ export const getProfileunique = (id) => async (dispatch) => {
         if (!response.ok) {
             const error = await response.text();
             dispatch(alluserFail(error));
-            return; 
+            return;
         }
 
         const data = await response.json();

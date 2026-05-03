@@ -96,13 +96,12 @@ const authSlice = createSlice({
         },
         loadUserRequest(state) {
             state.loading = true;
-            state.message = null;
         },
         loadUserSuccess(state, action) {
             state.loading = false;
             state.isAuthenticated = true;
             state.loaduser = action.payload.user || action.payload;
-            state.message = action.payload.message || null;
+            // Silent success - do not touch message/status/showNotification
         },
         loadUserFail(state, action) {
             state.loading = false;
@@ -126,7 +125,6 @@ const authSlice = createSlice({
         },
         followingRequest(state) {
             state.loading = true;
-            state.message = null;
         },
         followingSuccess(state, action) {
             state.loading = false;
@@ -152,7 +150,6 @@ const authSlice = createSlice({
         },
         unfollowRequest(state) {
             state.loading = true;
-            state.message = null;
         },
         unfollowSuccess(state, action) {
             state.loading = false;
@@ -177,7 +174,6 @@ const authSlice = createSlice({
         },
         getfollowsRequest(state) {
             state.loading = true;
-            state.message = null;
         },
         getfollowsSuccess(state, action) {
             state.loading = false;
@@ -217,13 +213,11 @@ const authSlice = createSlice({
         },
         alluserRequest(state) {
             state.loading = true;
-            state.error = null;
-            state.message = null;
         },
         alluserSuccess(state, action) {
             state.loading = false;
             state.uservariant = action.payload.profile || action.payload;
-            // state.message = action.payload.message || null;
+            // Silent success - do not touch message/status/showNotification
         },
         alluserFail(state, action) {
             state.loading = false;
